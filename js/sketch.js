@@ -18,8 +18,8 @@ var canPassThroughCorners = false;
 
 // Top Left of the Site(52.830206, -6.935848)
 // Bottom Right Of the Site (52.822532, -6.936950)
-var cols = 549; // Height of the area (5498)
-var rows = 826; // Width of the area (8266)
+var cols = 50; // Height of the area (5498)
+var rows = 50; // Width of the area (8266)
 
 // % of cells that are walls
 var percentWalls = allowDiagonals ? (canPassThroughCorners ? 0.4 : 0.3) : 0.2;
