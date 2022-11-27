@@ -20,11 +20,14 @@ function Spot(i, j, x, y, width, height, isWall, grid) {
   this.g = 0;
   this.h = 0;
   this.vh = 0; //visual heuristic for prioritising path options
+
   // Neighbors
   this.neighbors = undefined;
   this.neighboringWalls = undefined;
+
   // Where did I come from?
   this.previous = undefined;
+
   // Am I an wall?
   this.wall = isWall;
 

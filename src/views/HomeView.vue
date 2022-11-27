@@ -8,37 +8,30 @@
   // import "../../js/astarpathfinder";
   // import "../../js/libraries/p5.dom";
 
+  import { escapeHtmlComment } from "@vue/shared";
+
   export default {
-    methods: {
-      // Gets the GPS location of the user if given access
-      getLocation() {
-        var x = document.getElementById("location");
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-          x.innerHTML =
-            "Geolocation is not permitted or is not supported by this browser.";
-        }
-      },
-      // Display location in the P tag
-      showPosition(position) {
-        var x = document.getElementById("location");
-        x.innerHTML =
-            "Latitude: " +
-            position.coords.latitude +
-            "<br>Longitude: " +
-            position.coords.longitude;
-      },
+    created() {
+      const success = (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        // var x = document.getElementById("location");
+        // x.innerHTML = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+        // Do something with the position
+      };
+
+      const error = (err) => {
+        console.log(error);
+      };
+      // This will open permission popup
+      navigator.geolocation.getCurrentPosition(success, error);
     },
   };
 </script>
 
 <template>
   <main>
-    <button @click="getLocation()" class="btn btn-primary">
-      Check Location
-    </button>
-
-    <p id="location"></p>
+    <h1>Main</h1>
   </main>
 </template>

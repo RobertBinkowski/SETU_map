@@ -1,0 +1,23 @@
+// Colors
+$acc-1: #009b74;
+$acc-2: #025cb1;
+
+$txt-1: #ffffff;
+$txt-2: #303030;
+
+$bg-1: #292929;
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    $acc-2: #ffffff;
+    --color-background: var(--vt-c-black);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-background-mute: var(--vt-c-black-mute);
+
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--vt-c-text-dark-2);
+  }
+}

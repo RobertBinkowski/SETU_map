@@ -1,16 +1,29 @@
 <script setup>
   import { RouterLink, RouterView } from "vue-router";
-  import HelloWorld from "./components/HelloWorld.vue";
   import BottomFooter from "./components/BottomFooter.vue";
   import TopNav from "./components/TopNav.vue";
+  // import AlertBox from "./components/AlertBox.vue";
 </script>
 
 <template>
-  <div>
+  <div class="app">
     <TopNav></TopNav>
-    <RouterView></RouterView>
+    <!-- <AlertBox></AlertBox> -->
+    <div class="content">
+      <RouterView></RouterView>
+    </div>
     <BottomFooter></BottomFooter>
   </div>
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped>
+  .app {
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    .content {
+      margin: auto;
+      max-width: 200px;
+    }
+  }
+</style>
