@@ -1,5 +1,5 @@
 <template>
-  <main class="about">
+  <main id="about">
     <h1>About</h1>
     <h2>South East Technological University Map (SETU Map)</h2>
     <p>
@@ -15,12 +15,8 @@
   </main>
 </template>
 
-<style>
-  @media (min-width: 1024px) {
-    .about {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-    }
+<style scoped lang="scss">
+  #about {
+    text-align: center;
   }
 </style>

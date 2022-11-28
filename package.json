@@ -7,7 +7,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.3",
+    "bootstrap-vue-3": "^0.4.10",
     "sass": "^1.56.1",
     "scss": "^0.2.4",
     "vue": "^3.2.41",

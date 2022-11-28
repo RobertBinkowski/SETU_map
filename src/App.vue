@@ -2,13 +2,13 @@
   import { RouterLink, RouterView } from "vue-router";
   import BottomFooter from "./components/BottomFooter.vue";
   import TopNav from "./components/TopNav.vue";
-  // import AlertBox from "./components/AlertBox.vue";
+  import AlertBox from "./components/AlertBox.vue";
 </script>
 
 <template>
   <div class="app">
     <TopNav></TopNav>
-    <!-- <AlertBox></AlertBox> -->
+    <AlertBox :alerts="alert - warning"></AlertBox>
     <div class="content">
       <RouterView></RouterView>
     </div>
@@ -23,7 +23,7 @@
     margin: 0;
     .content {
       margin: auto;
-      max-width: 200px;
+      max-width: 1500px;
     }
   }
 </style>

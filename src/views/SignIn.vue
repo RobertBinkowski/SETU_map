@@ -1,64 +1,44 @@
 <template>
-  <!-- Pills content -->
-  <main class="tab-content">
-    <h1>Sign In</h1>
-    <div
-      class="tab-pane fade show active"
-      id="pills-login"
-      role="tabpanel"
-      aria-labelledby="tab-login"
-    >
-      <form>
-        <!-- Email input -->
-        <div class="form-outline mb-4">
-          <input type="email" id="loginName" class="form-control" />
-          <label class="form-label" for="loginName">Email or username</label>
-        </div>
+  <section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card bg-dark text-white" style="border-radius: 1rem">
+            <div class="card-body p-5 text-center">
+              <div class="mb-md-5 mt-md-4 pb-5">
+                <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+                <p class="text-white-50 mb-5">
+                  Please enter your login and password!
+                </p>
 
-        <!-- Password input -->
-        <div class="form-outline mb-4">
-          <input type="password" id="loginPassword" class="form-control" />
-          <label class="form-label" for="loginPassword">Password</label>
-        </div>
+                <div class="form-outline form-white mb-4">
+                  <input
+                    type="email"
+                    id="typeEmailX"
+                    class="form-control form-control-lg"
+                  />
+                  <label class="form-label" for="typeEmailX">Email</label>
+                </div>
 
-        <!-- 2 column grid layout -->
-        <div class="row mb-4">
-          <div class="col-md-6 d-flex justify-content-center">
-            <!-- Checkbox -->
-            <div class="form-check mb-3 mb-md-0">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="loginCheck"
-                checked
-              />
-              <label class="form-check-label" for="loginCheck">
-                Remember me
-              </label>
+                <div class="form-outline form-white mb-4">
+                  <input
+                    type="password"
+                    id="typePasswordX"
+                    class="form-control form-control-lg"
+                  />
+                  <label class="form-label" for="typePasswordX">Password</label>
+                </div>
+
+                <button class="btn btn-outline-light btn-lg px-5" type="submit">
+                  Login
+                </button>
+              </div>
             </div>
           </div>
-
-          <div class="col-md-6 d-flex justify-content-center">
-            <!-- Simple link -->
-            <a href="#!">Forgot password?</a>
-          </div>
         </div>
-
-        <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-block mb-4">
-          Sign in
-        </button>
-      </form>
+      </div>
     </div>
-    <div
-      class="tab-pane fade"
-      id="pills-register"
-      role="tabpanel"
-      aria-labelledby="tab-register"
-    ></div>
-  </main>
-  <!-- Pills content -->
+  </section>
 </template>
 
 <style lang="sass" scoped></style>
