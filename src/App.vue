@@ -2,13 +2,13 @@
   import { RouterLink, RouterView } from "vue-router";
   import BottomFooter from "./components/BottomFooter.vue";
   import TopNav from "./components/TopNav.vue";
-  import AlertBox from "./components/AlertBox.vue";
+  // import AlertBox from "./components/AlertBox.vue";
 </script>
 
 <template>
   <div class="app">
     <TopNav></TopNav>
-    <AlertBox :alerts="alert - warning"></AlertBox>
+    <!-- <AlertBox :alerts="alert - warning"></AlertBox> -->
     <div class="content">
       <RouterView></RouterView>
     </div>
