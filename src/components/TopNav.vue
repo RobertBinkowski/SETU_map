@@ -118,6 +118,11 @@
             name: "Sign In",
             to: "signin",
           },
+          {
+            enabled: true,
+            name: "Admin Page",
+            to: "admin",
+          },
         ],
         features: {
           darkMode: false,
