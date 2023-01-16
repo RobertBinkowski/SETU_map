@@ -1,7 +1,12 @@
 <?php
-
 //Enable Strict to ensure Scalars is configured per file basis
 declare(strict_types=1);
+
+//Database Variables
+$host = "127.0.0.1";
+$username = "root";
+$password = "pass";
+$database = "setu_map";
 
 //Auto Loader for all Controllers from /src/
 spl_autoload_register(function ($class) {
@@ -9,16 +14,16 @@ spl_autoload_register(function ($class) {
 });
 
 //Handle Exceptions
+set_error_handler("ErrorHandler::handleError");
 set_exception_handler("ErrorHandler::handleException");
 
 //Set all headers to return Json type
 header("Content-type:application/json; charset=UTF-8");
 
 //Create Objects
-$database = new Database("127.0.0.1","setu_map","root","pass"); 
-$userCont = new UserController;
+$database = new Database($host, $database, $username, $password);
 
-$request = explode("/",$_SERVER["REQUEST_URI"]);
+$request = explode("/", $_SERVER["REQUEST_URI"]);
 
 // if($request[1] == ""){
 //     http_response_code(404);
@@ -26,7 +31,9 @@ $request = explode("/",$_SERVER["REQUEST_URI"]);
 // }else{
 // }
 
-$database->getConnection();
+$gateway = new userGateway($database);
+$userCont = new UserController($gateway);
+
 $pass = $request[1] ?? null;
 
 $userCont->userRequest($_SERVER["REQUEST_METHOD"], $pass);
