@@ -13,9 +13,9 @@ $request = explode("/", $_SERVER["REQUEST_URI"]);
 // } else {
 // }
 
-$output = new User($database);
-$output = new UserController($output);
+$output = new Campus($database);
+$output = new CampusController($output);
 
 $pass = $request[1] ?? null;
 
-$output->userRequest($_SERVER["REQUEST_METHOD"], $pass);
+$output->campusRequest($_SERVER["REQUEST_METHOD"], $pass);
