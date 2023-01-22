@@ -7,15 +7,15 @@ include "./src/header.php";
 
 $request = explode("/", $_SERVER["REQUEST_URI"]);
 
-// if($request[1] == ""){
+// if ($request[1] == "") {
 //     http_response_code(404);
 //     exit;
-// }else{
+// } else {
 // }
 
-$gateway = new userGateway($database);
-$userCont = new UserController($gateway);
+$output = new User($database);
+$output = new UserController($output);
 
 $pass = $request[1] ?? null;
 
-$userCont->userRequest($_SERVER["REQUEST_METHOD"], $pass);
+$output->userRequest($_SERVER["REQUEST_METHOD"], $pass);

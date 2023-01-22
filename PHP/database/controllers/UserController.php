@@ -2,7 +2,7 @@
 
 class UserController
 {
-    public function __construct(private UserGateway $gateway)
+    public function __construct(private User $gateway)
     {
     }
     public function userRequest(string $method, ?string $id): void
