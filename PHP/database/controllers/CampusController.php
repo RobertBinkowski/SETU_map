@@ -1,8 +1,8 @@
 <?php
 
-class UserController
+class CampusController
 {
-    public function __construct(private User $gateway)
+    public function __construct(private Campus $gateway)
     {
     }
     public function request(string $method, ?string $id): void
@@ -15,17 +15,17 @@ class UserController
     }
     private function processResourceRequest(string $method, string $id): void
     {
-        $user = $this->gateway->get($id);
+        $campus = $this->gateway->get($id);
 
-        if (!$user) {
+        if (!$campus) {
             http_response_code(404);
-            echo json_encode(["message" => "User Not found"]);
+            echo json_encode(["message" => "campus Not found"]);
             return;
         }
 
         switch ($method) {
             case "GET":
-                echo json_encode($user);
+                echo json_encode($campus);
                 break;
             case "PATCH":
                 $data = (array) json_decode(file_get_contents("php://input"), true);
@@ -38,18 +38,18 @@ class UserController
                     break;
                 }
 
-                //Update user
+                //Update campus
                 http_response_code(200);
-                $rows = $this->gateway->update($user, $data);
+                $rows = $this->gateway->update($campus, $data);
                 echo json_encode([
-                    "message" => "User $id - Updated",
+                    "message" => "campus $id - Updated",
                     "rows affected" => $rows,
                 ]);
                 break;
             case "DELETE":
                 $rows = $this->gateway->delete($id);
                 echo json_encode([
-                    "message" => "User $id - Deleted",
+                    "message" => "campus $id - Deleted",
                     "rows" => $rows
                 ]);
                 break;
@@ -75,11 +75,11 @@ class UserController
                     echo json_encode(["errors" => $errors]);
                     break;
                 }
-                //No errors create a user
+                //No errors create a campus
                 http_response_code(201);
                 $id = $this->gateway->create($data);
                 echo json_encode([
-                    "message" => "User Was Created",
+                    "message" => "campus Was Created",
                     "ID" => $id,
                 ]);
                 break;
@@ -97,14 +97,11 @@ class UserController
     {
         $errors = [];
 
-        if ($is_new && empty($data["email"])) {
-            $errors[] = "Email is required";
+        if ($is_new && empty($data["name"])) {
+            $errors[] = "Name is required";
         }
-        if ($is_new && empty($data["username"])) {
-            $errors[] = "Username is required";
-        }
-        if ($is_new && empty($data["password"])) {
-            $errors[] = "Password is required";
+        if ($is_new && empty($data["abbreviation"])) {
+            $errors[] = "Abbreviation is required";
         }
         return $errors;
     }

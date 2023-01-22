@@ -1,7 +1,7 @@
 <?php
 
 
-class User
+class Room
 {
     private PDO $conn;
 
@@ -11,7 +11,7 @@ class User
     }
     public function getAll(): array
     {
-        $sql = "SELECT * FROM users WHERE `enabled`='1'";
+        $sql = "SELECT * FROM room WHERE `enabled`='1'";
 
         $statement = $this->conn->query($sql);
 
@@ -25,14 +25,17 @@ class User
     }
     public function create(array $data): string
     {
-        $sql = "INSERT INTO users (enabled ,username, email, password, privileges) VALUES (enabled,:username, :email, :password, :privileges)";
+        $sql = "INSERT INTO room (enabled , type, name, info, size, building_id, location_id, floor_id) VALUES (enabled,:type, :name, :info, :size, :building_id, :location_id, :floor_id)";
 
         $statement = $this->conn->prepare($sql);
 
-        $statement->bindValue(":username", $data["username"], PDO::PARAM_STR);
-        $statement->bindValue(":email", $data["email"], PDO::PARAM_STR);
-        $statement->bindValue(":password", $data["password"], PDO::PARAM_STR);
-        $statement->bindValue(":privileges", $data["privileges"], PDO::PARAM_STR);
+        $statement->bindValue(":type", $data["type"], PDO::PARAM_STR);
+        $statement->bindValue(":name", $data["name"], PDO::PARAM_STR);
+        $statement->bindValue(":info", $data["info"], PDO::PARAM_STR);
+        $statement->bindValue(":size", $data["size"], PDO::PARAM_STR);
+        $statement->bindValue(":building_id", $data["building_id"], PDO::PARAM_STR);
+        $statement->bindValue(":location_id", $data["location_id"], PDO::PARAM_STR);
+        $statement->bindValue(":floor_id", $data["floor_id"], PDO::PARAM_STR);
 
         $statement->execute();
 
@@ -41,7 +44,7 @@ class User
 
     public function get(string $id): array|false
     {
-        $sql = "SELECT * FROM users WHERE id = :id";
+        $sql = "SELECT * FROM room WHERE id = :id";
 
         $statement = $this->conn->prepare($sql);
 
@@ -60,15 +63,18 @@ class User
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE users SET username = :username, password = :password, email = :email, enabled = :enabled, privileges = :privileges WHERE ID =:ID";
+        $sql = "UPDATE room SET type = :type, name = :name, info = :info, enabled = :enabled, size = :size, building_id= :building_id, location_id = :location_id, floor_id = :floor_id WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
-        $statement->bindValue(":username", $new["username"] ?? $current["username"], PDO::PARAM_STR);
-        $statement->bindValue(":password", $new["password"] ?? $current["password"], PDO::PARAM_STR);
-        $statement->bindValue(":email", $new["email"] ?? $current["email"], PDO::PARAM_STR);
+        $statement->bindValue(":type", $new["type"] ?? $current["type"], PDO::PARAM_STR);
+        $statement->bindValue(":name", $new["name"] ?? $current["name"], PDO::PARAM_STR);
+        $statement->bindValue(":info", $new["info"] ?? $current["info"], PDO::PARAM_STR);
         $statement->bindValue(":enabled", $new["enabled"] ?? $current["enabled"], PDO::PARAM_BOOL);
-        $statement->bindValue(":privileges", $new["privileges"] ?? $current["privileges"], PDO::PARAM_STR);
+        $statement->bindValue(":size", $new["size"] ?? $current["size"], PDO::PARAM_STR);
+        $statement->bindValue(":building_id", $new["building_id"], PDO::PARAM_STR);
+        $statement->bindValue(":location_id", $new["location_id"], PDO::PARAM_STR);
+        $statement->bindValue(":floor_id", $new["floor_id"], PDO::PARAM_STR);
 
         $statement->bindValue(":ID", $current["ID"], PDO::PARAM_INT);
 
@@ -79,7 +85,7 @@ class User
 
     public function disable(array $current, bool $enabled = false): int
     {
-        $sql = "UPDATE users SET enabled = :enabled WHERE ID =:ID";
+        $sql = "UPDATE room SET enabled = :enabled WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -94,7 +100,7 @@ class User
 
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM users WHERE ID = :ID";
+        $sql = "DELETE FROM room WHERE ID = :ID";
 
         $statement = $this->conn->prepare($sql);
 

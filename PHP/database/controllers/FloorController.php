@@ -1,8 +1,8 @@
 <?php
 
-class UserController
+class FloorController
 {
-    public function __construct(private User $gateway)
+    public function __construct(private Floor $gateway)
     {
     }
     public function request(string $method, ?string $id): void
@@ -15,17 +15,17 @@ class UserController
     }
     private function processResourceRequest(string $method, string $id): void
     {
-        $user = $this->gateway->get($id);
+        $floor = $this->gateway->get($id);
 
-        if (!$user) {
+        if (!$floor) {
             http_response_code(404);
-            echo json_encode(["message" => "User Not found"]);
+            echo json_encode(["message" => "floor Not found"]);
             return;
         }
 
         switch ($method) {
             case "GET":
-                echo json_encode($user);
+                echo json_encode($floor);
                 break;
             case "PATCH":
                 $data = (array) json_decode(file_get_contents("php://input"), true);
@@ -38,18 +38,18 @@ class UserController
                     break;
                 }
 
-                //Update user
+                //Update floor
                 http_response_code(200);
-                $rows = $this->gateway->update($user, $data);
+                $rows = $this->gateway->update($floor, $data);
                 echo json_encode([
-                    "message" => "User $id - Updated",
+                    "message" => "floor $id - Updated",
                     "rows affected" => $rows,
                 ]);
                 break;
             case "DELETE":
                 $rows = $this->gateway->delete($id);
                 echo json_encode([
-                    "message" => "User $id - Deleted",
+                    "message" => "floor $id - Deleted",
                     "rows" => $rows
                 ]);
                 break;
@@ -75,7 +75,7 @@ class UserController
                     echo json_encode(["errors" => $errors]);
                     break;
                 }
-                //No errors create a user
+                //No errors create a floor
                 http_response_code(201);
                 $id = $this->gateway->create($data);
                 echo json_encode([
@@ -96,15 +96,8 @@ class UserController
     private function getValidationErrors(array $data, bool $is_new = true): array
     {
         $errors = [];
-
-        if ($is_new && empty($data["email"])) {
-            $errors[] = "Email is required";
-        }
-        if ($is_new && empty($data["username"])) {
-            $errors[] = "Username is required";
-        }
-        if ($is_new && empty($data["password"])) {
-            $errors[] = "Password is required";
+        if ($is_new && empty($data["name"])) {
+            $errors[] = "name is required";
         }
         return $errors;
     }

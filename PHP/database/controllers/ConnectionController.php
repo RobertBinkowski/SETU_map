@@ -1,8 +1,8 @@
 <?php
 
-class UserController
+class ConnectionController
 {
-    public function __construct(private User $gateway)
+    public function __construct(private Connection $gateway)
     {
     }
     public function request(string $method, ?string $id): void
@@ -15,17 +15,17 @@ class UserController
     }
     private function processResourceRequest(string $method, string $id): void
     {
-        $user = $this->gateway->get($id);
+        $connection = $this->gateway->get($id);
 
-        if (!$user) {
+        if (!$connection) {
             http_response_code(404);
-            echo json_encode(["message" => "User Not found"]);
+            echo json_encode(["message" => "connection Not found"]);
             return;
         }
 
         switch ($method) {
             case "GET":
-                echo json_encode($user);
+                echo json_encode($connection);
                 break;
             case "PATCH":
                 $data = (array) json_decode(file_get_contents("php://input"), true);
@@ -38,18 +38,18 @@ class UserController
                     break;
                 }
 
-                //Update user
+                //Update connection
                 http_response_code(200);
-                $rows = $this->gateway->update($user, $data);
+                $rows = $this->gateway->update($connection, $data);
                 echo json_encode([
-                    "message" => "User $id - Updated",
+                    "message" => "connection $id - Updated",
                     "rows affected" => $rows,
                 ]);
                 break;
             case "DELETE":
                 $rows = $this->gateway->delete($id);
                 echo json_encode([
-                    "message" => "User $id - Deleted",
+                    "message" => "connection $id - Deleted",
                     "rows" => $rows
                 ]);
                 break;
@@ -75,11 +75,11 @@ class UserController
                     echo json_encode(["errors" => $errors]);
                     break;
                 }
-                //No errors create a user
+                //No errors create a connection
                 http_response_code(201);
                 $id = $this->gateway->create($data);
                 echo json_encode([
-                    "message" => "User Was Created",
+                    "message" => "connection Was Created",
                     "ID" => $id,
                 ]);
                 break;
@@ -97,14 +97,8 @@ class UserController
     {
         $errors = [];
 
-        if ($is_new && empty($data["email"])) {
-            $errors[] = "Email is required";
-        }
-        if ($is_new && empty($data["username"])) {
-            $errors[] = "Username is required";
-        }
-        if ($is_new && empty($data["password"])) {
-            $errors[] = "Password is required";
+        if ($is_new && empty($data["distance"])) {
+            $errors[] = "distance is required";
         }
         return $errors;
     }

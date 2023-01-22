@@ -3,19 +3,20 @@
 declare(strict_types=1);
 include "./src/ErrorHandler.php";
 include "./src/AutoLoader.php";
-include "./src/header.php";
+include "./src/Header.php";
+include "./src/Security.php";
 
 $request = explode("/", $_SERVER["REQUEST_URI"]);
 
-// if($request[1] == ""){
+// if ($request[1] == "") {
 //     http_response_code(404);
 //     exit;
-// }else{
+// } else {
 // }
 
-$gateway = new userGateway($database);
-$userCont = new UserController($gateway);
+$output = new Image($database);
+$output = new ImageController($output);
 
 $pass = $request[1] ?? null;
 
-$userCont->userRequest($_SERVER["REQUEST_METHOD"], $pass);
+$output->request($_SERVER["REQUEST_METHOD"], $pass);
