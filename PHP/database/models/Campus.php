@@ -11,7 +11,7 @@ class Campus
     }
     public function getAll(): array
     {
-        $sql = "SELECT * FROM campus";
+        $sql = "SELECT * FROM campus WHERE `enabled`='1'";
 
         $statement = $this->conn->query($sql);
 

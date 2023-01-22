@@ -5,7 +5,7 @@ class UserController
     public function __construct(private User $gateway)
     {
     }
-    public function userRequest(string $method, ?string $id): void
+    public function request(string $method, ?string $id): void
     {
         if ($id) {
             $this->processResourceRequest($method, $id);

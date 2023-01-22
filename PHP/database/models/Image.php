@@ -1,7 +1,7 @@
 <?php
 
 
-class User
+class Image
 {
     private PDO $conn;
 
@@ -11,7 +11,7 @@ class User
     }
     public function getAll(): array
     {
-        $sql = "SELECT * FROM users WHERE `enabled`='1'";
+        $sql = "SELECT * FROM image WHERE `enabled`='1'";
 
         $statement = $this->conn->query($sql);
 
@@ -25,14 +25,16 @@ class User
     }
     public function create(array $data): string
     {
-        $sql = "INSERT INTO users (enabled ,username, email, password, privileges) VALUES (enabled,:username, :email, :password, :privileges)";
+        $sql = "INSERT INTO image (enabled ,name, info, src, campus_id,building_id, room_id) VALUES (enabled,:name, :info, :src, :campus_id, :building_id ,:room_id)";
 
         $statement = $this->conn->prepare($sql);
 
-        $statement->bindValue(":username", $data["username"], PDO::PARAM_STR);
-        $statement->bindValue(":email", $data["email"], PDO::PARAM_STR);
-        $statement->bindValue(":password", $data["password"], PDO::PARAM_STR);
-        $statement->bindValue(":privileges", $data["privileges"], PDO::PARAM_STR);
+        $statement->bindValue(":name", $data["name"], PDO::PARAM_STR);
+        $statement->bindValue(":info", $data["info"], PDO::PARAM_STR);
+        $statement->bindValue(":src", $data["src"], PDO::PARAM_STR);
+        $statement->bindValue(":campus_id", $data["campus_id"], PDO::PARAM_STR);
+        $statement->bindValue(":building_id", $data["building_id"], PDO::PARAM_STR);
+        $statement->bindValue(":room_id", $data["room_id"], PDO::PARAM_STR);
 
         $statement->execute();
 
@@ -41,7 +43,7 @@ class User
 
     public function get(string $id): array|false
     {
-        $sql = "SELECT * FROM users WHERE id = :id";
+        $sql = "SELECT * FROM image WHERE id = :id";
 
         $statement = $this->conn->prepare($sql);
 
@@ -60,15 +62,17 @@ class User
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE users SET username = :username, password = :password, email = :email, enabled = :enabled, privileges = :privileges WHERE ID =:ID";
+        $sql = "UPDATE image SET name = :name, src = :src, info = :info, enabled = :enabled, campus_id = :campus_id WHERE ID =:ID, building_id = :building_id , room_id= :room_id";
 
         $statement = $this->conn->prepare($sql);
 
-        $statement->bindValue(":username", $new["username"] ?? $current["username"], PDO::PARAM_STR);
-        $statement->bindValue(":password", $new["password"] ?? $current["password"], PDO::PARAM_STR);
-        $statement->bindValue(":email", $new["email"] ?? $current["email"], PDO::PARAM_STR);
+        $statement->bindValue(":name", $new["name"] ?? $current["name"], PDO::PARAM_STR);
+        $statement->bindValue(":src", $new["src"] ?? $current["src"], PDO::PARAM_STR);
+        $statement->bindValue(":info", $new["info"] ?? $current["info"], PDO::PARAM_STR);
         $statement->bindValue(":enabled", $new["enabled"] ?? $current["enabled"], PDO::PARAM_BOOL);
-        $statement->bindValue(":privileges", $new["privileges"] ?? $current["privileges"], PDO::PARAM_STR);
+        $statement->bindValue(":campus_id", $new["campus_id"] ?? $current["campus_id"], PDO::PARAM_STR);
+        $statement->bindValue(":building_id", $new["building_id"] ?? $current["building_id"], PDO::PARAM_STR);
+        $statement->bindValue(":room_id", $new["room_id"] ?? $current["room_id"], PDO::PARAM_STR);
 
         $statement->bindValue(":ID", $current["ID"], PDO::PARAM_INT);
 
@@ -79,7 +83,7 @@ class User
 
     public function disable(array $current, bool $enabled = false): int
     {
-        $sql = "UPDATE users SET enabled = :enabled WHERE ID =:ID";
+        $sql = "UPDATE image SET enabled = :enabled WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -94,7 +98,7 @@ class User
 
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM users WHERE ID = :ID";
+        $sql = "DELETE FROM image WHERE ID = :ID";
 
         $statement = $this->conn->prepare($sql);
 

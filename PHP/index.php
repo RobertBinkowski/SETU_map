@@ -3,7 +3,8 @@
 declare(strict_types=1);
 include "./src/ErrorHandler.php";
 include "./src/AutoLoader.php";
-include "./src/header.php";
+include "./src/Header.php";
+include "./src/Security.php";
 
 $request = explode("/", $_SERVER["REQUEST_URI"]);
 
@@ -13,9 +14,9 @@ $request = explode("/", $_SERVER["REQUEST_URI"]);
 // } else {
 // }
 
-$output = new Campus($database);
-$output = new CampusController($output);
+$output = new Image($database);
+$output = new ImageController($output);
 
 $pass = $request[1] ?? null;
 
-$output->campusRequest($_SERVER["REQUEST_METHOD"], $pass);
+$output->request($_SERVER["REQUEST_METHOD"], $pass);

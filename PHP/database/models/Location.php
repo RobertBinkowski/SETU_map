@@ -1,7 +1,7 @@
 <?php
 
 
-class User
+class Location
 {
     private PDO $conn;
 
@@ -11,7 +11,7 @@ class User
     }
     public function getAll(): array
     {
-        $sql = "SELECT * FROM users WHERE `enabled`='1'";
+        $sql = "SELECT * FROM location WHERE `enabled`='1'";
 
         $statement = $this->conn->query($sql);
 
@@ -25,14 +25,16 @@ class User
     }
     public function create(array $data): string
     {
-        $sql = "INSERT INTO users (enabled ,username, email, password, privileges) VALUES (enabled,:username, :email, :password, :privileges)";
+        $sql = "INSERT INTO location (enabled , type, geo_longitude, geo_latitude, map_longitude, map_latitude, type) VALUES (enabled,:type, :geo_longitude, :geo_latitude, :map_longitude, :map_latitude, :type)";
 
         $statement = $this->conn->prepare($sql);
 
-        $statement->bindValue(":username", $data["username"], PDO::PARAM_STR);
-        $statement->bindValue(":email", $data["email"], PDO::PARAM_STR);
-        $statement->bindValue(":password", $data["password"], PDO::PARAM_STR);
-        $statement->bindValue(":privileges", $data["privileges"], PDO::PARAM_STR);
+        $statement->bindValue(":type", $data["type"], PDO::PARAM_STR);
+        $statement->bindValue(":geo_longitude", $data["geo_longitude"], PDO::PARAM_STR);
+        $statement->bindValue(":geo_latitude", $data["geo_latitude"], PDO::PARAM_STR);
+        $statement->bindValue(":map_longitude", $data["map_longitude"], PDO::PARAM_STR);
+        $statement->bindValue(":map_latitude", $data["map_latitude"], PDO::PARAM_STR);
+        $statement->bindValue(":type", $data["type"], PDO::PARAM_STR);
 
         $statement->execute();
 
@@ -41,7 +43,7 @@ class User
 
     public function get(string $id): array|false
     {
-        $sql = "SELECT * FROM users WHERE id = :id";
+        $sql = "SELECT * FROM location WHERE id = :id";
 
         $statement = $this->conn->prepare($sql);
 
@@ -60,15 +62,17 @@ class User
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE users SET username = :username, password = :password, email = :email, enabled = :enabled, privileges = :privileges WHERE ID =:ID";
+        $sql = "UPDATE location SET type = :type, geo_longitude = :geo_longitude, geo_latitude = :geo_latitude, enabled = :enabled, map_longitude = :map_longitude, map_latitude= :map_latitude, type = :type WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
-        $statement->bindValue(":username", $new["username"] ?? $current["username"], PDO::PARAM_STR);
-        $statement->bindValue(":password", $new["password"] ?? $current["password"], PDO::PARAM_STR);
-        $statement->bindValue(":email", $new["email"] ?? $current["email"], PDO::PARAM_STR);
+        $statement->bindValue(":type", $new["type"] ?? $current["type"], PDO::PARAM_STR);
+        $statement->bindValue(":geo_longitude", $new["geo_longitude"] ?? $current["geo_longitude"], PDO::PARAM_STR);
+        $statement->bindValue(":geo_latitude", $new["geo_latitude"] ?? $current["geo_latitude"], PDO::PARAM_STR);
         $statement->bindValue(":enabled", $new["enabled"] ?? $current["enabled"], PDO::PARAM_BOOL);
-        $statement->bindValue(":privileges", $new["privileges"] ?? $current["privileges"], PDO::PARAM_STR);
+        $statement->bindValue(":map_longitude", $new["map_longitude"] ?? $current["map_longitude"], PDO::PARAM_STR);
+        $statement->bindValue(":map_latitude", $new["map_latitude"], PDO::PARAM_STR);
+        $statement->bindValue(":type", $new["type"], PDO::PARAM_STR);
 
         $statement->bindValue(":ID", $current["ID"], PDO::PARAM_INT);
 
@@ -79,7 +83,7 @@ class User
 
     public function disable(array $current, bool $enabled = false): int
     {
-        $sql = "UPDATE users SET enabled = :enabled WHERE ID =:ID";
+        $sql = "UPDATE location SET enabled = :enabled WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -94,7 +98,7 @@ class User
 
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM users WHERE ID = :ID";
+        $sql = "DELETE FROM location WHERE ID = :ID";
 
         $statement = $this->conn->prepare($sql);
 

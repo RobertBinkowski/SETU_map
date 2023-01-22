@@ -1,4 +1,5 @@
 <?php
+
 spl_autoload_register(function ($class) {
 
     $path = __DIR__ . '\\..' . '\\database\\' . lcfirst($class . '.php');

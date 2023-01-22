@@ -1,8 +1,8 @@
 <?php
 
-class CampusController
+class ConnectionController
 {
-    public function __construct(private Campus $gateway)
+    public function __construct(private Connection $gateway)
     {
     }
     public function request(string $method, ?string $id): void
@@ -15,17 +15,17 @@ class CampusController
     }
     private function processResourceRequest(string $method, string $id): void
     {
-        $campus = $this->gateway->get($id);
+        $connection = $this->gateway->get($id);
 
-        if (!$campus) {
+        if (!$connection) {
             http_response_code(404);
-            echo json_encode(["message" => "campus Not found"]);
+            echo json_encode(["message" => "connection Not found"]);
             return;
         }
 
         switch ($method) {
             case "GET":
-                echo json_encode($campus);
+                echo json_encode($connection);
                 break;
             case "PATCH":
                 $data = (array) json_decode(file_get_contents("php://input"), true);
@@ -38,18 +38,18 @@ class CampusController
                     break;
                 }
 
-                //Update campus
+                //Update connection
                 http_response_code(200);
-                $rows = $this->gateway->update($campus, $data);
+                $rows = $this->gateway->update($connection, $data);
                 echo json_encode([
-                    "message" => "campus $id - Updated",
+                    "message" => "connection $id - Updated",
                     "rows affected" => $rows,
                 ]);
                 break;
             case "DELETE":
                 $rows = $this->gateway->delete($id);
                 echo json_encode([
-                    "message" => "campus $id - Deleted",
+                    "message" => "connection $id - Deleted",
                     "rows" => $rows
                 ]);
                 break;
@@ -75,11 +75,11 @@ class CampusController
                     echo json_encode(["errors" => $errors]);
                     break;
                 }
-                //No errors create a campus
+                //No errors create a connection
                 http_response_code(201);
                 $id = $this->gateway->create($data);
                 echo json_encode([
-                    "message" => "campus Was Created",
+                    "message" => "connection Was Created",
                     "ID" => $id,
                 ]);
                 break;
@@ -97,11 +97,8 @@ class CampusController
     {
         $errors = [];
 
-        if ($is_new && empty($data["name"])) {
-            $errors[] = "Name is required";
-        }
-        if ($is_new && empty($data["abbreviation"])) {
-            $errors[] = "Abbreviation is required";
+        if ($is_new && empty($data["distance"])) {
+            $errors[] = "distance is required";
         }
         return $errors;
     }

@@ -1,7 +1,7 @@
 <?php
 
 
-class User
+class Connection
 {
     private PDO $conn;
 
@@ -11,7 +11,7 @@ class User
     }
     public function getAll(): array
     {
-        $sql = "SELECT * FROM users WHERE `enabled`='1'";
+        $sql = "SELECT * FROM connection WHERE `enabled`='1'";
 
         $statement = $this->conn->query($sql);
 
@@ -25,14 +25,13 @@ class User
     }
     public function create(array $data): string
     {
-        $sql = "INSERT INTO users (enabled ,username, email, password, privileges) VALUES (enabled,:username, :email, :password, :privileges)";
+        $sql = "INSERT INTO connection (enabled , distance, node_one_id, node_two_is) VALUES (enabled,:distance, :node_one_id, :node_two_is)";
 
         $statement = $this->conn->prepare($sql);
 
-        $statement->bindValue(":username", $data["username"], PDO::PARAM_STR);
-        $statement->bindValue(":email", $data["email"], PDO::PARAM_STR);
-        $statement->bindValue(":password", $data["password"], PDO::PARAM_STR);
-        $statement->bindValue(":privileges", $data["privileges"], PDO::PARAM_STR);
+        $statement->bindValue(":distance", $data["distance"], PDO::PARAM_STR);
+        $statement->bindValue(":node_one_id", $data["node_one_id"], PDO::PARAM_STR);
+        $statement->bindValue(":node_two_is", $data["node_two_is"], PDO::PARAM_STR);
 
         $statement->execute();
 
@@ -41,7 +40,7 @@ class User
 
     public function get(string $id): array|false
     {
-        $sql = "SELECT * FROM users WHERE id = :id";
+        $sql = "SELECT * FROM connection WHERE id = :id";
 
         $statement = $this->conn->prepare($sql);
 
@@ -60,15 +59,13 @@ class User
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE users SET username = :username, password = :password, email = :email, enabled = :enabled, privileges = :privileges WHERE ID =:ID";
+        $sql = "UPDATE connection SET distance = :distance, node_one_id = :node_one_id, node_two_is = :node_two_is, enabled = :enabled WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
-        $statement->bindValue(":username", $new["username"] ?? $current["username"], PDO::PARAM_STR);
-        $statement->bindValue(":password", $new["password"] ?? $current["password"], PDO::PARAM_STR);
-        $statement->bindValue(":email", $new["email"] ?? $current["email"], PDO::PARAM_STR);
-        $statement->bindValue(":enabled", $new["enabled"] ?? $current["enabled"], PDO::PARAM_BOOL);
-        $statement->bindValue(":privileges", $new["privileges"] ?? $current["privileges"], PDO::PARAM_STR);
+        $statement->bindValue(":distance", $new["distance"] ?? $current["distance"], PDO::PARAM_STR);
+        $statement->bindValue(":node_one_id", $new["node_one_id"] ?? $current["node_one_id"], PDO::PARAM_STR);
+        $statement->bindValue(":node_two_is", $new["node_two_is"] ?? $current["node_two_is"], PDO::PARAM_STR);
 
         $statement->bindValue(":ID", $current["ID"], PDO::PARAM_INT);
 
@@ -79,7 +76,7 @@ class User
 
     public function disable(array $current, bool $enabled = false): int
     {
-        $sql = "UPDATE users SET enabled = :enabled WHERE ID =:ID";
+        $sql = "UPDATE connection SET enabled = :enabled WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -94,7 +91,7 @@ class User
 
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM users WHERE ID = :ID";
+        $sql = "DELETE FROM connection WHERE ID = :ID";
 
         $statement = $this->conn->prepare($sql);
 
