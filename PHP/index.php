@@ -16,7 +16,3 @@ $request = explode("/", $_SERVER["REQUEST_URI"]);
 
 $output = new Image($database);
 $output = new ImageController($output);
-
-$pass = $request[1] ?? null;
-
-$output->request($_SERVER["REQUEST_METHOD"], $pass);
