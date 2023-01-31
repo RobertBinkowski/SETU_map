@@ -16,8 +16,12 @@ export class Node {
    * @param {double} y - Y Coordinates
    * @param {double} z - Z Coordinates
    * @param {str} info - Location Information
+   * @param {str} acronym - Acronym of the location
+   * @param {str} type - Type of the location [room, bathroom] - Pulled from database
+   * @param {int} floor - floor
    * @param {double} geo_longitude - Longitude Geo Location
    * @param {double} geo_latitude - Latitude Geo Location
+   *
    */
   constructor(
     name,
@@ -26,23 +30,32 @@ export class Node {
     y,
     z = 0,
     info = "",
+    acronym = "",
+    type = "",
+    floor = 0,
     geo_longitude = null,
     geo_latitude = null
   ) {
     this.name = name;
     this.priority = priority;
-    this.info = info;
 
+    //Location Information
+    this.info = info;
+    this.acronym = acronym;
+    this.type = type;
+    this.floor = floor;
+
+    //Location Info
     this.x = x;
     this.y = y;
     this.z = z;
 
-    this.f = 0; //total cost function
-    this.g = 0; //cost function from start to the current grid point
-    this.h = 0; //heuristic estimated cost function from current grid point to the goal
+    this.f = 0; //Total Cost Function
+    this.g = 0; //cost from start to the current point
+    this.h = 0; //heuristic estimate from current end
 
-    this.neighbors = []; // neighbors of the current grid point
-    this.parent = undefined; // source of the current grid point
+    this.neighbors = []; // neighbors of the current point
+    this.parent = undefined; // source of the current point
 
     this.geo_longitude = geo_longitude;
     this.geo_latitude = geo_latitude;

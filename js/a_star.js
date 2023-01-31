@@ -8,8 +8,8 @@
  *
  * Heuristic function to calculate the heuristic value between 2 points
  *
- * @param {int} start - start Node
- * @param {int} end - end Node
+ * @param {obj} start - start Node
+ * @param {obj} end - end Node
  * @returns combined difference between 2 points
  */
 function heuristic(start, end) {
@@ -22,7 +22,11 @@ function heuristic(start, end) {
     return d1 + d2 + d3;
   }
 
-
+/**
+ * 
+ * @param {Node} cameFrom - Previous Node/s
+ * @param {Node} current - Current Node
+ */
 function reconstruct_path(cameFrom, current)
     const path = []
 
@@ -39,7 +43,7 @@ function reconstruct_path(cameFrom, current)
 
 // A* finds a path from start to goal.
 // h is the heuristic function. h(n) estimates the cost to reach goal from node n.
-function A_Star(start, goal, h)
+export function A_Star(start, goal, h)
     // The set of discovered nodes that may need to be (re-)expanded.
     // Initially, only the start node is known.
     // This is usually implemented as a min-heap or priority queue rather than a hash-set.
