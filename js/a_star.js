@@ -1,142 +1,82 @@
-// Title:       SETU Map
-// By:          Robert Binkowski
-// Code:        C00237917
-// Tutor:       Oisin Cawley
+/**
+ *  Title:          A Star
+ *  by:             Robert Binkowski
+ *  Student No:     C00237917
+ */
 
-let cols = 50; //columns in the grid
-let rows = 50; //rows in the grid
-
-let grid = new Array(cols); //array of all the grid points
-
-let openSet = []; //array containing unevaluated grid points
-let closedSet = []; //array containing completely evaluated grid points
-
-let start; //starting grid point
-let end; // ending grid point (goal)
-let path = [];
-
-//heuristic we will be using - Manhattan distance
-//for other heuristics visit - https://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
-function heuristic(position0, position1) {
-  let d1 = Math.abs(position1.x - position0.x);
-  let d2 = Math.abs(position1.y - position0.y);
-
-  return d1 + d2;
-}
-
-//constructor function to create all the grid points as objects contained the data for the points
-function GridPoint(x, y) {
-  this.x = x; //x location of the grid point
-  this.y = y; //y location of the grid point
-
-  this.f = 0; //total cost function
-  this.g = 0; //cost function from start to the current grid point
-  this.h = 0; //heuristic estimated cost function from current grid point to the goal
-
-  this.neighbors = []; // neighbors of the current grid point
-  this.parent = undefined; // immediate source of the current grid point
-
-  // update neighbors array for a given grid point
-  this.updateNeighbors = function (grid) {
-    let i = this.x;
-    let j = this.y;
-    if (i < cols - 1) {
-      this.neighbors.push(grid[i + 1][j]);
-    }
-    if (i > 0) {
-      this.neighbors.push(grid[i - 1][j]);
-    }
-    if (j < rows - 1) {
-      this.neighbors.push(grid[i][j + 1]);
-    }
-    if (j > 0) {
-      this.neighbors.push(grid[i][j - 1]);
-    }
-  };
-}
-
-//initializing the grid
-function init() {
-  //making a 2D array
-  for (let i = 0; i < cols; i++) {
-    grid[i] = new Array(rows);
+/**
+ *
+ * Heuristic function to calculate the heuristic value between 2 points
+ *
+ * @param {int} start - start Node
+ * @param {int} end - end Node
+ * @returns combined difference between 2 points
+ */
+function heuristic(start, end) {
+    //Calculate the distance between 2 points X-value and Y-value
+    let d1 = Math.abs(start.x - end.x);
+    let d2 = Math.abs(start.y - end.y);
+    let d3 = Math.abs(start.z - end.z);
+  
+    //Return the outcome which is a heuristic value
+    return d1 + d2 + d3;
   }
 
-  for (let i = 0; i < cols; i++) {
-    for (let j = 0; j < rows; j++) {
-      grid[i][j] = new GridPoint(i, j);
+
+function reconstruct_path(cameFrom, current)
+    const path = []
+
+    let currentKey = `${tRow}x${tCol}`
+    let current = cells[tRow][tCol]
+
+    while (current !== start){
+        path.push(current)
+        const {key, cell} = parentForCell[currentKey] 
+        current = cell
+        currentKey = key
     }
-  }
+    return total_path
 
-  for (let i = 0; i < cols; i++) {
-    for (let j = 0; j < rows; j++) {
-      grid[i][j].updateNeighbors(grid);
-    }
-  }
+// A* finds a path from start to goal.
+// h is the heuristic function. h(n) estimates the cost to reach goal from node n.
+function A_Star(start, goal, h)
+    // The set of discovered nodes that may need to be (re-)expanded.
+    // Initially, only the start node is known.
+    // This is usually implemented as a min-heap or priority queue rather than a hash-set.
+    openSet := {start}
 
-  start = grid[0][0];
-  end = grid[cols - 1][rows - 1];
+    // For node n, cameFrom[n] is the node immediately preceding it on the cheapest path from start
+    // to n currently known.
+    cameFrom := an empty map
 
-  openSet.push(start);
+    // For node n, gScore[n] is the cost of the cheapest path from start to n currently known.
+    gScore := map with default value of Infinity
+    gScore[start] := 0
 
-  console.log(grid);
-}
+    // For node n, fScore[n] := gScore[n] + h(n). fScore[n] represents our current best guess as to
+    // how cheap a path could be from start to finish if it goes through n.
+    fScore := map with default value of Infinity
+    fScore[start] := h(start)
 
-//A star search implementation
-
-function search() {
-  init();
-  while (openSet.length > 0) {
-    //assumption lowest index is the first one to begin with
-    let lowestIndex = 0;
-    for (let i = 0; i < openSet.length; i++) {
-      if (openSet[i].f < openSet[lowestIndex].f) {
-        lowestIndex = i;
-      }
-    }
-    let current = openSet[lowestIndex];
-
-    if (current === end) {
-      let temp = current;
-      path.push(temp);
-      while (temp.parent) {
-        path.push(temp.parent);
-        temp = temp.parent;
-      }
-      console.log("DONE!");
-      // return the traced path
-      return path.reverse();
-    }
-
-    //remove current from openSet
-    openSet.splice(lowestIndex, 1);
-    //add current to closedSet
-    closedSet.push(current);
-
-    let neighbors = current.neighbors;
-
-    for (let i = 0; i < neighbors.length; i++) {
-      let neighbor = neighbors[i];
-
-      if (!closedSet.includes(neighbor)) {
-        let possibleG = current.g + 1;
-
-        if (!openSet.includes(neighbor)) {
-          openSet.push(neighbor);
-        } else if (possibleG >= neighbor.g) {
-          continue;
+    while (openSet > 0){
+        // This operation can occur in O(Log(N)) time if openSet is a min-heap or a priority queue
+        current := the node in openSet having the lowest fScore[] value
+        if (current == goal){
+            return reconstruct_path(cameFrom, current);
         }
-
-        neighbor.g = possibleG;
-        neighbor.h = heuristic(neighbor, end);
-        neighbor.f = neighbor.g + neighbor.h;
-        neighbor.parent = current;
-      }
+        openSet.Remove(current)
+        foreach ( neighbor as current){
+            // d(current,neighbor) is the weight of the edge from current to neighbor
+            // tentative_gScore is the distance from start to the neighbor through current
+            tentative_gScore := gScore[current] + d(current, neighbor)
+            if tentative_gScore < gScore[neighbor]
+                // This path to neighbor is better than any previous one. Record it!
+                cameFrom[neighbor] := current
+                gScore[neighbor] := tentative_gScore
+                fScore[neighbor] := tentative_gScore + h(neighbor)
+                if neighbor not in openSet
+                    openSet.add(neighbor)
+        }
     }
-  }
-
-  //no solution by default
-  return [];
-}
-
-console.log(search());
+    // Open set is empty but goal was never reached
+    return failure
