@@ -8,18 +8,18 @@
  *
  * Heuristic function to calculate the heuristic value between 2 points
  *
- * @param {obj} start - start Node
- * @param {obj} end - end Node
+ * @param {Node} start - start Node
+ * @param {Node} end - end Node
  * @returns combined difference between 2 points
  */
-function heuristic(start, end) {
-    //Calculate the distance between 2 points X-value and Y-value
+function calculateHeuristic(start, end) {
+    //Calculate the distance between 2 nodes
     let d1 = Math.abs(start.x - end.x);
     let d2 = Math.abs(start.y - end.y);
     let d3 = Math.abs(start.z - end.z);
   
     //Return the outcome which is a heuristic value
-    return d1 + d2 + d3;
+    return Math.abs(d1 + d2 + d3);
   }
 
 /**
@@ -27,23 +27,18 @@ function heuristic(start, end) {
  * @param {Node} cameFrom - Previous Node/s
  * @param {Node} current - Current Node
  */
-function reconstruct_path(cameFrom, current)
-    const path = []
-
-    let currentKey = `${tRow}x${tCol}`
-    let current = cells[tRow][tCol]
-
-    while (current !== start){
-        path.push(current)
-        const {key, cell} = parentForCell[currentKey] 
-        current = cell
-        currentKey = key
+function reconstructPath(previous, current){
+    const path = {current}
+    while (current !== previous.key){
+        current = previous[current];
+        path.prepend(current);
     }
-    return total_path
+    return path
+}
 
 // A* finds a path from start to goal.
 // h is the heuristic function. h(n) estimates the cost to reach goal from node n.
-export function A_Star(start, goal, h)
+export function A_Star(start, goal, h){
     // The set of discovered nodes that may need to be (re-)expanded.
     // Initially, only the start node is known.
     // This is usually implemented as a min-heap or priority queue rather than a hash-set.
@@ -66,7 +61,7 @@ export function A_Star(start, goal, h)
         // This operation can occur in O(Log(N)) time if openSet is a min-heap or a priority queue
         current := the node in openSet having the lowest fScore[] value
         if (current == goal){
-            return reconstruct_path(cameFrom, current);
+            return reconstructPath(cameFrom, current);
         }
         openSet.Remove(current)
         foreach ( neighbor as current){
@@ -84,3 +79,4 @@ export function A_Star(start, goal, h)
     }
     // Open set is empty but goal was never reached
     return failure
+}

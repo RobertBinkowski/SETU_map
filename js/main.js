@@ -10,6 +10,8 @@ import { A_Star } from "./a_star.js";
 
 var priorityQueue = new PriorityQueue();
 
+var search = new A_Star();
+
 let openSet = []; //array containing unevaluated grid points
 let closedSet = []; //array containing completely evaluated grid points
 
