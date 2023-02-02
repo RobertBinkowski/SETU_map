@@ -18,4 +18,8 @@ spl_autoload_register(function ($class) {
     if (file_exists($path)) {
         include $path;
     }
+    $path = __DIR__ . '\\..' . '\\database\\middleware\\' . lcfirst($class . '.php');
+    if (file_exists($path)) {
+        include $path;
+    }
 });
