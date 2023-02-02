@@ -1,18 +1,14 @@
 <?php
 //Enable Strict to ensure Scalars is configured per file basis
 declare(strict_types=1);
+
+/**
+ * Includes for the Back End
+ */
 include "./src/ErrorHandler.php";
+//Auto Loader for Database Components
 include "./src/AutoLoader.php";
+//Main header data
 include "./src/Header.php";
 include "./src/Security.php";
-
-$request = explode("/", $_SERVER["REQUEST_URI"]);
-
-// if ($request[1] == "") {
-//     http_response_code(404);
-//     exit;
-// } else {
-// }
-
-$output = new Image($database);
-$output = new ImageController($output);
+include "./router.php";
