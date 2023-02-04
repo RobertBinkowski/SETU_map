@@ -17,6 +17,7 @@
  * @param {int} floor - floor
  * @param {double} geo_longitude - Longitude Geo Location
  * @param {double} geo_latitude - Latitude Geo Location
+ * @param {bool} blocked - Set weather it is accusable
  *
  */
 export function Node(
@@ -29,7 +30,8 @@ export function Node(
   type = "",
   floor = 0,
   geo_longitude = null,
-  geo_latitude = null
+  geo_latitude = null,
+  blocked = false
 ) {
   this.name = name;
 
@@ -43,7 +45,7 @@ export function Node(
   this.x = x;
   this.y = y;
   this.z = z;
-  this.blocked = false;
+  this.blocked = blocked;
 
   this.f = 0; //Total Cost Function
   this.g = 0; //From the start
