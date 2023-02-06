@@ -48,9 +48,9 @@ export function Node(
   this.blocked = blocked;
   this.location = "[" + x + "," + y + "," + z + "]"; //To bre read out easily
 
-  this.f = 0; //Total Cost Function
-  this.g = 0; //From the start
-  this.h = 0; //heuristic
+  this.f = 0; //  Total Cost Function
+  this.g = 0; //  Steps Taken from the start
+  this.h = 0; //  Heuristic
 
   this.neighbors = []; // neighbors of the current point
   this.parent = undefined; // source of the current point
