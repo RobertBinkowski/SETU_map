@@ -1,32 +1,38 @@
-import { getSystemErrorMap } from "util";
 import { Node } from "./node.js";
 
 export function Map(rows = 5, cols = 5, height = 1) {
-  let grid = new Array(cols);
+  //Create a Grid of layers
+  let grid = new Array(height);
 
-  //Create 2D Array - Create a map
-  for (let i = 0; i < cols; i++) {
-    grid[i] = new Array(rows);
-    // Create a 3D Array if height is greater than 1 layer
-    if (height > 1) {
-      for (let ii = 0; ii < height; ii++) {
-        grid[i][ii] = new Array(height);
-      }
+  let x = 0;
+  let y = 0;
+  let z = 0;
+
+  //Create a grid of columns and rows
+  for (y = 0; y < height; y++) {
+    grid[y] = new Array(cols);
+    for (x = 0; x < cols; x++) {
+      grid[y][x] = new Array(rows);
     }
   }
 
   //Populate Arrays - Nodes
-  for (let i = 0; i < cols; i++) {
-    for (let j = 0; j < rows; j++) {
-      grid[i][j] = new Node("None", i, j);
+  for (z = 0; z < height; z++) {
+    for (y = 0; y < cols; y++) {
+      for (x = 0; x < rows; x++) {
+        grid[z][y][x] = new Node(null, x, y, z);
+      }
     }
   }
 
   //Update Nodes Neighbors
-  for (let i = 0; i < cols; i++) {
-    for (let j = 0; j < rows; j++) {
-      grid[i][j].updateNeighbors(grid, rows, cols);
+  for (z = 0; z < height; z++) {
+    for (y = 0; y < cols; y++) {
+      for (x = 0; x < rows; x++) {
+        grid[z][y][x].updateNeighbors(grid, rows, cols, height);
+      }
     }
   }
+
   return grid;
 }

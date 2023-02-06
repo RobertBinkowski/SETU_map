@@ -46,6 +46,7 @@ export function Node(
   this.y = y;
   this.z = z;
   this.blocked = blocked;
+  this.location = "[" + x + "," + y + "," + z + "]"; //To bre read out easily
 
   this.f = 0; //Total Cost Function
   this.g = 0; //From the start
@@ -58,20 +59,22 @@ export function Node(
   this.geo_latitude = geo_latitude;
 
   // update neighbors array for a given grid point
-  this.updateNeighbors = function (grid, row, column) {
+  this.updateNeighbors = function (grid, row, column, height) {
     let i = this.x;
     let j = this.y;
+
+    height = height - 1;
     if (i < column - 1) {
-      this.neighbors.push(grid[i + 1][j]);
+      this.neighbors.push(grid[height][j][i + 1]);
     }
     if (i > 0) {
-      this.neighbors.push(grid[i - 1][j]);
+      this.neighbors.push(grid[height][j][i - 1]);
     }
     if (j < row - 1) {
-      this.neighbors.push(grid[i][j + 1]);
+      this.neighbors.push(grid[height][j + 1][i]);
     }
     if (j > 0) {
-      this.neighbors.push(grid[i][j - 1]);
+      this.neighbors.push(grid[height][j - 1][i]);
     }
   };
 }
