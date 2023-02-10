@@ -1,4 +1,10 @@
 /**
+ *  Title:          Functions
+ *  by:             Robert Binkowski
+ *  Student No:     C00237917
+ */
+
+/**
  *
  * Heuristic function to calculate the heuristic value between 2 points
  *
@@ -6,7 +12,7 @@
  * @param {Node} end - end Node
  * @returns combined difference between 2 points
  */
-export function calculateHeuristic(start, end) {
+export function calculateDistance(start, end) {
   //  Calculate the distance between 2 nodes
   //  Ensure all values are positive
   let d1 = pos(pos(start.x) - pos(end.x));
@@ -18,6 +24,7 @@ export function calculateHeuristic(start, end) {
 }
 
 /**
+ * Turn Value To Positive
  *
  * @param {double} input - Int/Double
  * @returns Return a positive Value

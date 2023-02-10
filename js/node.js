@@ -1,5 +1,5 @@
 /**
- *  Title:          Priority Queue
+ *  Title:          Node
  *  by:             Robert Binkowski
  *  Student No:     C00237917
  */
@@ -46,7 +46,7 @@ export function Node(
   this.y = y;
   this.z = z;
   this.blocked = blocked;
-  this.location = "[" + x + "," + y + "," + z + "]"; //To bre read out easily
+  this.location = "[" + x + "," + y + "," + z + "]";
 
   this.f = 0; //  Total Cost Function
   this.g = 0; //  Steps Taken from the start

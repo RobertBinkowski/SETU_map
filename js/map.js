@@ -1,3 +1,9 @@
+/**
+ *  Title:          Map
+ *  by:             Robert Binkowski
+ *  Student No:     C00237917
+ */
+
 import { Node } from "./node.js";
 
 export function Map(rows = 5, cols = 5, height = 1) {

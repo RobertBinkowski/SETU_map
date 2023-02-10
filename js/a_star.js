@@ -4,8 +4,16 @@
  *  Student No:     C00237917
  */
 
-import { calculateHeuristic } from "./functions.js";
+import { calculateDistance } from "./functions.js";
 
+/**
+ *
+ * A* Implementation
+ *
+ * @param {Node} departure - Departure Node
+ * @param {Node} destination - Destination Node
+ * @returns Array of nodes to the destination
+ */
 export function A_Star(departure, destination) {
   let unchecked = []; // unchecked Nodes
   let checked = []; // checked Nodes
@@ -22,8 +30,10 @@ export function A_Star(departure, destination) {
         lowestIndex = i;
       }
     }
+
     let current = unchecked[lowestIndex];
 
+    //If found solution
     if (current === destination) {
       let temp = current;
       path.push(temp);
@@ -55,7 +65,7 @@ export function A_Star(departure, destination) {
         }
 
         neighbor.g = possibleG;
-        neighbor.h = calculateHeuristic(neighbor, destination);
+        neighbor.h = calculateDistance(neighbor, destination); // Heuristic
         neighbor.f = neighbor.g + neighbor.h;
         neighbor.parent = current;
       }
@@ -64,18 +74,4 @@ export function A_Star(departure, destination) {
 
   //no path found
   return [];
-}
-
-function printMap(map) {
-  let output = "\n\n\n";
-  for (let z = 0; z < map.length; z++) {
-    for (let y = 0; y < map[z].length; y++) {
-      for (let x = 0; x < map[z][y].length; x++) {
-        output += map[z][y][x].f;
-      }
-      output += "\n";
-    }
-    output += "\n";
-  }
-  console.log(output);
 }
