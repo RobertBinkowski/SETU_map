@@ -9,6 +9,7 @@
 import { A_Star } from "./a_star.js";
 import { Map } from "./map.js";
 
+// import { Node } from "./node.js";
 // var priorityQueue = new PriorityQueue();
 
 //Size of the Map
@@ -30,4 +31,8 @@ for (let i = 0; i < search.length; i++) {
   console.log(search[i].location);
 }
 
-console.log("Solution Found");
+// const node = new Node("Hello Here", 1, 2, 3);
+
+// console.log(node.x);
+
+console.log(search[10].x);

@@ -14,11 +14,14 @@ import { calculateDistance } from "./functions.js";
  * @param {Double} distance - Distance
  * @returns
  */
-export function Connection(nodeOne, nodeTwo, distance = 0) {
-  this.oneNode = nodeOne;
-  this.nodeTwo = nodeTwo;
-  this.distance = distance;
-  if (distance == 0) {
-    distance = calculateDistance(nodeOne, nodeTwo);
+export class Connection {
+  constructor(nodeOne, nodeTwo, distance = 0) {
+    this.oneNode = nodeOne;
+    this.nodeTwo = nodeTwo;
+    this.distance = distance;
+
+    if (distance == 0) {
+      distance = calculateDistance(nodeOne, nodeTwo);
+    }
   }
 }
