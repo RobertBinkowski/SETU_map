@@ -50,10 +50,10 @@ export function A_Star(departure, destination) {
     //add current to checked
     checked.push(current);
 
-    let neighbors = current.neighbors;
+    let connections = current.connections;
 
-    for (let i = 0; i < neighbors.length; i++) {
-      let neighbor = neighbors[i];
+    for (let i = 0; i < connections.length; i++) {
+      let neighbor = connections[i];
 
       if (!checked.includes(neighbor)) {
         let possibleG = current.g + 1;

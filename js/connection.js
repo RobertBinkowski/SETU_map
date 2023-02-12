@@ -16,12 +16,12 @@ import { calculateDistance } from "./functions.js";
  */
 export class Connection {
   constructor(nodeOne, nodeTwo, distance = 0) {
-    this.oneNode = nodeOne;
+    this.nodeOne = nodeOne;
     this.nodeTwo = nodeTwo;
     this.distance = distance;
 
-    if (distance == 0) {
-      distance = calculateDistance(nodeOne, nodeTwo);
-    }
+    // if (distance == 0) {
+    //   distance = calculateDistance(nodeOne, nodeTwo);
+    // }
   }
 }
