@@ -63,6 +63,8 @@ export class Node {
   }
   //Add Connection to the Node
   addConnection(node) {
-    this.connections.push(node);
+    if (!this.connections.includes(node)) {
+      this.connections.push(node);
+    }
   }
 }
