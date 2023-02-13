@@ -11,17 +11,11 @@ import { calculateDistance } from "./functions.js";
  *
  * @param {Node} nodeOne - Connection Origin
  * @param {Node} nodeTwo - Connected To
- * @param {Double} distance - Distance
  * @returns
  */
 export class Connection {
-  constructor(nodeOne, nodeTwo, distance = 0) {
+  constructor(nodeOne, nodeTwo) {
     this.nodeOne = nodeOne;
     this.nodeTwo = nodeTwo;
-    this.distance = distance;
-
-    // if (distance == 0) {
-    //   distance = calculateDistance(nodeOne, nodeTwo);
-    // }
   }
 }
