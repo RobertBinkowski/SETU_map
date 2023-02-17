@@ -10,6 +10,9 @@
       <p>
         {{ location.id }}
       </p>
+      <!-- <svg>
+        <polyline points="20,22 1000,800 0,0"></polyline>
+      </svg> -->
     </div>
 
     <div
