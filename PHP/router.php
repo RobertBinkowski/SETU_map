@@ -7,17 +7,17 @@ if ($request[1] == "api") {
     $id = $request[3] ?? null;
 
     switch ($request[2]) {
-        case "image":
+        case "images":
             $output = new Image($database);
             $output = new ImageController($output);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
-        case "user":
+        case "users":
             $output = new User($database);
             $output = new UserController($output);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
-        case "building":
+        case "buildings":
             $output = new Building($database);
             $output = new BuildingController($output);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
@@ -27,27 +27,27 @@ if ($request[1] == "api") {
             $output = new CampusController($output);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
-        case "connection":
+        case "connections":
             $output = new Connection($database);
             $output = new ConnectionController($output);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
-        case "floor":
+        case "floors":
             $output = new Floor($database);
             $output = new FloorController($output);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
-        case "layout":
+        case "layouts":
             $output = new Layout($database);
             $output = new LayoutController($output);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
-        case "location":
+        case "locations":
             $output = new Location($database);
             $output = new LocationController($output);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
-        case "room":
+        case "rooms":
             $output = new Room($database);
             $output = new RoomController($output);
             $output->request($_SERVER["REQUEST_METHOD"], $id);

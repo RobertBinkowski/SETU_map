@@ -5,7 +5,6 @@
 
 <template>
   <main>
-    <h1>Main</h1>
     <MapComponent></MapComponent>
   </main>
 </template>
