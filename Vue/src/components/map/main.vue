@@ -16,7 +16,7 @@
     setup() {
       let entries = ref([]);
       async function getData() {
-        const { data } = await axios.get("http://localhost:8000/user");
+        const { data } = await axios.get("http://localhost:8000/api/user");
         console.log(data);
         entries.value = data;
       }
