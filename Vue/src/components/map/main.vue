@@ -1,5 +1,28 @@
 <template>
   <h2>Campus</h2>
+  <form action="" id="search">
+    <label for="departure">Departure</label><br />
+    <select name="departure">
+      <option
+        v-for="location in locations"
+        :key="location.id"
+        :value="location.id"
+      >
+        {{ location.id }}
+      </option></select
+    ><br />
+    <label for="destination">Destination</label><br />
+    <select name="destination">
+      <option
+        v-for="location in locations"
+        :key="location.id"
+        :value="location.id"
+      >
+        {{ location.id }}
+      </option></select
+    ><br />
+    <input type="submit" value="search" />
+  </form>
   <section id="canvas">
     <div
       class="location"
@@ -10,9 +33,6 @@
       <p>
         {{ location.id }}
       </p>
-      <!-- <svg>
-        <polyline points="20,22 1000,800 0,0"></polyline>
-      </svg> -->
     </div>
 
     <div
@@ -30,6 +50,7 @@
 <script>
   import axios from "axios";
   import { ref } from "vue";
+  // import { search } from "../../../js/main.js";
 
   export default {
     name: "App",
@@ -50,6 +71,8 @@
 
       getLocations();
       getConnections();
+      console.log(typeof connections.value);
+      // search(locations, connections);
 
       return { locations, connections };
     },
@@ -77,5 +100,8 @@
     .connection {
       display: none;
     }
+  }
+  #search {
+    display: none;
   }
 </style>

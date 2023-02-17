@@ -4,9 +4,6 @@
  *  Student No:     C00237917
  */
 
-import { Connection } from "./connection.js";
-import { Node } from "./node.js";
-
 export function Map(nodes, connections) {
   //  Add Connections to the nodes one by one
   let i = 0;
