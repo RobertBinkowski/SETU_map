@@ -15,11 +15,11 @@ import { Node } from "./node.js";
 export function search(nodes = [], connections = [], departure, destination) {
   //  Set Unset Locations
   if (nodes.length === 0) {
-    let node1 = new Node("One", 0, 0);
-    let node2 = new Node("Two", 1, 2);
-    let node3 = new Node("Three", 2, 4);
-    let node4 = new Node("Four", 1, 5);
-    let node5 = new Node("Five", 12, 22);
+    let node1 = new Node("1", 23, 10);
+    let node2 = new Node("2", 11, 11);
+    let node3 = new Node("3", 20, 15);
+    let node4 = new Node("4", 23, 23);
+    let node5 = new Node("5", 12, 50);
     nodes.push(node1);
     nodes.push(node2);
     nodes.push(node3);
@@ -31,12 +31,22 @@ export function search(nodes = [], connections = [], departure, destination) {
     let connection2 = new Connection(2, 3);
     let connection3 = new Connection(3, 4);
     let connection4 = new Connection(4, 5);
-    let connection5 = new Connection(1, 5);
+    let connection5 = new Connection(1, 2);
+    let connection6 = new Connection(4, 1);
+    let connection7 = new Connection(5, 3);
+    let connection8 = new Connection(3, 1);
+    let connection9 = new Connection(5, 3);
+    let connection10 = new Connection(3, 5);
     connections.push(connection1);
     connections.push(connection2);
     connections.push(connection3);
     connections.push(connection4);
     connections.push(connection5);
+    connections.push(connection6);
+    connections.push(connection7);
+    connections.push(connection8);
+    connections.push(connection9);
+    connections.push(connection10);
   }
 
   //  connect nodes
@@ -52,8 +62,10 @@ export function search(nodes = [], connections = [], departure, destination) {
 
   var search = new A_Star(departure, destination);
 
+  let output = "";
   for (let i = 0; i < search.length; i++) {
-    console.log(search[i].location);
+    output += "->" + search[i].name;
   }
-  return search;
+  return output;
+  // return search;
 }

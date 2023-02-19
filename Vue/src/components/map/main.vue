@@ -1,6 +1,6 @@
 <template>
-  <h2>Campus</h2>
-  <form action="" id="search">
+  <section>
+    <h2>Campus</h2>
     <label for="departure">Departure</label><br />
     <select name="departure">
       <option
@@ -21,40 +21,32 @@
         {{ location.id }}
       </option></select
     ><br />
-    <input type="submit" value="search" />
-  </form>
-  <section id="canvas">
-    <div
-      class="location"
-      :style="{ top: location.y + 'em', left: location.x + 'em' }"
-      v-for="location in locations"
-      :key="location.id"
-    >
-      <p>
-        {{ location.id }}
-      </p>
-    </div>
 
-    <div
-      class="connection"
-      v-for="connection in connections"
-      :key="connection.id"
-    >
-      <p>
-        {{ connection }}
-      </p>
-    </div>
+    <input type="submit" v-on:click="searchTheArray()" value="search" />
+
+    <section id="canvas">
+      <div
+        class="location"
+        :style="{ top: location.y + 'em', left: location.x + 'em' }"
+        v-for="location in locations"
+        :key="location.id"
+      >
+        <p>
+          {{ location.id }}
+        </p>
+      </div>
+    </section>
   </section>
 </template>
 
 <script>
   import axios from "axios";
   import { ref } from "vue";
-  // import { search } from "../../../js/main.js";
+  import { search } from "../../../js/main.js";
 
   export default {
-    name: "App",
     setup() {
+      let searchData = "";
       let locations = ref([]);
       let connections = ref([]);
 
@@ -71,12 +63,16 @@
 
       getLocations();
       getConnections();
-      console.log(typeof connections.value);
-      // search(locations, connections);
+      // console.log(locations.focus());
 
       return { locations, connections };
     },
-    computed: {},
+    methods: {
+      searchTheArray() {
+        // alert(locations.input.focus());
+        alert(search());
+      },
+    },
   };
 </script>
 
@@ -87,9 +83,10 @@
     height: 1000px;
     width: 1000px;
     position: relative;
+    background-color: rgb(56, 56, 56);
     .location {
       position: absolute;
-      background-color: blue;
+      background-color: rgb(122, 122, 165);
       width: 2em;
       border-radius: 1em;
       height: 2em;
@@ -102,6 +99,6 @@
     }
   }
   #search {
-    display: none;
+    // display: none;
   }
 </style>
