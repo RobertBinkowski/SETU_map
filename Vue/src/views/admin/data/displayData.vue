@@ -12,6 +12,7 @@
         <button>Disable</button>
       </th>
     </tr>
+    <button>Create New</button>
   </table>
 </template>
 

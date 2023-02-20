@@ -14,4 +14,12 @@ class Database
             PDO::ATTR_STRINGIFY_FETCHES => false,
         ]);
     }
+
+    public function getTables()
+    {
+        $sql = "SHOW TABLES;";
+        $output = $this->getConnection()->prepare($sql);
+        $output->execute();
+        return $output;
+    }
 }

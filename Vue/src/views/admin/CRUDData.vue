@@ -1,8 +1,12 @@
 <template>
   <main>
     <h1>Data From The Database</h1>
-
-    <DisplayData :data="output"></DisplayData>
+    <div>
+      <button v-for="table in tables" :key="table.id">
+        {{ table.Tables_in_setu_map }}
+      </button>
+    </div>
+    <DisplayData :data="locations"></DisplayData>
   </main>
 </template>
 
@@ -16,15 +20,21 @@
       DisplayData,
     },
     setup() {
-      let output = ref([]);
+      let tables = ref([]);
+      let locations = ref([]);
+
+      async function getTables() {
+        const { data } = await axios.get("http://localhost:8000/api/tables");
+        tables.value = data;
+      }
 
       async function getLocations() {
         const { data } = await axios.get("http://localhost:8000/api/locations");
-        output.value = data;
+        locations.value = data;
       }
-
+      getTables();
       getLocations();
-      return { output };
+      return { locations, tables };
     },
   };
 </script>

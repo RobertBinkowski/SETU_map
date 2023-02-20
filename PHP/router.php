@@ -52,6 +52,10 @@ if ($request[1] == "api") {
             $output = new RoomController($output);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
+        case "tables":
+            $statement = $database->getTables();
+            echo json_encode($statement->fetchAll(PDO::FETCH_ASSOC));
+            break;
         default:
             http_response_code(404);
             // header("Location: ./hello.php");
