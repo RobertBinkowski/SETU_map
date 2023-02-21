@@ -35,3 +35,11 @@ a {
     font-size: 1.5em;
   }
 }
+
+button{
+  background-color: $acc-2;
+  border-radius: $rad-1;
+  padding: .1em 1em .1em 1em;
+  margin: .3em;
+  color: $txt-1;
+}

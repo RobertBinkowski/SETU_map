@@ -7,12 +7,11 @@
     <tr v-for="(value, key) in data" :key="key">
       <td v-for="(table, key) in value" :key="key">{{ table }}</td>
       <th>
-        <button>Edit</button>
-        <button>Delete</button>
-        <button>Disable</button>
+        <button :value="value.id">Edit</button>
+        <button :value="value.id">Delete</button>
+        <button :value="value.id">Disable</button>
       </th>
     </tr>
-    <button>Create New</button>
   </table>
 </template>
 
@@ -23,8 +22,10 @@
 </script>
 
 <style lang="scss" scoped>
+  @import "@/assets/variables.scss";
   table {
-    color: gray;
-    border-radius: 1em;
+    background-color: $acc-1;
+    color: $txt-1;
+    border: 1px solid $acc-2;
   }
 </style>

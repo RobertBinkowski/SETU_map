@@ -1,12 +1,15 @@
 <template>
   <main>
     <h1>Data From The Database</h1>
-    <div>
-      <button v-for="table in tables" :key="table.id">
-        {{ table.Tables_in_setu_map }}
-      </button>
+    <div class="table">
+      <div>
+        <button v-for="table in tables" :key="table.id" @click="setData()">
+          {{ table.Tables_in_setu_map }}
+        </button>
+      </div>
+      <DisplayData :data="data"></DisplayData>
+      <button>Create New</button>
     </div>
-    <DisplayData :data="locations"></DisplayData>
   </main>
 </template>
 
@@ -21,6 +24,8 @@
     },
     setup() {
       let tables = ref([]);
+      let data = ref([]);
+
       let locations = ref([]);
 
       async function getTables() {
@@ -28,13 +33,27 @@
         tables.value = data;
       }
 
-      async function getLocations() {
+      async function getData() {
         const { data } = await axios.get("http://localhost:8000/api/locations");
         locations.value = data;
       }
+
       getTables();
-      getLocations();
-      return { locations, tables };
+      getData();
+      return { data, tables };
+    },
+    methods: {
+      setData: function () {
+        data.value = locations;
+        alert(data.value);
+      },
     },
   };
 </script>
+
+<style scoped lang="scss">
+  @import "@/assets/variables.scss";
+  .table {
+    // padding: 1em;
+  }
+</style>
