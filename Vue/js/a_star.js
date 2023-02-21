@@ -15,6 +15,12 @@ import { calculateDistance } from "./functions.js";
  * @returns Array of nodes to the destination
  */
 export function A_Star(departure, destination) {
+  //  Check if undefined
+  if (typeof departure == "undefined" || typeof destination == "undefined") {
+    console.log("Error: Values Were Undefined");
+    return [];
+  }
+
   let unchecked = []; // unchecked Nodes
   let checked = []; // checked Nodes
 
@@ -73,5 +79,6 @@ export function A_Star(departure, destination) {
   }
 
   //no path found
+  console.log("No Solution Found");
   return [];
 }
