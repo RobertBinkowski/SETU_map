@@ -1,7 +1,6 @@
 <template>
-  <section>
-    <h2>Campus</h2>
-    <label for="departure">Departure</label><br />
+  <section id="mapComponent">
+    <!-- <label for="departure">Departure</label><br />
     <select name="departure">
       <option
         v-for="location in locations"
@@ -20,9 +19,7 @@
       >
         {{ location.id }}
       </option></select
-    ><br />
-
-    <input type="submit" v-on:click="searchTheArray()" value="search" />
+    ><br /> -->
 
     <section id="canvas">
       <div
@@ -40,32 +37,16 @@
 </template>
 
 <script>
-  import axios from "axios";
-  import { ref } from "vue";
-  import { search } from "@/js/main.js";
+  import { search } from "@/../js/main.js";
 
   export default {
-    setup() {
-      let searchData = "";
-      let locations = ref([]);
-      let connections = ref([]);
-
-      async function getLocations() {
-        const { data } = await axios.get("http://localhost:8000/api/locations");
-        locations.value = data;
-      }
-      async function getConnections() {
-        const { data } = await axios.get(
-          "http://localhost:8000/api/connections"
-        );
-        connections.value = data;
-      }
-
-      getLocations();
-      getConnections();
-      // console.log(locations.focus());
-
-      return { locations, connections };
+    props: {
+      locations: {
+        required: true,
+      },
+      connections: {
+        required: true,
+      },
     },
     methods: {
       searchTheArray() {
@@ -77,6 +58,7 @@
 </script>
 
 <style lang="scss" scoped>
+  @import "@/assets/variables.scss";
   #canvas {
     margin: auto;
     overflow: hidden;

@@ -42,8 +42,9 @@
     },
     methods: {
       setData: function () {
-        data.value = locations;
-        alert(data.value);
+        // Not Working
+        // data.value = locations;
+        // alert(data.value);
       },
     },
   };
