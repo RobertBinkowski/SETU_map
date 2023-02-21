@@ -116,7 +116,7 @@
           {
             enabled: true,
             name: "Sign In",
-            to: "signin",
+            to: "sign-in",
           },
           {
             enabled: true,

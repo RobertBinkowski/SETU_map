@@ -4,8 +4,7 @@
     <h2>South East Technological University Map (SETU Map)</h2>
     <p>
       This project was designed by
-      <a href="https://robertbinkowski.github.io/RobertBinkowski/"
-        >Robert Binkowski (C00237917)</a
+      <a href="https://robertbinkowski.me/">Robert Binkowski (C00237917)</a
       ><br />
       as a final year project for the 4th year in <b>Software Development</b>.
       <br />

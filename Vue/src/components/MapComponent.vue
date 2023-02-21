@@ -42,7 +42,7 @@
 <script>
   import axios from "axios";
   import { ref } from "vue";
-  import { search } from "../../../js/main.js";
+  import { search } from "@/js/main.js";
 
   export default {
     setup() {
