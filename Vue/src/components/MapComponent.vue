@@ -20,7 +20,7 @@
         {{ location.id }}
       </option></select
     ><br /> -->
-
+    <LocationComponent :room="rooms[0]" v-show="false"></LocationComponent>
     <section id="canvas">
       <div
         class="location"
@@ -38,13 +38,20 @@
 
 <script>
   import { search } from "@/../js/main.js";
+  import LocationComponent from "../components/LocationComponent.vue";
 
   export default {
+    components: {
+      LocationComponent,
+    },
     props: {
       locations: {
         required: true,
       },
       connections: {
+        required: true,
+      },
+      rooms: {
         required: true,
       },
     },

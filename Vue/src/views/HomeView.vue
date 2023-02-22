@@ -14,8 +14,8 @@
     <MapComponent
       :locations="locations"
       :connections="connections"
+      :rooms="rooms"
     ></MapComponent>
-    <LocationComponent :locations="locations"></LocationComponent>
   </main>
 </template>
 
@@ -26,12 +26,10 @@
   import { ref } from "vue";
 
   import MapComponent from "../components/MapComponent.vue";
-  import LocationComponent from "../components/LocationComponent.vue";
 
   export default {
     components: {
       MapComponent,
-      LocationComponent,
       // escapeHtmlComment,
     },
     setup() {
@@ -39,6 +37,7 @@
       let locations = ref([]);
       let connections = ref([]);
       let campuses = ref([]);
+      let rooms = ref([]);
 
       async function getLocations() {
         const { data } = await axios.get("http://localhost:8000/api/locations");
@@ -55,11 +54,16 @@
         campuses.value = data;
       }
 
+      async function getRooms() {
+        const { data } = await axios.get("http://localhost:8000/api/rooms");
+        rooms.value = data;
+      }
+
       getLocations();
       getConnections();
       getCampus();
-
-      return { locations, connections, campuses };
+      getRooms();
+      return { locations, connections, campuses, rooms };
     },
   };
 </script>
