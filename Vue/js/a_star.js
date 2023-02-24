@@ -18,13 +18,14 @@ export function A_Star(departure, destination) {
   //  Check if undefined
   if (typeof departure == "undefined" || typeof destination == "undefined") {
     console.log("Error: Values Were Undefined");
-    return [];
+    return output;
   }
 
-  let unchecked = []; // unchecked Nodes
-  let checked = []; // checked Nodes
-
-  let path = []; // complete path to the destination
+  // Set Variables
+  var output = []; // Output of the application
+  let unchecked = []; //  Unchecked Nodes
+  let checked = []; //  Checked Nodes
+  let path = []; // Path to the destination
 
   unchecked.push(departure);
 
@@ -47,8 +48,12 @@ export function A_Star(departure, destination) {
         path.push(temp.parent);
         temp = temp.parent;
       }
-      // return the traced path
-      return path.reverse();
+
+      // return path data
+      // output["distance"] = path[0].h;
+      output["path"] = path.reverse();
+
+      return output;
     }
 
     //remove current from unchecked
@@ -80,5 +85,5 @@ export function A_Star(departure, destination) {
 
   //no path found
   console.log("No Solution Found");
-  return [];
+  return output;
 }

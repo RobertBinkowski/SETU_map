@@ -21,16 +21,18 @@
       </option></select
     ><br /> -->
     <LocationComponent :room="rooms[0]" v-show="false"></LocationComponent>
-    <section id="canvas">
+    <section
+      id="canvas"
+      :style="{ height: campus.height + 'px', width: campus.width + 'px' }"
+    >
       <div
         class="location"
         :style="{ top: location.y + 'em', left: location.x + 'em' }"
         v-for="location in locations"
         :key="location.id"
       >
-        <p>
-          {{ location.id }}
-        </p>
+        <div v-html="location.layout"></div>
+        {{ location.id }}
       </div>
     </section>
   </section>
@@ -54,6 +56,9 @@
       rooms: {
         required: true,
       },
+      campus: {
+        required: true,
+      },
     },
     methods: {
       searchTheArray() {
@@ -69,19 +74,20 @@
   #canvas {
     margin: auto;
     overflow: hidden;
-    height: 1000px;
-    width: 1000px;
+    background-color: gray;
     position: relative;
     background-color: rgb(56, 56, 56);
     .location {
       position: absolute;
-      background-color: rgb(122, 122, 165);
-      width: 2em;
-      border-radius: 1em;
-      height: 2em;
-      p {
-        padding: 0.3em 0 0 0.8em;
-      }
+      width: -50%;
+      height: -50%;
+      // background-color: rgb(122, 122, 165);
+      // width: 2em;
+      // border-radius: 1em;
+      // height: 2em;
+      // p {
+      //   padding: 0.3em 0 0 0.8em;
+      // }
     }
     .connection {
       display: none;

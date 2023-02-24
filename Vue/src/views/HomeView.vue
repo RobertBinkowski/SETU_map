@@ -15,6 +15,7 @@
       :locations="locations"
       :connections="connections"
       :rooms="rooms"
+      :campus="campuses[0]"
     ></MapComponent>
   </main>
 </template>
