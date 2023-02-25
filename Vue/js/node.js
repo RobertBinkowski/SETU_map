@@ -19,7 +19,6 @@ export class Node {
    * @param {str} info - Location Information
    * @param {str} acronym - Acronym of the location
    * @param {str} type - Type of the location [room, bathroom] - Pulled from database
-   * @param {int} floor - floor
    * @param {double} geo_longitude - Longitude Geo Location
    * @param {double} geo_latitude - Latitude Geo Location
    * @param {bool} blocked - Set weather it is accusable
@@ -33,7 +32,6 @@ export class Node {
     info = "",
     acronym = "",
     type = "",
-    floor = 0,
     geo_longitude = null,
     geo_latitude = null
   ) {
@@ -43,12 +41,11 @@ export class Node {
     this.info = info;
     this.acronym = acronym;
     this.type = type;
-    this.floor = floor;
 
     //Location Info
     this.x = x;
     this.y = y;
-    this.z = z;
+    this.z = z; // Also the Floor number 0 being Ground Floor
     this.location = "[" + x + "," + y + "," + z + "]";
 
     this.f = 0; //  Total Cost Function

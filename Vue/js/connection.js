@@ -5,7 +5,6 @@
  */
 
 import { Node } from "./node.js";
-import { calculateDistance } from "./functions.js";
 /**
  *  Connection between Nodes
  *

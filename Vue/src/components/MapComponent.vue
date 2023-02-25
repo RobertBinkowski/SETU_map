@@ -79,8 +79,6 @@
     background-color: rgb(56, 56, 56);
     .location {
       position: absolute;
-      width: -50%;
-      height: -50%;
       // background-color: rgb(122, 122, 165);
       // width: 2em;
       // border-radius: 1em;

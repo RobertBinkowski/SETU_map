@@ -4,7 +4,7 @@
  *  Student No:     C00237917
  */
 
-import { calculateDistance } from "./functions.js";
+import { geoDistance, mapDistance } from "./functions.js";
 
 /**
  *
@@ -26,6 +26,7 @@ export function A_Star(departure, destination) {
   let unchecked = []; //  Unchecked Nodes
   let checked = []; //  Checked Nodes
   let path = []; // Path to the destination
+  var distance = 0; // Total Geo Distance to the location
 
   unchecked.push(departure);
 
@@ -46,11 +47,12 @@ export function A_Star(departure, destination) {
       path.push(temp);
       while (temp.parent) {
         path.push(temp.parent);
+        distance = geoDistance(temp, temp.parent);
         temp = temp.parent;
       }
 
       // return path data
-      // output["distance"] = path[0].h;
+      output["distance"] = distance | 0; // Make A whole number
       output["path"] = path.reverse();
 
       return output;
@@ -76,7 +78,7 @@ export function A_Star(departure, destination) {
         }
 
         neighbor.g = possibleG;
-        neighbor.h = calculateDistance(neighbor, destination); // Heuristic
+        neighbor.h = mapDistance(neighbor, destination); // Heuristic
         neighbor.f = neighbor.g + neighbor.h;
         neighbor.parent = current;
       }

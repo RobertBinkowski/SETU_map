@@ -39,6 +39,7 @@
       let connections = ref([]);
       let campuses = ref([]);
       let rooms = ref([]);
+      // let users = ref([]);
 
       async function getLocations() {
         const { data } = await axios.get("http://localhost:8000/api/locations");
@@ -59,12 +60,23 @@
         const { data } = await axios.get("http://localhost:8000/api/rooms");
         rooms.value = data;
       }
+      // async function getUsers() {
+      //   const { data } = await axios.get("http://localhost:8000/api/users");
+      //   users.value = data;
+      // }
 
       getLocations();
       getConnections();
       getCampus();
       getRooms();
-      return { locations, connections, campuses, rooms };
+      // getUsers();
+      return {
+        locations,
+        connections,
+        campuses,
+        rooms,
+        // users
+      };
     },
   };
 </script>
