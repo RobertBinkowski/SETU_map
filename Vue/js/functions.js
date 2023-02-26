@@ -28,6 +28,7 @@ export function mapDistance(start, end) {
  *
  * @param {Node} start - Departure Node
  * @param {Node} end - Destination Node
+ * @returns Geographical distance between 2 points
  */
 export function geoDistance(start, end) {
   var radius = 6378.137; // Earth Radius in KM
@@ -37,13 +38,13 @@ export function geoDistance(start, end) {
     (end.geo_latitude * Math.PI) / 180 - (start.geo_latitude * Math.PI) / 180;
   var longitude =
     (end.geo_longitude * Math.PI) / 180 - (start.geo_longitude * Math.PI) / 180;
-  var a =
+  var d =
     Math.sin(latitude / 2) * Math.sin(latitude / 2) +
     Math.cos((start.geo_latitude * Math.PI) / 180) *
       Math.cos((end.geo_latitude * Math.PI) / 180) *
       Math.sin(longitude / 2) *
       Math.sin(longitude / 2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var c = 2 * Math.atan2(Math.sqrt(d), Math.sqrt(1 - d));
   var output = radius * c;
   output = output * 1000; //Convert to meters
   return output;
