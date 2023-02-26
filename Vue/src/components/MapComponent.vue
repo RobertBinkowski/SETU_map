@@ -1,25 +1,5 @@
 <template>
   <section id="mapComponent">
-    <!-- <label for="departure">Departure</label><br />
-    <select name="departure">
-      <option
-        v-for="location in locations"
-        :key="location.id"
-        :value="location.id"
-      >
-        {{ location.id }}
-      </option></select
-    ><br />
-    <label for="destination">Destination</label><br />
-    <select name="destination">
-      <option
-        v-for="location in locations"
-        :key="location.id"
-        :value="location.id"
-      >
-        {{ location.id }}
-      </option></select
-    ><br /> -->
     <LocationComponent :room="rooms[0]" v-show="false"></LocationComponent>
     <section
       id="canvas"
@@ -27,12 +7,44 @@
     >
       <div
         class="location"
-        :style="{ top: location.y + 'em', left: location.x + 'em' }"
-        v-for="location in locations"
+        v-for="location in buildings"
         :key="location.id"
+        :style="{
+          top: nodes[location.location_id - 1].y + 'em',
+          left: nodes[location.location_id - 1].x + 'em',
+          zIndex: nodes[location.location_id - 1].z + 2,
+        }"
       >
+        {{ location.name }}
         <div v-html="location.layout"></div>
-        {{ location.id }}
+      </div>
+      <div
+        class="location"
+        v-for="location in rooms"
+        :key="location.id"
+        :style="{
+          top: nodes[location.location_id - 1].y + 'em',
+          left: nodes[location.location_id - 1].x + 'em',
+          zIndex: nodes[location.location_id - 1].z + 1,
+        }"
+      >
+        {{ location.info }}
+        <div v-html="location.layout"></div>
+      </div>
+      <div
+        class="location"
+        v-for="location in floors"
+        :key="location.id"
+        :style="{
+          top:
+            nodes[buildings[location.building_id - 1].location_id - 1].y + 'em',
+          left:
+            nodes[buildings[location.building_id - 1].location_id - 1].x + 'em',
+          zIndex: nodes[buildings[location.building_id - 1].location_id - 1].z,
+        }"
+      >
+        {{ location.info }}
+        <div v-html="location.layout"></div>
       </div>
     </section>
   </section>
@@ -47,13 +59,16 @@
       LocationComponent,
     },
     props: {
-      locations: {
-        required: true,
-      },
-      connections: {
+      buildings: {
         required: true,
       },
       rooms: {
+        required: true,
+      },
+      floors: {
+        required: true,
+      },
+      nodes: {
         required: true,
       },
       campus: {
@@ -62,7 +77,7 @@
     },
     methods: {
       searchTheArray() {
-        // alert(locations.input.focus());
+        // alert(nodes.input.focus());
         alert(search());
       },
     },

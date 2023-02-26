@@ -1,7 +1,7 @@
 <template>
-  <section>
-    <div class="images" v-show="false">
-      <!-- <img :src="images[0].src" alt="images" /> -->
+  <div id="locationDetails">
+    <div class="images">
+      <img :src="images[0]" alt="images" />
     </div>
     <div class="details">
       <h1>{{ room.name }}</h1>
@@ -9,10 +9,10 @@
       <p>{{ room.size }}</p>
       <p>{{ room.info }}</p>
     </div>
-    <div class="options" v-show="false">
-      <button>Navigate</button>
+    <div class="options">
+      <button>navigate</button>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -41,7 +41,11 @@
 
 <style lang="scss" scoped>
   @import "@/assets/variables.scss";
-  section {
+  #locationDetails {
+    position: fixed;
+    z-index: 10;
+    top: 5em;
+    left: 2em;
     border-radius: $rad-1;
     background-color: gray;
     width: 20em;

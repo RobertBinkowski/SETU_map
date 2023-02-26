@@ -15,17 +15,16 @@
       </h2>
     </div>
     <MapComponent
-      :locations="locations"
-      :connections="connections"
+      :buildings="buildings"
       :rooms="rooms"
+      :floors="floors"
+      :nodes="locations"
       :campus="campuses[0]"
     ></MapComponent>
   </main>
 </template>
 
 <script>
-  // import { escapeHtmlComment } from "@vue/shared";
-
   import axios from "axios";
   import { ref } from "vue";
 
@@ -34,27 +33,34 @@
   export default {
     components: {
       MapComponent,
-      // escapeHtmlComment,
     },
     setup() {
+      let buildings = ref([]);
       let locations = ref([]);
-      let connections = ref([]);
+      let floors = ref([]);
       let campuses = ref([]);
       let rooms = ref([]);
 
+      // Campuses
+      async function getCampuses() {
+        const { data } = await axios.get("http://localhost:8000/api/campuses");
+        campuses.value = data;
+      }
+      // Nodes
       async function getLocations() {
         const { data } = await axios.get("http://localhost:8000/api/locations");
         locations.value = data;
       }
-      async function getConnections() {
-        const { data } = await axios.get(
-          "http://localhost:8000/api/connections"
-        );
-        connections.value = data;
+
+      // Other
+      async function getFloors() {
+        const { data } = await axios.get("http://localhost:8000/api/floors");
+        floors.value = data;
       }
-      async function getCampuses() {
-        const { data } = await axios.get("http://localhost:8000/api/campuses");
-        campuses.value = data;
+
+      async function getBuildings() {
+        const { data } = await axios.get("http://localhost:8000/api/buildings");
+        buildings.value = data;
       }
 
       async function getRooms() {
@@ -62,15 +68,17 @@
         rooms.value = data;
       }
 
+      getBuildings();
       getLocations();
-      getConnections();
       getCampuses();
       getRooms();
+      getFloors();
       return {
+        buildings,
         locations,
-        connections,
         campuses,
         rooms,
+        floors,
       };
     },
   };
