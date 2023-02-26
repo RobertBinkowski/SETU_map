@@ -52,7 +52,7 @@
         connections.value = data;
       }
       async function getCampus() {
-        const { data } = await axios.get("http://localhost:8000/api/campus");
+        const { data } = await axios.get("http://localhost:8000/api/campuses");
         campuses.value = data;
       }
 

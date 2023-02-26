@@ -11,7 +11,7 @@ class Connection
     }
     public function getAll(): array
     {
-        $sql = "SELECT * FROM connection WHERE `enabled`='1'";
+        $sql = "SELECT * FROM connections WHERE `enabled`='1'";
 
         $statement = $this->conn->query($sql);
 
@@ -25,7 +25,7 @@ class Connection
     }
     public function create(array $data): string
     {
-        $sql = "INSERT INTO connection (enabled , distance, node_one_id, node_two_is) VALUES (enabled,:distance, :node_one_id, :node_two_is)";
+        $sql = "INSERT INTO connections (enabled , distance, node_one_id, node_two_is) VALUES (enabled,:distance, :node_one_id, :node_two_is)";
 
         $statement = $this->conn->prepare($sql);
 
@@ -40,7 +40,7 @@ class Connection
 
     public function get(string $id): array|false
     {
-        $sql = "SELECT * FROM connection WHERE id = :id";
+        $sql = "SELECT * FROM connections WHERE id = :id";
 
         $statement = $this->conn->prepare($sql);
 
@@ -59,7 +59,7 @@ class Connection
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE connection SET distance = :distance, node_one_id = :node_one_id, node_two_is = :node_two_is, enabled = :enabled WHERE ID =:ID";
+        $sql = "UPDATE connections SET distance = :distance, node_one_id = :node_one_id, node_two_is = :node_two_is, enabled = :enabled WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -76,7 +76,7 @@ class Connection
 
     public function disable(array $current, bool $enabled = false): int
     {
-        $sql = "UPDATE connection SET enabled = :enabled WHERE ID =:ID";
+        $sql = "UPDATE connections SET enabled = :enabled WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -91,7 +91,7 @@ class Connection
 
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM connection WHERE ID = :ID";
+        $sql = "DELETE FROM connections WHERE ID = :ID";
 
         $statement = $this->conn->prepare($sql);
 

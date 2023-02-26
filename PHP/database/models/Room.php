@@ -11,7 +11,7 @@ class Room
     }
     public function getAll(): array
     {
-        $sql = "SELECT * FROM room WHERE `enabled`='1'";
+        $sql = "SELECT * FROM rooms WHERE `enabled`='1'";
 
         $statement = $this->conn->query($sql);
 
@@ -25,7 +25,7 @@ class Room
     }
     public function create(array $data): string
     {
-        $sql = "INSERT INTO room (enabled , type, name, info, size, building_id, location_id, floor_id) VALUES (enabled,:type, :name, :info, :size, :building_id, :location_id, :floor_id)";
+        $sql = "INSERT INTO rooms (enabled , type, name, info, size, building_id, location_id, floor_id) VALUES (enabled,:type, :name, :info, :size, :building_id, :location_id, :floor_id)";
 
         $statement = $this->conn->prepare($sql);
 
@@ -44,7 +44,7 @@ class Room
 
     public function get(string $id): array|false
     {
-        $sql = "SELECT * FROM room WHERE id = :id";
+        $sql = "SELECT * FROM rooms WHERE id = :id";
 
         $statement = $this->conn->prepare($sql);
 
@@ -63,7 +63,7 @@ class Room
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE room SET type = :type, name = :name, info = :info, enabled = :enabled, size = :size, building_id= :building_id, location_id = :location_id, floor_id = :floor_id WHERE ID =:ID";
+        $sql = "UPDATE rooms SET type = :type, name = :name, info = :info, enabled = :enabled, size = :size, building_id= :building_id, location_id = :location_id, floor_id = :floor_id WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -85,7 +85,7 @@ class Room
 
     public function disable(array $current, bool $enabled = false): int
     {
-        $sql = "UPDATE room SET enabled = :enabled WHERE ID =:ID";
+        $sql = "UPDATE rooms SET enabled = :enabled WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -100,7 +100,7 @@ class Room
 
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM room WHERE ID = :ID";
+        $sql = "DELETE FROM rooms WHERE ID = :ID";
 
         $statement = $this->conn->prepare($sql);
 

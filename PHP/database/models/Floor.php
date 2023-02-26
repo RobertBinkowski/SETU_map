@@ -11,7 +11,7 @@ class Floor
     }
     public function getAll(): array
     {
-        $sql = "SELECT * FROM floor WHERE `enabled`='1'";
+        $sql = "SELECT * FROM floors WHERE `enabled`='1'";
 
         $statement = $this->conn->query($sql);
 
@@ -25,7 +25,7 @@ class Floor
     }
     public function create(array $data): string
     {
-        $sql = "INSERT INTO floor (enabled , info, size, building_id, floor) VALUES (enabled, :info, :size, :building_id, :floor)";
+        $sql = "INSERT INTO floors (enabled , info, size, building_id, floor) VALUES (enabled, :info, :size, :building_id, :floor)";
 
         $statement = $this->conn->prepare($sql);
 
@@ -42,7 +42,7 @@ class Floor
 
     public function get(string $id): array|false
     {
-        $sql = "SELECT * FROM floor WHERE id = :id";
+        $sql = "SELECT * FROM floors WHERE id = :id";
 
         $statement = $this->conn->prepare($sql);
 
@@ -61,7 +61,7 @@ class Floor
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE floor SET info = :info, enabled = :enabled, size = :size, building_id= :building_id, floor = :floor WHERE ID =:ID";
+        $sql = "UPDATE floors SET info = :info, enabled = :enabled, size = :size, building_id= :building_id, floor = :floor WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -80,7 +80,7 @@ class Floor
 
     public function disable(array $current, bool $enabled = false): int
     {
-        $sql = "UPDATE floor SET enabled = :enabled WHERE ID =:ID";
+        $sql = "UPDATE floors SET enabled = :enabled WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -95,7 +95,7 @@ class Floor
 
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM floor WHERE ID = :ID";
+        $sql = "DELETE FROM floors WHERE ID = :ID";
 
         $statement = $this->conn->prepare($sql);
 

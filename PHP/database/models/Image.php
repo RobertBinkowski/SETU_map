@@ -11,7 +11,7 @@ class Image
     }
     public function getAll(): array
     {
-        $sql = "SELECT * FROM image WHERE `enabled`='1'";
+        $sql = "SELECT * FROM images WHERE `enabled`='1'";
 
         $statement = $this->conn->query($sql);
 
@@ -25,7 +25,7 @@ class Image
     }
     public function create(array $data): string
     {
-        $sql = "INSERT INTO image (enabled ,name, info, src, campus_id,building_id, room_id) VALUES (enabled,:name, :info, :src, :campus_id, :building_id ,:room_id)";
+        $sql = "INSERT INTO images (enabled ,name, info, src, campus_id,building_id, room_id) VALUES (enabled,:name, :info, :src, :campus_id, :building_id ,:room_id)";
 
         $statement = $this->conn->prepare($sql);
 
@@ -43,7 +43,7 @@ class Image
 
     public function get(string $id): array|false
     {
-        $sql = "SELECT * FROM image WHERE id = :id";
+        $sql = "SELECT * FROM images WHERE id = :id";
 
         $statement = $this->conn->prepare($sql);
 
@@ -62,7 +62,7 @@ class Image
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE image SET name = :name, src = :src, info = :info, enabled = :enabled, campus_id = :campus_id WHERE ID =:ID, building_id = :building_id , room_id= :room_id";
+        $sql = "UPDATE images SET name = :name, src = :src, info = :info, enabled = :enabled, campus_id = :campus_id WHERE ID =:ID, building_id = :building_id , room_id= :room_id";
 
         $statement = $this->conn->prepare($sql);
 
@@ -83,7 +83,7 @@ class Image
 
     public function disable(array $current, bool $enabled = false): int
     {
-        $sql = "UPDATE image SET enabled = :enabled WHERE ID =:ID";
+        $sql = "UPDATE images SET enabled = :enabled WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -98,7 +98,7 @@ class Image
 
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM image WHERE ID = :ID";
+        $sql = "DELETE FROM images WHERE ID = :ID";
 
         $statement = $this->conn->prepare($sql);
 

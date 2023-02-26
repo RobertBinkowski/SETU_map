@@ -32,6 +32,7 @@ export function mapDistance(start, end) {
 export function geoDistance(start, end) {
   var radius = 6378.137; // Earth Radius in KM
 
+  // Haversine formula
   var latitude =
     (end.geo_latitude * Math.PI) / 180 - (start.geo_latitude * Math.PI) / 180;
   var longitude =

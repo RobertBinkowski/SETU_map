@@ -11,7 +11,7 @@ class Location
     }
     public function getAll(): array
     {
-        $sql = "SELECT * FROM location WHERE `enabled`='1'";
+        $sql = "SELECT * FROM locations WHERE `enabled`='1'";
 
         $statement = $this->conn->query($sql);
 
@@ -25,7 +25,7 @@ class Location
     }
     public function create(array $data): string
     {
-        $sql = "INSERT INTO location (enabled , type, geo_longitude, geo_latitude, map_longitude, map_latitude, type) VALUES (enabled,:type, :geo_longitude, :geo_latitude, :map_longitude, :map_latitude, :type)";
+        $sql = "INSERT INTO locations (enabled , type, geo_longitude, geo_latitude, map_longitude, map_latitude, type) VALUES (enabled,:type, :geo_longitude, :geo_latitude, :map_longitude, :map_latitude, :type)";
 
         $statement = $this->conn->prepare($sql);
 
@@ -43,7 +43,7 @@ class Location
 
     public function get(string $id): array|false
     {
-        $sql = "SELECT * FROM location WHERE id = :id";
+        $sql = "SELECT * FROM locations WHERE id = :id";
 
         $statement = $this->conn->prepare($sql);
 
@@ -62,7 +62,7 @@ class Location
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE location SET type = :type, geo_longitude = :geo_longitude, geo_latitude = :geo_latitude, enabled = :enabled, map_longitude = :map_longitude, map_latitude= :map_latitude, type = :type WHERE ID =:ID";
+        $sql = "UPDATE locations SET type = :type, geo_longitude = :geo_longitude, geo_latitude = :geo_latitude, enabled = :enabled, map_longitude = :map_longitude, map_latitude= :map_latitude, type = :type WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -83,7 +83,7 @@ class Location
 
     public function disable(array $current, bool $enabled = false): int
     {
-        $sql = "UPDATE location SET enabled = :enabled WHERE ID =:ID";
+        $sql = "UPDATE locations SET enabled = :enabled WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -98,7 +98,7 @@ class Location
 
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM location WHERE ID = :ID";
+        $sql = "DELETE FROM locations WHERE ID = :ID";
 
         $statement = $this->conn->prepare($sql);
 

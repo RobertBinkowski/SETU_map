@@ -22,7 +22,7 @@ if ($request[1] == "api") {
             $output = new BuildingController($output);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
-        case "campus":
+        case "campuses":
             $output = new Campus($database);
             $output = new CampusController($output);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
@@ -35,11 +35,6 @@ if ($request[1] == "api") {
         case "floors":
             $output = new Floor($database);
             $output = new FloorController($output);
-            $output->request($_SERVER["REQUEST_METHOD"], $id);
-            break;
-        case "layouts":
-            $output = new Layout($database);
-            $output = new LayoutController($output);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "locations":

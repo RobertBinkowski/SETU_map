@@ -11,7 +11,7 @@ class Building
     }
     public function getAll(): array
     {
-        $sql = "SELECT * FROM building WHERE `enabled`='1'";
+        $sql = "SELECT * FROM buildings WHERE `enabled`='1'";
 
         $statement = $this->conn->query($sql);
 
@@ -25,7 +25,7 @@ class Building
     }
     public function create(array $data): string
     {
-        $sql = "INSERT INTO building (enabled ,name, abbreviation, info, size, campus_id) VALUES (enabled,:name, :abbreviation, :info, :size, :campus_id)";
+        $sql = "INSERT INTO buildings (enabled ,name, abbreviation, info, size, campus_id) VALUES (enabled,:name, :abbreviation, :info, :size, :campus_id)";
 
         $statement = $this->conn->prepare($sql);
 
@@ -41,7 +41,7 @@ class Building
 
     public function get(string $id): array|false
     {
-        $sql = "SELECT * FROM building WHERE id = :id";
+        $sql = "SELECT * FROM buildings WHERE id = :id";
 
         $statement = $this->conn->prepare($sql);
 
@@ -60,7 +60,7 @@ class Building
 
     public function update(array $current, array $new): int
     {
-        $sql = "UPDATE building SET name = :name, info = :info, abbreviation = :abbreviation, enabled = :enabled, size = :size WHERE ID =:ID";
+        $sql = "UPDATE buildings SET name = :name, info = :info, abbreviation = :abbreviation, enabled = :enabled, size = :size WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -80,7 +80,7 @@ class Building
 
     public function disable(array $current, bool $enabled = false): int
     {
-        $sql = "UPDATE building SET enabled = :enabled WHERE ID =:ID";
+        $sql = "UPDATE buildings SET enabled = :enabled WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
@@ -95,7 +95,7 @@ class Building
 
     public function delete(string $id): int
     {
-        $sql = "DELETE FROM building WHERE ID = :ID";
+        $sql = "DELETE FROM buildings WHERE ID = :ID";
 
         $statement = $this->conn->prepare($sql);
 
