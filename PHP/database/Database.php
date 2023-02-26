@@ -17,7 +17,7 @@ class Database
 
     public function getTables()
     {
-        $sql = "SHOW TABLES;";
+        $sql = "SHOW TABLES";
         $output = $this->getConnection()->prepare($sql);
         $output->execute();
         return $output;

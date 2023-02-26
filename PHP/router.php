@@ -51,6 +51,11 @@ if ($request[1] == "api") {
             $statement = $database->getTables();
             echo json_encode($statement->fetchAll(PDO::FETCH_ASSOC));
             break;
+        case "logs":
+            $output = new Log($database);
+            $output = new LogController($output);
+            $output->request($_SERVER["REQUEST_METHOD"], $id);
+            break;
         default:
             http_response_code(404);
             // header("Location: ./hello.php");

@@ -3,7 +3,12 @@
     <h1>Users</h1>
     <div class="table">
       <div>
-        <button v-for="table in tables" :key="table.id" @click="setData()">
+        <button
+          v-for="table in tables"
+          :key="table.id"
+          @click="setData()"
+          v-show="table.Tables_in_setu_map != 'logs'"
+        >
           {{ table.Tables_in_setu_map }}
         </button>
       </div>

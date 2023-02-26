@@ -1,16 +1,19 @@
 <template>
   <main>
-    <h2 id="campus">
-      <select name="campus">
-        <option
-          v-for="campus in campuses"
-          :key="campus"
-          :value="campus.abbreviation"
-        >
-          {{ campus.name }}
-        </option>
-      </select>
-    </h2>
+    <div class="campusSelect">
+      <h2>
+        Campus:
+        <select name="campus">
+          <option
+            v-for="campus in campuses"
+            :key="campus"
+            :value="campus.abbreviation"
+          >
+            {{ campus.name }}
+          </option>
+        </select>
+      </h2>
+    </div>
     <MapComponent
       :locations="locations"
       :connections="connections"
@@ -34,12 +37,10 @@
       // escapeHtmlComment,
     },
     setup() {
-      let searchData = "";
       let locations = ref([]);
       let connections = ref([]);
       let campuses = ref([]);
       let rooms = ref([]);
-      // let users = ref([]);
 
       async function getLocations() {
         const { data } = await axios.get("http://localhost:8000/api/locations");
@@ -51,7 +52,7 @@
         );
         connections.value = data;
       }
-      async function getCampus() {
+      async function getCampuses() {
         const { data } = await axios.get("http://localhost:8000/api/campuses");
         campuses.value = data;
       }
@@ -60,22 +61,16 @@
         const { data } = await axios.get("http://localhost:8000/api/rooms");
         rooms.value = data;
       }
-      // async function getUsers() {
-      //   const { data } = await axios.get("http://localhost:8000/api/users");
-      //   users.value = data;
-      // }
 
       getLocations();
       getConnections();
-      getCampus();
+      getCampuses();
       getRooms();
-      // getUsers();
       return {
         locations,
         connections,
         campuses,
         rooms,
-        // users
       };
     },
   };
@@ -83,14 +78,18 @@
 
 <style lang="scss" scoped>
   @import "@/assets/variables.scss";
-  #campus {
+  .campusSelect {
+    width: 100%;
+    padding: 0.3em;
+    background-color: #ffffff00;
+    color: $txt-1;
+    text-align: center;
+
     select {
-      width: 100%;
-      text-align: center;
-      padding: 0.3em;
-      background-color: #ffffff00;
-      color: $txt-1;
       border: none;
+      border-radius: 1em;
+      width: 10em;
+      text-align: center;
       outline: none;
     }
   }
