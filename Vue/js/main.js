@@ -11,7 +11,13 @@
 import { A_Star } from "./a_star.js";
 import { Map } from "./map.js";
 
-export function search(nodes = [], connections = [], departure, destination) {
+export function search(
+  nodes = [],
+  connections = [],
+  departure,
+  destination,
+  disabled = false
+) {
   //  Set Unset Locations
   if (nodes.length === 0 || connections.length === 0) {
     console.log("No Nodes/Connections Provided");
@@ -19,17 +25,15 @@ export function search(nodes = [], connections = [], departure, destination) {
   }
 
   //  connect nodes
-  let map = Map(nodes, connections);
+  Map(nodes, connections);
 
   // set unset locations
   if (typeof departure == "undefined" || typeof destination == "undefined") {
     console.log("No Departure/Destination Provided");
     return [];
-    // departure = map[0];
-    // destination = map[4];
   }
 
-  var search = new A_Star(departure, destination);
+  var search = new A_Star(departure, destination, disabled);
 
   return search;
 }

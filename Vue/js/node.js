@@ -22,7 +22,7 @@ export class Node {
    * @param {bool} blocked - Set weather it is accusable
    *
    */
-  constructor(name, x, y, z = 0, info = "", acronym = "", type = "") {
+  constructor(name, x, y, z = 0, type = "Location", info = "", acronym = "") {
     this.name = name;
 
     //Location Information

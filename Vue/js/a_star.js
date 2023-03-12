@@ -14,7 +14,7 @@ import { geoDistance } from "./functions.js";
  * @param {Node} destination - Destination Node
  * @returns Array of nodes to the destination
  */
-export function A_Star(departure, destination) {
+export function A_Star(departure, destination, disabled = false) {
   //  Check if undefined
   if (typeof departure == "undefined" || typeof destination == "undefined") {
     console.log("Error: Values Were Undefined");
@@ -63,24 +63,28 @@ export function A_Star(departure, destination) {
     //add current to checked
     checked.push(current);
 
-    let connections = current.connections;
+    if (current.type == "Stairs" && disabled) {
+      continue;
+    } else {
+      let connections = current.connections;
 
-    for (let i = 0; i < connections.length; i++) {
-      let neighbor = connections[i];
+      for (let i = 0; i < connections.length; i++) {
+        let neighbor = connections[i];
 
-      if (!checked.includes(neighbor)) {
-        let possibleG = current.g + 1;
+        if (!checked.includes(neighbor)) {
+          let possibleG = current.g + 1;
 
-        if (!unchecked.includes(neighbor)) {
-          unchecked.push(neighbor);
-        } else if (possibleG >= neighbor.g) {
-          continue;
+          if (!unchecked.includes(neighbor)) {
+            unchecked.push(neighbor);
+          } else if (possibleG >= neighbor.g) {
+            continue;
+          }
+
+          neighbor.g = possibleG;
+          neighbor.h = geoDistance(neighbor, destination); // Heuristic
+          neighbor.f = neighbor.g + neighbor.h;
+          neighbor.parent = current;
         }
-
-        neighbor.g = possibleG;
-        neighbor.h = geoDistance(neighbor, destination); // Heuristic
-        neighbor.f = neighbor.g + neighbor.h;
-        neighbor.parent = current;
       }
     }
   }
