@@ -4,7 +4,7 @@
  *  Student No:     C00237917
  */
 
-import { geoDistance, mapDistance } from "./functions.js";
+import { geoDistance } from "./functions.js";
 
 /**
  *
@@ -47,7 +47,7 @@ export function A_Star(departure, destination) {
       path.push(temp);
       while (temp.parent) {
         path.push(temp.parent);
-        distance = geoDistance(temp, temp.parent);
+        distance = geoDistance(temp, temp.parent, true);
         temp = temp.parent;
       }
 
@@ -78,7 +78,7 @@ export function A_Star(departure, destination) {
         }
 
         neighbor.g = possibleG;
-        neighbor.h = mapDistance(neighbor, destination); // Heuristic
+        neighbor.h = geoDistance(neighbor, destination); // Heuristic
         neighbor.f = neighbor.g + neighbor.h;
         neighbor.parent = current;
       }

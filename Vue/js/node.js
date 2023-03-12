@@ -19,22 +19,10 @@ export class Node {
    * @param {str} info - Location Information
    * @param {str} acronym - Acronym of the location
    * @param {str} type - Type of the location [room, bathroom] - Pulled from database
-   * @param {double} geo_longitude - Longitude Geo Location
-   * @param {double} geo_latitude - Latitude Geo Location
    * @param {bool} blocked - Set weather it is accusable
    *
    */
-  constructor(
-    name,
-    x,
-    y,
-    z = 0,
-    info = "",
-    acronym = "",
-    type = "",
-    geo_longitude = null,
-    geo_latitude = null
-  ) {
+  constructor(name, x, y, z = 0, info = "", acronym = "", type = "") {
     this.name = name;
 
     //Location Information
@@ -54,9 +42,6 @@ export class Node {
 
     this.connections = []; // neighbors of the current point
     this.parent = undefined; // source of the current point
-
-    this.geo_longitude = geo_longitude;
-    this.geo_latitude = geo_latitude;
   }
   //Add Connection to the Node
   addConnection(node) {

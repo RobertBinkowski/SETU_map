@@ -7,61 +7,11 @@ function test() {
   let connections = [];
 
   //  Set Unset Locations
-  let node1 = new Node(
-    "Node 1",
-    rand(500),
-    rand(500),
-    0,
-    "",
-    "",
-    "",
-    rand(500),
-    rand(500)
-  );
-  let node2 = new Node(
-    "Node 2",
-    rand(500),
-    rand(500),
-    0,
-    "",
-    "",
-    "",
-    rand(500),
-    rand(500)
-  );
-  let node3 = new Node(
-    "Node 3",
-    rand(500),
-    rand(500),
-    0,
-    "",
-    "",
-    "",
-    rand(500),
-    rand(500)
-  );
-  let node4 = new Node(
-    "Node 4",
-    rand(500),
-    rand(500),
-    0,
-    "",
-    "",
-    "",
-    rand(500),
-    rand(500)
-  );
-  let node5 = new Node(
-    "Node 5",
-    rand(500),
-    rand(500),
-    0,
-    "",
-    "",
-    "",
-    rand(500),
-    rand(500)
-  );
+  let node1 = new Node("Node 1", rand(500), rand(500));
+  let node2 = new Node("Node 2", rand(500), rand(500));
+  let node3 = new Node("Node 3", rand(500), rand(500));
+  let node4 = new Node("Node 4", rand(500), rand(500));
+  let node5 = new Node("Node 5", rand(500), rand(500));
 
   nodes.push(node1);
   nodes.push(node2);
@@ -91,7 +41,7 @@ function test() {
   connections.push(connection9);
   connections.push(connection10);
 
-  let output = search(nodes, connections, node1, node2);
+  let output = search(nodes, connections, node2, node5);
   console.log(output);
 }
 

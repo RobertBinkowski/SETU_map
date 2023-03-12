@@ -28,7 +28,7 @@
           zIndex: nodes[location.location_id - 1].z + 1,
         }"
       >
-        {{ location.info }}
+        {{ location.name }}
         <div v-html="location.layout"></div>
       </div>
       <div
@@ -43,7 +43,7 @@
           zIndex: nodes[buildings[location.building_id - 1].location_id - 1].z,
         }"
       >
-        {{ location.info }}
+        {{ location.name }}
         <div v-html="location.layout"></div>
       </div>
     </section>
@@ -88,7 +88,7 @@
   @import "@/assets/variables.scss";
   #canvas {
     margin: auto;
-    overflow: hidden;
+    overflow: scroll;
     background-color: gray;
     position: relative;
     background-color: rgb(56, 56, 56);
