@@ -1,11 +1,19 @@
 <template>
   <section id="mapComponent">
-    <LocationComponent :room="rooms[0]" v-show="false"></LocationComponent>
+    <LocationComponent
+      :room="rooms[0]"
+      v-show="locationContent"
+    ></LocationComponent>
+    <div v-show="demo" id="demo">
+      <input type="checkbox" name="showOnlyNodes" @click="toggleNodes" />
+      <label for="showOnlyNodes">Only Nodes & Connections</label>
+    </div>
     <section
       id="canvas"
       :style="{ height: campus.height + 'px', width: campus.width + 'px' }"
     >
       <div
+        v-show="!onlyNodes"
         class="location"
         v-for="location in buildings"
         :key="location.id"
@@ -19,6 +27,7 @@
         <div v-html="location.layout"></div>
       </div>
       <div
+        v-show="!onlyNodes"
         class="location"
         v-for="location in rooms"
         :key="location.id"
@@ -32,6 +41,7 @@
         <div v-html="location.layout"></div>
       </div>
       <div
+        v-show="!onlyNodes"
         class="location"
         v-for="location in floors"
         :key="location.id"
@@ -45,6 +55,19 @@
       >
         {{ location.name }}
         <div v-html="location.layout"></div>
+      </div>
+      <div
+        v-show="onlyNodes"
+        class="node"
+        v-for="node in nodes"
+        :key="node.id"
+        :style="{
+          top: node.y + 'em',
+          left: node.x + 'em',
+          zIndex: node.z,
+        }"
+      >
+        {{ node.id }}
       </div>
     </section>
   </section>
@@ -80,6 +103,20 @@
         // alert(nodes.input.focus());
         alert(search());
       },
+      toggleNodes() {
+        if (this.onlyNodes == true) {
+          this.onlyNodes = false;
+        } else {
+          this.onlyNodes = true;
+        }
+      },
+    },
+    data() {
+      return {
+        locationContent: false,
+        onlyNodes: false,
+        demo: true,
+      };
     },
   };
 </script>
@@ -105,8 +142,27 @@
     .connection {
       display: none;
     }
+    .node {
+      background-color: rgb(122, 122, 165);
+      width: 2em;
+      border-radius: 1em;
+      padding: 0.2em 0.7em;
+      height: 2em;
+    }
   }
-  #search {
-    // display: none;
+  #demo {
+    position: fixed;
+    z-index: 100;
+    padding: 1em;
+    right: 2em;
+    top: 3em;
+    background: gray;
+    color: $acc-1;
+    font-size: 1.2em;
+    input[type="checkbox"] {
+      height: 1em;
+      width: 1em;
+      margin: 1em;
+    }
   }
 </style>
