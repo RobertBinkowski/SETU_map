@@ -13,21 +13,24 @@
  * @returns Geographical distance between 2 points
  */
 export function geoDistance(start, end, meters = false) {
-  var radius = 6378.137; // Earth Radius in KM
+  const radius = 6378.137; // Earth Radius in KM
+
+  // Extract latitudes and longitudes
+  const { x: lat1, y: lon1 } = start;
+  const { x: lat2, y: lon2 } = end;
 
   // Haversine formula
-  var latitude = (end.x * Math.PI) / 180 - (start.x * Math.PI) / 180;
-  var longitude = (end.y * Math.PI) / 180 - (start.y * Math.PI) / 180;
-  var d =
-    Math.sin(latitude / 2) * Math.sin(latitude / 2) +
-    Math.cos((start.x * Math.PI) / 180) *
-      Math.cos((end.x * Math.PI) / 180) *
-      Math.sin(longitude / 2) *
-      Math.sin(longitude / 2);
-  var c = 2 * Math.atan2(Math.sqrt(d), Math.sqrt(1 - d));
+  const latitude = (lat2 * Math.PI) / 180 - (lat1 * Math.PI) / 180;
+  const longitude = (lon2 * Math.PI) / 180 - (lon1 * Math.PI) / 180;
+  const d =
+    Math.sin(latitude / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(longitude / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(d), Math.sqrt(1 - d));
   var output = radius * c;
   if (meters) {
-    output = output * 1000; //Convert to meters
+    output *= 1000; //Convert to meters
   }
   return output;
 }
