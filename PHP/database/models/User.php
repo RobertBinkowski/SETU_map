@@ -1,5 +1,6 @@
 <?php
 
+
 class User
 {
     private int $id;
@@ -66,5 +67,18 @@ class User
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
+    }
+
+    // To Array
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'enabled' => $this->enabled,
+            'username' => $this->username,
+            'email' => $this->email,
+            'password' => $this->password,
+            'privileges' => $this->privileges,
+        ];
     }
 }
