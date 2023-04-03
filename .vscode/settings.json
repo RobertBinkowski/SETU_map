@@ -3,5 +3,6 @@
         "axios",
         "Cawley",
         "setu"
-    ]
+    ],
+    "sqltools.connections": []
 }
