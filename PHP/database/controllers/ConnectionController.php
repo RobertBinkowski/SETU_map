@@ -2,7 +2,7 @@
 
 class ConnectionController
 {
-    public function __construct(private Connection $gateway)
+    public function __construct(private ConnectionRepository $gateway)
     {
     }
     public function request(string $method, ?string $id): void

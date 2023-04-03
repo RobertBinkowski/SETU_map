@@ -2,7 +2,7 @@
 
 class CampusController
 {
-    public function __construct(private Campus $gateway)
+    public function __construct(private CampusRepository $gateway)
     {
     }
     public function request(string $method, ?string $id): void

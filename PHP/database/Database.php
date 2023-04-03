@@ -15,7 +15,10 @@ class Database
         ]);
     }
 
-    public function getTables()
+    /**
+     * @return string
+     */
+    public function getTables(): string
     {
         $sql = "SHOW TABLES";
         $output = $this->getConnection()->prepare($sql);

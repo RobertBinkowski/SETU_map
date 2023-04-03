@@ -2,7 +2,7 @@
 
 class BuildingController
 {
-    public function __construct(private Building $gateway)
+    public function __construct(private BuildingRepository $gateway)
     {
     }
     public function request(string $method, ?string $id): void

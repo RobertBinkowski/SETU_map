@@ -2,7 +2,7 @@
 
 class LocationController
 {
-    public function __construct(private Location $gateway)
+    public function __construct(private LocationRepository $gateway)
     {
     }
     public function request(string $method, ?string $id): void

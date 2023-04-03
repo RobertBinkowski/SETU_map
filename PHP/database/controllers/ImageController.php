@@ -2,7 +2,7 @@
 
 class ImageController
 {
-    public function __construct(private Image $gateway)
+    public function __construct(private ImageRepository $gateway)
     {
     }
     public function request(string $method, ?string $id): void

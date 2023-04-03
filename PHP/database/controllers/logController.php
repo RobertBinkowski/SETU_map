@@ -2,7 +2,7 @@
 
 class LogController
 {
-    public function __construct(private Log $gateway)
+    public function __construct(private LogRepository $gateway)
     {
     }
     public function request(string $method, ?string $id): void

@@ -2,7 +2,7 @@
 
 class FloorController
 {
-    public function __construct(private Floor $gateway)
+    public function __construct(private FloorRepository $gateway)
     {
     }
     public function request(string $method, ?string $id): void

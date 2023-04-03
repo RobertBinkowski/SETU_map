@@ -2,7 +2,7 @@
 
 class RoomController
 {
-    public function __construct(private Room $gateway)
+    public function __construct(private RoomRepository $gateway)
     {
     }
     public function request(string $method, ?string $id): void

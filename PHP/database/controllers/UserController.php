@@ -2,8 +2,12 @@
 
 class UserController
 {
-    public function __construct(private User $gateway)
+    public function __construct(private UserRepository $gateway)
     {
+    }
+    public function getAll(): void
+    {
+        echo json_encode($this->gateway->getAll());
     }
     public function request(string $method, ?string $id): void
     {
