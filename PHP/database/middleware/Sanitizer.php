@@ -1,23 +1,31 @@
 <?php
 
-//Sanitize filters
-// https://www.php.net/manual/en/filter.filters.sanitize.php
-function sanitize(string $input, string $type): string
+function sanitizePassword($password)
 {
+    // Set minimum and maximum password length
+    $minLength = 8;
+    $maxLength = 64;
 
-    if ($type == "email" && filter_var($input, FILTER_SANITIZE_EMAIL)) {
-        $output = filter_var($input, FILTER_SANITIZE_EMAIL);
+    // Remove specific unwanted characters
+    $unwantedChars = array('"', "'", '\\', '<', '>');
+    $password = str_replace($unwantedChars, '', $password);
+
+    // Check if the password meets the length requirements
+    $passwordLength = strlen($password);
+    if ($passwordLength < $minLength || $passwordLength > $maxLength) {
+        throw new Exception("Password must be between $minLength and $maxLength characters long.");
     }
-    return $output;
+
+    return $password;
 }
 
-//Filter flags from PHP
-//https://www.php.net/manual/en/filter.filters.flags.php
-function validate(string $input, string $type): bool
+function hashPassword($password)
 {
-    if ($type == "email" && filter_var($input, FILTER_SANITIZE_EMAIL)) {
-        return true;
-    }
+    $salt = "SomeSaltHere";
 
-    return false;
+    $password += $salt;
+
+    $password = password_hash($password, PASSWORD_DEFAULT);
+
+    return $password;
 }
