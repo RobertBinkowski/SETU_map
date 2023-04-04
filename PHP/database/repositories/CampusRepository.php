@@ -19,27 +19,34 @@ class CampusRepository
 
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
             $row["enabled"] = (bool)$row["enabled"]; // Set to Boolean
-            $data[] = $row;
+            $data[] = new Campus(
+                $row["id"],
+                $row["enabled"],
+                $row["name"],
+                $row["abbreviation"],
+                $row["info"],
+                $row["size"],
+            );
         }
         return $data;
     }
-    public function create(array $data): string
+    public function create(Campus $data): string
     {
         $sql = "INSERT INTO campuses (enabled ,name, abbreviation, info, size) VALUES (enabled,:name, :abbreviation, :info, :size)";
 
         $statement = $this->conn->prepare($sql);
 
-        $statement->bindValue(":name", $data["name"], PDO::PARAM_STR);
-        $statement->bindValue(":abbreviation", $data["abbreviation"], PDO::PARAM_STR);
-        $statement->bindValue(":info", $data["info"], PDO::PARAM_STR);
-        $statement->bindValue(":size", $data["size"], PDO::PARAM_STR);
+        $statement->bindValue(":name", $data->getName(), PDO::PARAM_STR);
+        $statement->bindValue(":abbreviation", $data->getAbbreviation(), PDO::PARAM_STR);
+        $statement->bindValue(":info", $data->getInfo(), PDO::PARAM_STR);
+        $statement->bindValue(":size", $data->getSize(), PDO::PARAM_STR);
 
         $statement->execute();
 
         return $this->conn->lastInsertId();
     }
 
-    public function get(string $id): array|false
+    public function get(int $id): Campus|false
     {
         $sql = "SELECT * FROM campuses WHERE id = :id";
 
@@ -53,31 +60,38 @@ class CampusRepository
 
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
+            return new Campus(
+                $data["id"],
+                $data["enabled"],
+                $data["name"],
+                $data["abbreviation"],
+                $data["info"],
+                $data["size"],
+            );
         }
 
-        return $data;
+        return false;
     }
 
-    public function update(array $current, array $new): int
+    public function update(Building $current, Building $new): bool
     {
         $sql = "UPDATE campuses SET name = :name, abbreviation = :abbreviation, info = :info, enabled = :enabled, size = :size WHERE ID =:ID";
 
         $statement = $this->conn->prepare($sql);
 
-        $statement->bindValue(":name", $new["name"] ?? $current["name"], PDO::PARAM_STR);
-        $statement->bindValue(":abbreviation", $new["abbreviation"] ?? $current["abbreviation"], PDO::PARAM_STR);
-        $statement->bindValue(":info", $new["info"] ?? $current["info"], PDO::PARAM_STR);
-        $statement->bindValue(":enabled", $new["enabled"] ?? $current["enabled"], PDO::PARAM_BOOL);
-        $statement->bindValue(":size", $new["size"] ?? $current["size"], PDO::PARAM_STR);
+        $statement->bindValue(":name", $new->getName() ?? $current->getName(), PDO::PARAM_STR);
+        $statement->bindValue(":abbreviation", $new->getAbbreviation() ?? $current->getAbbreviation(), PDO::PARAM_STR);
+        $statement->bindValue(":info", $new->getInfo() ?? $current->getInfo(), PDO::PARAM_STR);
+        $statement->bindValue(":size", $new->getSize() ?? $current->getSize(), PDO::PARAM_STR);
 
-        $statement->bindValue(":ID", $current["ID"], PDO::PARAM_INT);
+        $statement->bindValue(":ID", $current->getId(), PDO::PARAM_INT);
 
         $statement->execute();
 
-        return $statement->rowCount();
+        return $statement->rowCount() > 0;
     }
 
-    public function disable(array $current, bool $enabled = false): int
+    public function disable(array $current, bool $enabled = false): bool
     {
         $sql = "UPDATE campuses SET enabled = :enabled WHERE ID =:ID";
 
@@ -89,10 +103,10 @@ class CampusRepository
 
         $statement->execute();
 
-        return $statement->rowCount();
+        return $statement->rowCount() > 0;
     }
 
-    public function delete(string $id): int
+    public function delete(string $id): bool
     {
         $sql = "DELETE FROM campuses WHERE ID = :ID";
 
@@ -102,6 +116,6 @@ class CampusRepository
 
         $statement->execute();
 
-        return $statement->rowCount();
+        return $statement->rowCount() > 0;
     }
 }

@@ -33,7 +33,7 @@ class UserRepository
         }, $data);
         return $data;
     }
-    public function create(User $user): string
+    public function create(User $user): bool
     {
         $sql = "INSERT INTO users (enabled ,username, email, password, privileges) VALUES (enabled,:username, :email, :password, :privileges)";
 
@@ -46,10 +46,10 @@ class UserRepository
 
         $statement->execute();
 
-        return $this->conn->lastInsertId();
+        return $this->conn->lastInsertId() > 0;
     }
 
-    public function get(string $id): User|false
+    public function get(int $id): User|false
     {
         $sql = "SELECT * FROM users WHERE id = :id";
 
@@ -62,7 +62,6 @@ class UserRepository
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
         if ($data !== false) {
-            $data["enabled"] = (bool)$data["enabled"];
             $data["enabled"] = (bool)$data["enabled"];
             return new User(
                 $data["id"],
@@ -77,7 +76,7 @@ class UserRepository
         return false;
     }
 
-    public function update(User $current, User $new): int
+    public function update(User $current, User $new): bool
     {
         $sql = "UPDATE users SET username = :username, password = :password, email = :email, enabled = :enabled, privileges = :privileges WHERE ID =:ID";
 
@@ -96,7 +95,7 @@ class UserRepository
         return $statement->rowCount();
     }
 
-    public function disable(User $current, bool $enabled = false): int
+    public function disable(int $id, bool $enabled = false): bool
     {
         $sql = "UPDATE users SET enabled = :enabled WHERE ID =:ID";
 
@@ -104,14 +103,14 @@ class UserRepository
 
         $statement->bindValue(":enabled", $enabled, PDO::PARAM_BOOL);
 
-        $statement->bindValue(":ID", $current->getID(), PDO::PARAM_INT);
+        $statement->bindValue(":ID", $id, PDO::PARAM_INT);
 
         $statement->execute();
 
-        return $statement->rowCount();
+        return $statement->rowCount() > 0;
     }
 
-    public function delete(string $id): int
+    public function delete(string $id): bool
     {
         $sql = "DELETE FROM users WHERE ID = :ID";
 
@@ -121,6 +120,6 @@ class UserRepository
 
         $statement->execute();
 
-        return $statement->rowCount();
+        return $statement->rowCount() > 0;
     }
 }
