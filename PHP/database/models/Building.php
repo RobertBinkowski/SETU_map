@@ -86,4 +86,18 @@ class Building
     {
         $this->campusId = $campusId;
     }
+
+    // To Array
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'enabled' => $this->enabled,
+            'name' => $this->name,
+            'abbreviation' => $this->abbreviation,
+            'info' => $this->info,
+            'size' => $this->size,
+            'campus' => $this->campusId,
+        ];
+    }
 }

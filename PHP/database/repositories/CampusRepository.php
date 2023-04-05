@@ -23,9 +23,9 @@ class CampusRepository
                 $row["id"],
                 $row["enabled"],
                 $row["name"],
-                $row["abbreviation"],
-                $row["info"],
-                $row["size"],
+                isset($row["abbreviation"]) ?? "",
+                isset($row["info"]) ?? "",
+                isset($row["size"]) ?? 0
             );
         }
         return $data;
