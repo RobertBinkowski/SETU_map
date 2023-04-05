@@ -10,61 +10,78 @@ class User
     private string $password;
     private string $privileges;
 
-    public function __construct(int $id, bool $enabled, string $username, string $email, string $password, string $privileges)
-    {
+    private string $created;
+    private Campus $campus;
+
+    public function __construct(
+        int $id,
+        bool $enabled,
+        string $username,
+        string $email,
+        string $password,
+        string $privileges,
+        string $created,
+        Campus $campus,
+    ) {
         $this->id = $id;
         $this->enabled = $enabled;
         $this->username = $username;
         $this->email = $email;
         $this->password = $password;
         $this->privileges = $privileges;
+        $this->created = $created;
+        $this->campus = $campus;
     }
 
 
     // Getters
-    public function getID()
+    public function getID(): int
     {
         return $this->id;
     }
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
-    public function getPrivileges()
+    public function getPrivileges(): string
     {
         return $this->privileges;
     }
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
-    public function getEnabled()
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }
+    public function getCreated(): string
+    {
+        return $this->created;
+    }
 
     // Setters
-    public function setUsername($username)
+    public function setUsername($username): void
     {
         $this->username = $username;
     }
-    public function setPassword($password)
+    public function setPassword($password): void
     {
         $this->password = $password;
     }
-    public function setEmail($email)
+    public function setEmail($email): void
     {
         $this->email = $email;
     }
-    public function setPrivileges($privileges)
+    public function setPrivileges($privileges): void
     {
         $this->privileges = $privileges;
     }
-    public function setEnabled($enabled)
+    public function setEnabled($enabled): void
     {
         $this->enabled = $enabled;
     }
@@ -79,6 +96,7 @@ class User
             'email' => $this->email,
             'password' => $this->password,
             'privileges' => $this->privileges,
+            'created' => $this->created,
         ];
     }
 }

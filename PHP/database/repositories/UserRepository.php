@@ -19,13 +19,16 @@ class UserRepository
 
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
             $row["enabled"] = (bool)$row["enabled"]; // Set to Boolean
+            $row["created"] = (string)$row["created"]; // Set date to string for easy read
             $data[] = new User(
                 $row["id"],
                 $row["enabled"],
                 $row["username"],
                 $row["email"],
                 $row["password"],
-                $row["privileges"]
+                $row["privileges"],
+                $row["created"],
+                $row["campus"]
             );
         }
         $data = array_map(function (User $user) {
