@@ -27,7 +27,7 @@ class CampusRepository extends BaseRepository
         return $this->lastInsertId();
     }
 
-    public function get(int $id): Campus|false
+    public function get(int $id): array|false
     {
         $sql = "SELECT * FROM campuses WHERE id = :id";
 
@@ -35,16 +35,8 @@ class CampusRepository extends BaseRepository
 
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
-            return new Campus(
-                $data["id"],
-                $data["enabled"],
-                $data["name"],
-                $data["abbreviation"],
-                $data["info"],
-                $data["size"],
-            );
+            return $data;
         }
-
         return false;
     }
 

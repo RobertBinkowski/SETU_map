@@ -1,111 +1,81 @@
 <?php
 
 
-class ImageRepository
+class ImageRepository extends BaseRepository
 {
-    private PDO $conn;
-
-    public function __construct(Database $database)
-    {
-        $this->conn = $database->getConnection();
-    }
     public function getAll(): array
     {
         $sql = "SELECT * FROM images WHERE `enabled`='1'";
 
-        $statement = $this->conn->query($sql);
+        $result = $this->conn->query($sql);
 
-        $data = [];
-
-        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-            $row["enabled"] = (bool)$row["enabled"]; // Set to Boolean
-            $data[] = $row;
-        }
-        return $data;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function create(array $data): string
+    public function create(Image $data): bool
     {
-        $sql = "INSERT INTO images (enabled ,name, info, src, campus_id,building_id, room_id) VALUES (enabled,:name, :info, :src, :campus_id, :building_id ,:room_id)";
+        $sql = "INSERT INTO images (enabled ,name, info, src, campus_id,building_id, room_id) 
+        VALUES (enabled,:name, :info, :src, :campus_id, :building_id ,:room_id)";
 
-        $statement = $this->conn->prepare($sql);
+        return $this->execute(
+            $sql,
+            [
+                ':enable' => 1,
+                ':name' => $data->getName(),
+                ':info' => $data->getInfo(),
+                ':src' => $data->getSrc(),
+                ':campus_id' => $data->getCampusId(),
+                ':building_id' => $data->getBuildingId(),
+                ':room_id' => $data->getBuildingId(),
 
-        $statement->bindValue(":name", $data["name"], PDO::PARAM_STR);
-        $statement->bindValue(":info", $data["info"], PDO::PARAM_STR);
-        $statement->bindValue(":src", $data["src"], PDO::PARAM_STR);
-        $statement->bindValue(":campus_id", $data["campus_id"], PDO::PARAM_STR);
-        $statement->bindValue(":building_id", $data["building_id"], PDO::PARAM_STR);
-        $statement->bindValue(":room_id", $data["room_id"], PDO::PARAM_STR);
-
-        $statement->execute();
-
-        return $this->conn->lastInsertId();
+            ]
+        );
     }
 
     public function get(string $id): array|false
     {
         $sql = "SELECT * FROM images WHERE id = :id";
 
-        $statement = $this->conn->prepare($sql);
-
-        $statement->bindValue(":id", $id, PDO::PARAM_INT);
-
-        $statement->execute();
-
-        $data = $statement->fetch(PDO::FETCH_ASSOC);
+        $data = $this->fetch($sql, [':id' => $id]);
 
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
+            return $data;
         }
 
-        return $data;
+        return false;
     }
 
-    public function update(array $current, array $new): int
+    public function update(Image $current, Image $new): bool
     {
-        $sql = "UPDATE images SET name = :name, src = :src, info = :info, enabled = :enabled, campus_id = :campus_id WHERE ID =:ID, building_id = :building_id , room_id= :room_id";
+        $sql = "UPDATE images SET name = :name, src = :src, info = :info, enabled = :enabled, campus_id = :campus_id, building_id = :building_id , room_id= :room_id WHERE ID =:ID";
 
-        $statement = $this->conn->prepare($sql);
-
-        $statement->bindValue(":name", $new["name"] ?? $current["name"], PDO::PARAM_STR);
-        $statement->bindValue(":src", $new["src"] ?? $current["src"], PDO::PARAM_STR);
-        $statement->bindValue(":info", $new["info"] ?? $current["info"], PDO::PARAM_STR);
-        $statement->bindValue(":enabled", $new["enabled"] ?? $current["enabled"], PDO::PARAM_BOOL);
-        $statement->bindValue(":campus_id", $new["campus_id"] ?? $current["campus_id"], PDO::PARAM_STR);
-        $statement->bindValue(":building_id", $new["building_id"] ?? $current["building_id"], PDO::PARAM_STR);
-        $statement->bindValue(":room_id", $new["room_id"] ?? $current["room_id"], PDO::PARAM_STR);
-
-        $statement->bindValue(":ID", $current["ID"], PDO::PARAM_INT);
-
-        $statement->execute();
-
-        return $statement->rowCount();
+        return $this->execute($sql, [
+            ':name' => $new->getName() ?? $current->getName(),
+            ':src' => $new->getSrc() ?? $current->getSrc(),
+            ':info' => $new->getInfo() ?? $current->getInfo(),
+            ':enabled' => $new->isEnabled() ?? $current->isEnabled(),
+            ':campus_id' => $new->getCampusId() ?? $current->getCampusId(),
+            ':building_id' => $new->getBuildingId() ?? $current->getBuildingId(),
+            ':room_id' => $new->getRoomId() ?? $current->getRoomId(),
+            ':id' => $current->getId(),
+        ]);
     }
 
-    public function disable(array $current, bool $enabled = false): int
+    public function disable(int $id, bool $enabled = false): int
     {
         $sql = "UPDATE images SET enabled = :enabled WHERE ID =:ID";
 
-        $statement = $this->conn->prepare($sql);
-
-        $statement->bindValue(":enabled", $enabled, PDO::PARAM_BOOL);
-
-        $statement->bindValue(":ID", $current["ID"], PDO::PARAM_INT);
-
-        $statement->execute();
-
-        return $statement->rowCount();
+        return $this->execute($sql, [
+            ':enabled' => $enabled,
+            ':id' => $id,
+        ]);;
     }
 
-    public function delete(string $id): int
+    public function delete(int $id): int
     {
         $sql = "DELETE FROM images WHERE ID = :ID";
 
-        $statement = $this->conn->prepare($sql);
 
-        $statement->bindValue(":ID", $id, PDO::PARAM_INT);
-
-        $statement->execute();
-
-        return $statement->rowCount();
+        return $this->execute($sql, [':id' => $id]);
     }
 }
