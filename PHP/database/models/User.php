@@ -11,7 +11,7 @@ class User
     private string $privileges;
 
     private string $created;
-    private Campus $campus;
+    private int $campus;
 
     public function __construct(
         int $id,
@@ -21,7 +21,7 @@ class User
         string $password,
         string $privileges,
         string $created,
-        Campus $campus,
+        int $campus,
     ) {
         $this->id = $id;
         $this->enabled = $enabled;
