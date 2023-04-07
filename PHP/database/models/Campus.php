@@ -14,24 +14,24 @@ class Campus
 
     public function __construct(
         int $id,
-        bool $enabled = true,
-        string $name = "",
-        string $abbreviation = "",
+        string $name,
+        string $layout = "",
         string $info = "",
         float $size = 0,
         float $height = 0,
         float $width = 0,
-        string $layout = ""
+        string $abbreviation = "",
+        bool $enabled = true,
     ) {
         $this->id = $id;
-        $this->enabled = $enabled;
-        $this->name = $name;
-        $this->abbreviation = $abbreviation;
-        $this->info = $info;
-        $this->size = $size;
-        $this->height = $height;
-        $this->width = $width;
-        $this->layout = $layout;
+        $this->setEnabled($enabled);
+        $this->setName($name);
+        $this->setAbbreviation($abbreviation);
+        $this->setInfo($info);
+        $this->setSize($size);
+        $this->setHeight($height);
+        $this->setWidth($width);
+        $this->setLayout($layout);
     }
 
     // Getters
@@ -124,15 +124,15 @@ class Campus
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
-            'enabled' => $this->enabled,
-            'name' => $this->name,
-            'abbreviation' => $this->abbreviation,
-            'info' => $this->info,
-            'size' => $this->size,
-            'height' => $this->height,
-            'width' => $this->width,
-            'layout' => $this->layout,
+            'id' => $this->getId(),
+            'enabled' => $this->isEnabled(),
+            'name' => $this->getName(),
+            'abbreviation' => $this->getAbbreviation(),
+            'info' => $this->getInfo(),
+            'size' => $this->getSize(),
+            'height' => $this->getHeight(),
+            'width' => $this->getWidth(),
+            'layout' => $this->getLayout(),
         ];
     }
 }

@@ -8,23 +8,34 @@ class Room
     private string $info;
     private float $size;
     private bool $enabled;
-    private int $buildingId;
-    private int $locationId;
-    private int $floorId;
+    private int $building;
+    private int $location;
+    private int $floor;
 
-    public function __construct(array $data)
-    {
-        $this->id = (int)$data['id'];
-        $this->type = $data['type'];
-        $this->name = $data['name'];
-        $this->info = $data['info'];
-        $this->size = (float)$data['size'];
-        $this->enabled = (bool)$data['enabled'];
-        $this->buildingId = (int)$data['building_id'];
-        $this->locationId = (int)$data['location_id'];
-        $this->floorId = (int)$data['floor_id'];
+    public function __construct(
+        int $id,
+        string $type,
+        string $name,
+        string $info,
+        float $size,
+        int $building,
+        int $location,
+        int $floor,
+        bool $enabled = true
+    ) {
+        $this->id = $id;
+        $this->setEnabled($enabled);
+
+        $this->setType($type);
+        $this->setName($name);
+        $this->setInfo($info);
+        $this->setSize($size);
+        $this->setBuilding($building);
+        $this->setLocation($location);
+        $this->setFloor($floor);
     }
 
+    // Getters
     public function getId(): int
     {
         return $this->id;
@@ -55,21 +66,22 @@ class Room
         return $this->enabled;
     }
 
-    public function getBuildingId(): int
+    public function getBuilding(): int
     {
-        return $this->buildingId;
+        return $this->building;
     }
 
-    public function getLocationId(): int
+    public function getLocation(): int
     {
-        return $this->locationId;
+        return $this->location;
     }
 
-    public function getFloorId(): int
+    public function getFloor(): int
     {
-        return $this->floorId;
+        return $this->floor;
     }
 
+    // Setters
     public function setType(string $type): void
     {
         $this->type = $type;
@@ -95,18 +107,34 @@ class Room
         $this->enabled = $enabled;
     }
 
-    public function setBuildingId(int $buildingId): void
+    public function setBuilding(int $building): void
     {
-        $this->buildingId = $buildingId;
+        $this->building = $building;
     }
 
-    public function setLocationId(int $locationId): void
+    public function setLocation(int $location): void
     {
-        $this->locationId = $locationId;
+        $this->location = $location;
     }
 
-    public function setFloorId(int $floorId): void
+    public function setFloor(int $floor): void
     {
-        $this->floorId = $floorId;
+        $this->floor = $floor;
+    }
+
+    // To Array
+    public function toArray(): array
+    {
+        return [
+            "id" => $this->getId(),
+            "type" => $this->getType(),
+            "name" => $this->getName(),
+            "info" => $this->getInfo(),
+            "size" => $this->getSize(),
+            "enabled" => $this->isEnabled(),
+            "building" => $this->getBuilding(),
+            "location" => $this->getLocation(),
+            "floor" => $this->getFloor(),
+        ];
     }
 }

@@ -9,16 +9,27 @@ class Location
     private float $mapLongitude;
     private float $mapLatitude;
     private bool $enabled;
+    private string $created;
 
-    public function __construct(array $data)
-    {
-        $this->id = (int)$data['id'];
-        $this->type = $data['type'];
-        $this->geoLongitude = (float)$data['geo_longitude'];
-        $this->geoLatitude = (float)$data['geo_latitude'];
-        $this->mapLongitude = (float)$data['map_longitude'];
-        $this->mapLatitude = (float)$data['map_latitude'];
-        $this->enabled = (bool)$data['enabled'];
+    public function __construct(
+        int $id,
+        string $type,
+        float $geoLongitude,
+        float $geoLatitude,
+        float $mapLongitude,
+        float $mapLatitude,
+        string $created,
+        bool $enabled = true
+    ) {
+        $this->id = $id;
+        $this->setEnabled($enabled);
+
+        $this->setType($type);
+        $this->setGeoLongitude($geoLongitude);
+        $this->setGeoLatitude($geoLatitude);
+        $this->setMapLatitude($mapLatitude);
+        $this->setMapLongitude($mapLongitude);
+        $this->setCreated($created);
     }
 
     public function getId(): int
@@ -55,7 +66,12 @@ class Location
     {
         return $this->enabled;
     }
+    public function getCreated(): string
+    {
+        return $this->created;
+    }
 
+    // Setters
     public function setType(string $type): void
     {
         $this->type = $type;
@@ -84,5 +100,24 @@ class Location
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function setCreated(string $created): void
+    {
+        $this->created = $created;
+    }
+
+    // to Array
+    public function toArray(): array
+    {
+        return [
+            "id" => $this->getId(),
+            "type" => $this->getType(),
+            "geoLongitude" => $this->getGeoLongitude(),
+            "geoLatitude" => $this->getGeoLatitude(),
+            "mapLongitude" => $this->getMapLongitude(),
+            "mapLatitude" => $this->getMapLatitude(),
+            "enabled" => $this->isEnabled(),
+        ];
     }
 }

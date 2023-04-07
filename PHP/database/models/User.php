@@ -15,27 +15,28 @@ class User
 
     public function __construct(
         int $id,
-        bool $enabled,
         string $username,
         string $email,
         string $password,
         string $privileges,
         int $campus,
         string $created = "",
+        bool $enabled = true
     ) {
         $this->id = $id;
-        $this->enabled = $enabled;
-        $this->username = $username;
-        $this->email = $email;
-        $this->password = $password;
-        $this->privileges = $privileges;
         $this->created = $created;
-        $this->campus = $campus;
+        $this->setEnabled($enabled);
+
+        $this->setUsername($username);
+        $this->setEmail($email);
+        $this->setPassword($password);
+        $this->setPrivileges($privileges);
+        $this->setCampus($campus);
     }
 
 
     // Getters
-    public function getID(): int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -63,6 +64,10 @@ class User
     {
         return $this->created;
     }
+    public function getCampus()
+    {
+        return $this->campus;
+    }
 
     // Setters
     public function setUsername($username): void
@@ -71,7 +76,7 @@ class User
     }
     public function setPassword($password): void
     {
-        $this->password = $password;
+        $this->password = hashPassword($password);
     }
     public function setEmail($email): void
     {
@@ -85,18 +90,23 @@ class User
     {
         $this->enabled = $enabled;
     }
+    public function setCampus($campus): void
+    {
+        $this->campus = $campus;
+    }
 
     // To Array
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
-            'enabled' => $this->enabled,
-            'username' => $this->username,
-            'email' => $this->email,
-            'password' => $this->password,
-            'privileges' => $this->privileges,
-            'created' => $this->created,
+            'id' => $this->getId(),
+            'enabled' => $this->isEnabled(),
+            'username' => $this->getUsername(),
+            'email' => $this->getEmail(),
+            'password' => $this->getPassword(),
+            'privileges' => $this->getPrivileges(),
+            'created' => $this->getCreated(),
+            'campus' => $this->getCampus(),
         ];
     }
 }

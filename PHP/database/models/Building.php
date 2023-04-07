@@ -7,17 +7,24 @@ class Building
     private string $abbreviation;
     private string $info;
     private string $size;
-    private int $campusId;
+    private int $campus;
 
-    public function __construct(int $id, bool $enabled, string $name, string $abbreviation, string $info, string $size, int $campusId)
-    {
+    public function __construct(
+        int $id,
+        string $name,
+        string $abbreviation,
+        string $info,
+        string $size,
+        int $campus,
+        bool $enabled = true,
+    ) {
         $this->id = $id;
-        $this->enabled = $enabled;
-        $this->name = $name;
-        $this->abbreviation = $abbreviation;
-        $this->info = $info;
-        $this->size = $size;
-        $this->campusId = $campusId;
+        $this->setEnabled($enabled);
+        $this->setName($name);
+        $this->setAbbreviation($abbreviation);
+        $this->setInfo($info);
+        $this->setSize($size);
+        $this->setCampus($campus);
     }
 
     // Getters
@@ -51,9 +58,9 @@ class Building
         return $this->size;
     }
 
-    public function getCampusId(): int
+    public function getCampus(): int
     {
-        return $this->campusId;
+        return $this->campus;
     }
 
     // Setters
@@ -82,22 +89,22 @@ class Building
         $this->size = $size;
     }
 
-    public function setCampusId(int $campusId): void
+    public function setCampus(int $campus): void
     {
-        $this->campusId = $campusId;
+        $this->campus = $campus;
     }
 
     // To Array
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
-            'enabled' => $this->enabled,
-            'name' => $this->name,
-            'abbreviation' => $this->abbreviation,
-            'info' => $this->info,
-            'size' => $this->size,
-            'campus' => $this->campusId,
+            'id' => $this->getId(),
+            'enabled' => $this->isEnabled(),
+            'name' => $this->getName(),
+            'abbreviation' => $this->getAbbreviation(),
+            'info' => $this->getInfo(),
+            'size' => $this->getSize(),
+            'campus' => $this->getCampus(),
         ];
     }
 }

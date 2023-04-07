@@ -58,7 +58,7 @@ class RoomRepository extends BaseRepository
         ]);
     }
 
-    public function disable(Room $current, bool $enabled = false): int
+    public function disable(Room $current, bool $enabled = false): bool
     {
         $sql = "UPDATE rooms SET enabled = :enabled WHERE ID =:ID";
 
@@ -68,7 +68,7 @@ class RoomRepository extends BaseRepository
         ]);
     }
 
-    public function delete(string $id): int
+    public function delete(string $id): bool
     {
         $sql = "DELETE FROM rooms WHERE ID = :ID";
 

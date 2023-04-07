@@ -6,17 +6,23 @@ class Floor
     private bool $enabled;
     private string $info;
     private string $size;
-    private int $buildingId;
-    private string $floor;
+    private int $building;
+    private int $floor;
 
-    public function __construct(int $id, bool $enabled, string $info, string $size, int $buildingId, string $floor)
-    {
+    public function __construct(
+        int $id,
+        string $info,
+        string $size,
+        int $building,
+        int $floor,
+        bool $enabled = true,
+    ) {
         $this->id = $id;
-        $this->enabled = $enabled;
-        $this->info = $info;
-        $this->size = $size;
-        $this->buildingId = $buildingId;
-        $this->floor = $floor;
+        $this->setEnabled($enabled);
+        $this->setInfo($info);
+        $this->setSize($size);
+        $this->setBuilding($building);
+        $this->setFloor($floor);
     }
 
     // Getters
@@ -40,9 +46,9 @@ class Floor
         return $this->size;
     }
 
-    public function getBuildingId(): int
+    public function getBuilding(): int
     {
-        return $this->buildingId;
+        return $this->building;
     }
 
     public function getFloor(): string
@@ -66,13 +72,26 @@ class Floor
         $this->size = $size;
     }
 
-    public function setBuildingId(int $buildingId): void
+    public function setBuilding(int $building): void
     {
-        $this->buildingId = $buildingId;
+        $this->building = $building;
     }
 
-    public function setFloor(string $floor): void
+    public function setFloor(int $floor): void
     {
         $this->floor = $floor;
+    }
+
+    // To Array
+    function toArray(): array
+    {
+        return [
+            "id" => $this->getId(),
+            "enabled" => $this->isEnabled(),
+            "info" => $this->getInfo(),
+            "size" => $this->getSize(),
+            "building" => $this->getBuilding(),
+            "floor" => $this->getFloor(),
+        ];
     }
 }

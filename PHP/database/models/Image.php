@@ -7,20 +7,28 @@ class Image
     private string $info;
     private string $src;
     private bool $enabled;
-    private int $campusId;
-    private int $buildingId;
-    private int $roomId;
+    private int $campus;
+    private int $building;
+    private int $room;
 
-    public function __construct(array $data)
-    {
-        $this->id = (int)$data['id'];
-        $this->name = $data['name'];
-        $this->info = $data['info'];
-        $this->src = $data['src'];
-        $this->enabled = (bool)$data['enabled'];
-        $this->campusId = (int)$data['campus_id'];
-        $this->buildingId = (int)$data['building_id'];
-        $this->roomId = (int)$data['room_id'];
+    public function __construct(
+        int $id,
+        string $name,
+        string $info,
+        string $src,
+        int $campus,
+        int $building,
+        int $room,
+        bool $enabled = true
+    ) {
+        $this->id = $id;
+        $this->setName($name);
+        $this->setInfo($info);
+        $this->setSrc($src);
+        $this->setEnabled($enabled);
+        $this->setCampus($campus);
+        $this->setBuilding($building);
+        $this->setRoom($room);
     }
 
     public function getId(): int
@@ -48,19 +56,19 @@ class Image
         return $this->enabled;
     }
 
-    public function getCampusId(): int
+    public function getCampus(): int
     {
-        return $this->campusId;
+        return $this->campus;
     }
 
-    public function getBuildingId(): int
+    public function getBuilding(): int
     {
-        return $this->buildingId;
+        return $this->building;
     }
 
-    public function getRoomId(): int
+    public function getRoom(): int
     {
-        return $this->roomId;
+        return $this->room;
     }
 
     public function setName(string $name): void
@@ -83,18 +91,33 @@ class Image
         $this->enabled = $enabled;
     }
 
-    public function setCampusId(int $campusId): void
+    public function setCampus(int $campus): void
     {
-        $this->campusId = $campusId;
+        $this->campus = $campus;
     }
 
-    public function setBuildingId(int $buildingId): void
+    public function setBuilding(int $building): void
     {
-        $this->buildingId = $buildingId;
+        $this->building = $building;
     }
 
-    public function setRoomId(int $roomId): void
+    public function setRoom(int $room): void
     {
-        $this->roomId = $roomId;
+        $this->room = $room;
+    }
+
+    // To Array
+    public function toArray(): array
+    {
+        return [
+            "id" => $this->getId(),
+            "name" => $this->getName(),
+            "info" => $this->getInfo(),
+            "src" => $this->getSrc(),
+            "enabled" => $this->isEnabled(),
+            "campus" => $this->getCampus(),
+            "building" => $this->getBuilding(),
+            "room" => $this->getRoom(),
+        ];
     }
 }

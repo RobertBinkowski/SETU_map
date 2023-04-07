@@ -4,17 +4,20 @@ class Connection
 {
     private int $id;
     private bool $enabled;
-    private float $distance;
-    private int $nodeOneId;
-    private int $nodeTwoId;
+    private int $nodeOne;
+    private int $nodeTwo;
 
-    public function __construct(int $id, bool $enabled, float $distance, int $nodeOneId, int $nodeTwoId)
-    {
+    public function __construct(
+        int $id,
+        int $nodeOne,
+        int $nodeTwo,
+        bool $enabled = true,
+
+    ) {
         $this->id = $id;
-        $this->enabled = $enabled;
-        $this->distance = $distance;
-        $this->nodeOneId = $nodeOneId;
-        $this->nodeTwoId = $nodeTwoId;
+        $this->setEnabled($enabled);
+        $this->setNodeOne($nodeOne);
+        $this->setNodeTwo($nodeTwo);
     }
 
     // Getters
@@ -28,19 +31,15 @@ class Connection
         return $this->enabled;
     }
 
-    public function getDistance(): float
+
+    public function getNodeOne(): int
     {
-        return $this->distance;
+        return $this->nodeOne;
     }
 
-    public function getNodeOneId(): int
+    public function getNodeTwo(): int
     {
-        return $this->nodeOneId;
-    }
-
-    public function getNodeTwoId(): int
-    {
-        return $this->nodeTwoId;
+        return $this->nodeTwo;
     }
 
     // Setters
@@ -49,18 +48,24 @@ class Connection
         $this->enabled = $enabled;
     }
 
-    public function setDistance(float $distance): void
+    public function setNodeOne(int $nodeOne): void
     {
-        $this->distance = $distance;
+        $this->nodeOne = $nodeOne;
     }
 
-    public function setNodeOneId(int $nodeOneId): void
+    public function setNodeTwo(int $nodeTwo): void
     {
-        $this->nodeOneId = $nodeOneId;
+        $this->nodeTwo = $nodeTwo;
     }
 
-    public function setNodeTwoId(int $nodeTwoId): void
+    // to Array
+    public function toArray(): array
     {
-        $this->nodeTwoId = $nodeTwoId;
+        return [
+            "id" => $this->getId(),
+            "nodeOne" => $this->getNodeOne(),
+            "nodeTwo" => $this->getNodeTwo(),
+            "enabled" => $this->isEnabled(),
+        ];
     }
 }
