@@ -15,16 +15,6 @@ class RoomRepository extends BaseRepository
     {
         $sql = "INSERT INTO rooms (enabled , type, name, info, size, building_id, location_id, floor_id) VALUES (enabled,:type, :name, :info, :size, :building_id, :location_id, :floor_id)";
 
-        $statement = $this->conn->prepare($sql);
-
-        $statement->bindValue(":type", $data["type"], PDO::PARAM_STR);
-        $statement->bindValue(":name", $data["name"], PDO::PARAM_STR);
-        $statement->bindValue(":info", $data["info"], PDO::PARAM_STR);
-        $statement->bindValue(":size", $data["size"], PDO::PARAM_STR);
-        $statement->bindValue(":building_id", $data["building_id"], PDO::PARAM_STR);
-        $statement->bindValue(":location_id", $data["location_id"], PDO::PARAM_STR);
-        $statement->bindValue(":floor_id", $data["floor_id"], PDO::PARAM_STR);
-
         $this->execute($sql, [
             ":type" => $data->getType(),
             ":name" => $data->getName(),
