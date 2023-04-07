@@ -8,7 +8,25 @@ class UserRepository extends BaseRepository
 
         $result = $this->conn->query($sql);
 
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+
+        $users = [];
+
+        foreach ($data as $row) {
+            $user = new User(
+                $row['id'],
+                $row['enabled'],
+                $row['username'],
+                $row['email'],
+                $row['password'],
+                $row['privileges'],
+                $row['campus_id'],
+                (string)$row['created']
+            );
+            $users[] = $user;
+        }
+
+        return $users;
     }
 
     public function create(User $user): bool
@@ -32,18 +50,42 @@ class UserRepository extends BaseRepository
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
             return new User(
-                $data["id"],
-                $data["enabled"],
-                $data["username"],
-                $data["email"],
-                $data["password"],
-                $data["privileges"]
+                $data['id'],
+                $data['enabled'],
+                $data['username'],
+                $data['email'],
+                $data['password'],
+                $data['privileges'],
+                $data['campus_id'],
+                (string)$data['created']
             );
         }
 
         return false;
     }
 
+    public function getByCampus(int $id): User|false
+    {
+        $sql = "SELECT * FROM users WHERE campus_id = :id";
+
+        $data = $this->fetch($sql, [':id' => $id]);
+
+        if ($data !== false) {
+            $data["enabled"] = (bool)$data["enabled"];
+            return new User(
+                $data['id'],
+                $data['enabled'],
+                $data['username'],
+                $data['email'],
+                $data['password'],
+                $data['privileges'],
+                $data['campus_id'],
+                (string)$data['created']
+            );
+        }
+
+        return false;
+    }
     public function update(User $current, User $new): bool
     {
         $sql = "UPDATE users SET username = :username, password = :password, email = :email, enabled = :enabled, privileges = :privileges WHERE ID =:ID";

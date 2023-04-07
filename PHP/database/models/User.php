@@ -20,8 +20,8 @@ class User
         string $email,
         string $password,
         string $privileges,
-        string $created,
         int $campus,
+        string $created = "",
     ) {
         $this->id = $id;
         $this->enabled = $enabled;
