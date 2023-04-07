@@ -1,72 +1,69 @@
 <?php
 
-function sanitizePassword(string $password): string | bool
+/**
+ * Sanitize the input
+ */
+function sanitizeInput(string $input): string | bool
 {
-
-    // Check length
-    if (!checkSize($password)) {
-        return false;
-    }
-
     // Remove specific unwanted characters
-    $unwantedChars = array('"', "'", '\\', '<', '>');
-    $password = str_replace($unwantedChars, '', $password);
+    $unwantedChars = array('"', '<?', "'", '\\', "//", '/', '<', '>', "===", "==");
+    $input = str_replace($unwantedChars, '', $input);
 
-    // Remove whitespace from the password
-    $password = trim($password);
+    // Remove whitespace from the input
+    $input = trim($input);
 
-    // Convert the password to lowercase for case-insensitive comparison
-    $password = strtolower($password);
-
-    return $password;
+    return $input;
 }
-
+/**
+ * Hash the Password for storage in the db
+ */
 function hashPassword(string $password): string
 {
-    // Hash the password with Bcrypt
-    $password = password_hash($password, PASSWORD_BCRYPT);
+    /** 
+     * Hash the password with Argon2
+     * Argon2 is memory intensive algorithm but is more secure than the default Bcrypt
+     */
+    $options = [
+        // Set the default memory usage for the algorithm
+        'memory_cost' => PASSWORD_ARGON2_DEFAULT_MEMORY_COST,
+        // Sets the iterations set to perform Hashes default value is 4
+        'time_cost' => PASSWORD_ARGON2_DEFAULT_TIME_COST,
+        // set the number of threads to use for hashing default value is 1
+        'threads' => PASSWORD_ARGON2_DEFAULT_THREADS,
+    ];
+
+
+    $hash = password_hash($password, PASSWORD_ARGON2ID, $options);
 
     // Return the hashed password
-    return $password;
-}
-
-function comparePasswords(string $password, string $input): bool
-{
-    // check if set to null
-    if ($input == null || $password == null) {
-        return false;
-    }
-    // check if set to empty strings
-    if ($input = "" || $password == "") {
-        return false;
-    }
-
-    // Check size
-    if (!checkSize($password)) {
-        return false;
-    }
-
-    // Confirm hashes match 
-    if (password_verify($input, $password)) {
-        return true;
-    }
-
-    // Default Value is false
-    return false;
+    return $hash;
 }
 
 /**
- * Check The length of the password to match the length
+ * Compare Password to the Input
  */
-function checkSize(string $input): bool
+function comparePasswords(string $password, string $input): bool
 {
 
     // Set minimum and maximum password length
     $min = 8;
     $max = 64;
 
-    // Check if the password meets the length requirements
+    // check if set to null
+    if ($input == null || $password == null) {
+        return false;
+    }
+    // check if set to empty strings
+    if ($input == "" || $password == "") {
+        return false;
+    }
+
     if (strlen($input) < $min || strlen($input) > $max) {
+        return false;
+    }
+
+    // Compare the password hash with the input password
+    if (!password_verify($input, $password)) {
         return false;
     }
 
