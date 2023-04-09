@@ -2,9 +2,13 @@
 
 class FloorRepository extends BaseRepository
 {
-    public function getAll(): array
+    public function getAll(bool $disabled = false): array
     {
-        $sql = "SELECT * FROM floors WHERE `enabled`='1'";
+        $sql = "SELECT * FROM floors";
+
+        if (!$disabled) {
+            $sql .= " WHERE enabled = 1";
+        }
 
         $result = $this->conn->query($sql);
 
@@ -36,17 +40,17 @@ class FloorRepository extends BaseRepository
         return $data;
     }
 
-    public function update(array $current, array $new): int
+    public function update(Floor $current, array $new): int
     {
         $sql = "UPDATE floors SET info = :info, enabled = :enabled, size = :size, building_id= :building_id, floor = :floor WHERE ID =:ID";
 
         return $this->execute($sql, [
-            ':info' => $new["info"] ?? $current["info"],
-            ':enabled' => $new["enabled"] ?? $current["enabled"],
-            ':size' => $new["size"] ?? $current["size"],
-            ':building_id' => $new["building_id"] ?? $current["building_id"],
-            ':floor' => $new["floor"] ?? $current["floor"],
-            ':ID' => $current["ID"],
+            ':info' => $new["info"] ?? $current->getInfo(),
+            ':enabled' => $new["enabled"] ?? $current->isEnabled(),
+            ':size' => $new["size"] ?? $current->getSize(),
+            ':building_id' => $new["building_id"] ?? $current->getBuilding(),
+            ':floor' => $new["floor"] ?? $current->getFloor(),
+            ':ID' => $current->getId(),
         ]);
     }
 

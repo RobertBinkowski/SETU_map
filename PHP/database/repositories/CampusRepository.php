@@ -3,9 +3,13 @@
 
 class CampusRepository extends BaseRepository
 {
-    public function getAll(): array
+    public function getAll(bool $disabled = false): array
     {
-        $sql = "SELECT * FROM campuses WHERE `enabled`='1'";
+        $sql = "SELECT * FROM campuses";
+
+        if (!$disabled) {
+            $sql .= " WHERE enabled=1";
+        }
 
         $result = $this->conn->query($sql);
 
@@ -40,16 +44,16 @@ class CampusRepository extends BaseRepository
         return false;
     }
 
-    public function update(Campus $current, Campus $new): bool
+    public function update(Campus $current, array $new): bool
     {
         $sql = "UPDATE campuses SET name = :name, abbreviation = :abbreviation, info = :info, enabled = :enabled, size = :size WHERE ID =:ID";
 
         return $this->execute($sql, [
-            ':name' => $new->getName() ?? $current->getName(),
-            ':abbreviation' => $new->getAbbreviation() ?? $current->getAbbreviation(),
-            ':info' => $new->getInfo() ?? $current->getInfo(),
-            ':enabled' => $new->isEnabled() ?? $current->isEnabled(),
-            ':size' => $new->getSize() ?? $current->getSize(),
+            ':name' => $new['name'] ?? $current->getName(),
+            ':abbreviation' => $new['abbreviation'] ?? $current->getAbbreviation(),
+            ':info' => $new['info'] ?? $current->getInfo(),
+            ':enabled' => $new['enabled'] ?? $current->isEnabled(),
+            ':size' => $new['size'] ?? $current->getSize(),
             ':ID' => $current->getId()
         ]);
     }

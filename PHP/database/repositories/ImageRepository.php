@@ -3,9 +3,13 @@
 
 class ImageRepository extends BaseRepository
 {
-    public function getAll(): array
+    public function getAll(bool $disabled = false): array
     {
-        $sql = "SELECT * FROM images WHERE `enabled`='1'";
+        $sql = "SELECT * FROM images";
+
+        if (!$disabled) {
+            $sql .= " WHERE enabled =1";
+        }
 
         $result = $this->conn->query($sql);
 
@@ -23,9 +27,9 @@ class ImageRepository extends BaseRepository
                 ':name' => $data->getName(),
                 ':info' => $data->getInfo(),
                 ':src' => $data->getSrc(),
-                ':campus_id' => $data->getCampusId(),
-                ':building_id' => $data->getBuildingId(),
-                ':room_id' => $data->getBuildingId(),
+                ':campus_id' => $data->getCampus(),
+                ':building_id' => $data->getBuilding(),
+                ':room_id' => $data->getBuilding(),
 
             ]
         );
@@ -45,18 +49,18 @@ class ImageRepository extends BaseRepository
         return false;
     }
 
-    public function update(Image $current, Image $new): bool
+    public function update(Image $current, array $new): bool
     {
         $sql = "UPDATE images SET name = :name, src = :src, info = :info, enabled = :enabled, campus_id = :campus_id, building_id = :building_id , room_id= :room_id WHERE ID =:ID";
 
         return $this->execute($sql, [
-            ':name' => $new->getName() ?? $current->getName(),
-            ':src' => $new->getSrc() ?? $current->getSrc(),
-            ':info' => $new->getInfo() ?? $current->getInfo(),
-            ':enabled' => $new->isEnabled() ?? $current->isEnabled(),
-            ':campus_id' => $new->getCampusId() ?? $current->getCampusId(),
-            ':building_id' => $new->getBuildingId() ?? $current->getBuildingId(),
-            ':room_id' => $new->getRoomId() ?? $current->getRoomId(),
+            ':name' => $new['name'] ?? $current->getName(),
+            ':src' => $new['src'] ?? $current->getSrc(),
+            ':info' => $new['info'] ?? $current->getInfo(),
+            ':enabled' => $new['enabled'] ?? $current->isEnabled(),
+            ':campus_id' => $new['campus'] ?? $current->getCampus(),
+            ':building_id' => $new['building'] ?? $current->getBuilding(),
+            ':room_id' => $new['room'] ?? $current->getRoom(),
             ':id' => $current->getId(),
         ]);
     }

@@ -2,10 +2,12 @@
 
 class BuildingRepository extends BaseRepository
 {
-    public function getAll(): array
+    public function getAll(bool $disabled = false): array
     {
-        $sql = "SELECT * FROM buildings WHERE enabled = 1";
-
+        $sql = "SELECT * FROM buildings";
+        if (!$disabled) {
+            $sql .= " WHERE enabled = 1";
+        }
         $result = $this->conn->query($sql);
 
         return $result->fetchAll(PDO::FETCH_ASSOC);
@@ -40,17 +42,17 @@ class BuildingRepository extends BaseRepository
         return false;
     }
 
-    public function update(Building $current, Building $new): bool
+    public function update(Building $current, array $new): bool
     {
         $sql = "UPDATE buildings SET name = :name, abbreviation = :abbreviation, info = :info, 
                 size = :size, campus_id = :campus_id WHERE id = :id";
 
         return $this->execute($sql, [
-            ':name' => $new->getName() ?? $current->getName(),
-            ':abbreviation' => $new->getAbbreviation() ?? $current->getAbbreviation(),
-            ':info' => $new->getInfo() ?? $current->getInfo(),
-            ':size' => $new->getSize() ?? $current->getSize(),
-            ':campus_id' => $new->getCampus() ?? $current->getCampus(),
+            ':name' => $new['name'] ?? $current->getName(),
+            ':abbreviation' => $new['abbreviation'] ?? $current->getAbbreviation(),
+            ':info' => $new['info'] ?? $current->getInfo(),
+            ':size' => $new['size'] ?? $current->getSize(),
+            ':campus_id' => $new['campius'] ?? $current->getCampus(),
             ':id' => $current->getId(),
         ]);
     }

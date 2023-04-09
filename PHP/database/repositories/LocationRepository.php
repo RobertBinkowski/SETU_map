@@ -3,9 +3,13 @@
 
 class LocationRepository extends BaseRepository
 {
-    public function getAll(): array
+    public function getAll(bool $disabled = false): array
     {
-        $sql = "SELECT * FROM locations WHERE `enabled`='1'";
+        $sql = "SELECT * FROM locations";
+
+        if (!$disabled) {
+            $sql .= " WHERE enabled = 1";
+        }
 
         $result = $this->conn->query($sql);
 
@@ -41,18 +45,18 @@ class LocationRepository extends BaseRepository
         return false;
     }
 
-    public function update(Location $current, Location $new): bool
+    public function update(Location $current, array $new): bool
     {
         $sql = "UPDATE locations SET type = :type, geo_longitude = :geo_longitude, geo_latitude = :geo_latitude, enabled = :enabled, map_longitude = :map_longitude, map_latitude= :map_latitude, type = :type WHERE ID =:ID";
 
         return $this->execute($sql, [
 
-            ":type" => $new->getType() ?? $current->getType(),
-            ":geo_longitude" => $new->getGeoLongitude() ?? $current->getGeoLongitude(),
-            ":geo_latitude" => $new->getGeoLatitude() ?? $current->getGeoLatitude(),
-            ":map_longitude" => $new->getMapLongitude() ?? $current->getMapLongitude(),
-            ":map_latitude" => $new->getMapLatitude() ?? $current->getMapLatitude(),
-            ":enabled" => $new->isEnabled() ?? $current->isEnabled(),
+            ":type" => $new['type'] ?? $current->getType(),
+            ":geo_longitude" => $new['geo_longitude'] ?? $current->getGeoLongitude(),
+            ":geo_latitude" => $new['geo_latitude'] ?? $current->getGeoLatitude(),
+            ":map_longitude" => $new['map_longitude'] ?? $current->getMapLongitude(),
+            ":map_latitude" => $new['map_latitude'] ?? $current->getMapLatitude(),
+            ":enabled" => $new['enabled'] ?? $current->isEnabled(),
             'ID' => $current->getId()
         ]);
     }

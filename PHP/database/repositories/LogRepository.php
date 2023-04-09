@@ -36,14 +36,14 @@ class LogRepository extends BaseRepository
         return false;
     }
 
-    public function update(Log $current, Log $new): bool
+    public function update(Log $current, array $new): bool
     {
         $sql = "UPDATE logs SET title = :title, type = :type, info = :info WHERE ID =:ID";
 
         return $this->execute($sql, [
-            ':title' => $new->getTitle() ?? $current->getTitle(),
-            ':type' => $new->getType() ?? $current->getType(),
-            ':info' => $new->getInfo() ?? $current->getInfo(),
+            ':title' => $new['title'] ?? $current->getTitle(),
+            ':type' => $new['type'] ?? $current->getType(),
+            ':info' => $new['info'] ?? $current->getInfo(),
         ]);
     }
 

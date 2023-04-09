@@ -2,9 +2,13 @@
 
 class ConnectionRepository extends BaseRepository
 {
-    public function getAll(): array
+    public function getAll(bool $disabled = false): array
     {
-        $sql = "SELECT * FROM connections WHERE `enabled`='1'";
+        $sql = "SELECT * FROM connections";
+
+        if (!$disabled) {
+            $sql .= " WHERE enabled =1";
+        }
 
         $result = $this->conn->query($sql);
 
@@ -36,15 +40,14 @@ class ConnectionRepository extends BaseRepository
         return $data;
     }
 
-    public function update(array $current, array $new): int
+    public function update(Connection $current, array $new): int
     {
         $sql = "UPDATE connections SET distance = :distance, node_one_id = :node_one_id, node_two_is = :node_two_is, enabled = :enabled WHERE ID =:ID";
 
         return $this->execute($sql, [
-            ':distance' => $new["distance"] ?? $current["distance"],
-            ':node_one_id' => $new["node_one_id"] ?? $current["node_one_id"],
-            ':node_two_is' => $new["node_two_is"] ?? $current["node_two_is"],
-            ':ID' => $current["ID"],
+            ':node_one_id' => $new["node_one_id"] ?? $current->getNodeOne(),
+            ':node_two_is' => $new["node_two_is"] ?? $current->getNodeTwo(),
+            ':ID' => $current->getId(),
         ]);
     }
 

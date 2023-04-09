@@ -2,9 +2,13 @@
 
 class UserRepository extends BaseRepository
 {
-    public function getAll(): array
+    public function getAll(bool $disabled = false): array
     {
         $sql = "SELECT * FROM users";
+
+        if (!$disabled) {
+            $sql .= " WHERE enabled = 1";
+        }
 
         $result = $this->conn->query($sql);
 
@@ -86,16 +90,16 @@ class UserRepository extends BaseRepository
 
         return false;
     }
-    public function update(User $current, User $new): bool
+    public function update(User $current, array $new): bool
     {
         $sql = "UPDATE users SET username = :username, password = :password, email = :email, enabled = :enabled, privileges = :privileges WHERE ID =:ID";
 
         return $this->execute($sql, [
-            ':username' => $new->getUsername() ?? $current->getUsername(),
-            ':password' => $new->getPassword() ?? $current->getPassword(),
-            ':email' => $new->getEmail() ?? $current->getEmail(),
-            ':enabled' => $new->isEnabled() ?? $current->isEnabled(),
-            ':privileges' => $new->getPrivileges() ?? $current->getPrivileges(),
+            ':username' => $new['username'] ?? $current->getUsername(),
+            ':password' => $new['password'] ?? $current->getPassword(),
+            ':email' => $new['email'] ?? $current->getEmail(),
+            ':enabled' => $new['enabled'] ?? $current->isEnabled(),
+            ':privileges' => $new['privileges'] ?? $current->getPrivileges(),
             ':ID' => $current->getID(),
         ]);
     }
