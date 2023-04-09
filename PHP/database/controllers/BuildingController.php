@@ -1,9 +1,21 @@
 <?php
 
-class BuildingController
+class BuildingController extends BaseController
 {
     public function __construct(private BuildingRepository $gateway)
     {
+    }
+    protected function getRepository()
+    {
+        return $this->gateway;
+    }
+    public function getAll()
+    {
+        $buildings = $this->gateway->getAll();
+
+        return array_map(function ($building) {
+            return $building->toArray();
+        }, $buildings);
     }
     public function request(string $method, ?string $id): void
     {
@@ -13,7 +25,7 @@ class BuildingController
             $this->processCollectionRequest($method);
         }
     }
-    private function processResourceRequest(string $method, string $id): void
+    public function processResourceRequest(string $method, string $id): void
     {
         $building = $this->gateway->get($id);
 
@@ -59,7 +71,7 @@ class BuildingController
                 break;
         }
     }
-    private function processCollectionRequest($method): void
+    public function processCollectionRequest($method): void
     {
         switch ($method) {
             case "GET":

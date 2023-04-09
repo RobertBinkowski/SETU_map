@@ -1,17 +1,13 @@
 <?php
 
-class UserController
+class UserController extends BaseController
 {
     public function __construct(private UserRepository $gateway)
     {
     }
-    public function getAll()
+    protected function getRepository()
     {
-        $users = $this->gateway->getAll();
-
-        return array_map(function ($user) {
-            return $user->toArray();
-        }, $users);
+        return $this->gateway;
     }
 
     public function request(string $method, ?string $id): void
@@ -22,7 +18,7 @@ class UserController
             $this->processCollectionRequest($method);
         }
     }
-    private function processResourceRequest(string $method, string $id): void
+    public function processResourceRequest(string $method, string $id): void
     {
         $user = $this->gateway->get($id);
 
@@ -34,7 +30,7 @@ class UserController
 
         switch ($method) {
             case "GET":
-                echo json_encode($user->toArray());
+                echo json_encode($user);
                 break;
             case "PATCH":
                 $data = (array) json_decode(file_get_contents("php://input"), true);
@@ -68,7 +64,7 @@ class UserController
                 break;
         }
     }
-    private function processCollectionRequest($method): void
+    public function processCollectionRequest($method): void
     {
         switch ($method) {
             case "GET":
@@ -100,6 +96,8 @@ class UserController
     /**
      * Validate the inputs
      * @param array $data
+     * @param bool is new
+     * 
      * @return array
      */
     private function getValidationErrors(array $data, bool $is_new = true): array

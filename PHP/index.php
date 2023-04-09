@@ -12,3 +12,15 @@ include "./src/AutoLoader.php";
 include "./src/Header.php";
 include "./src/Security.php";
 include "./router.php";
+
+// Test
+// $user = new User(
+//     1,
+//     "Hello",
+//     "Email",
+//     "Pas",
+//     "none",
+//     1
+// );
+
+// echo $user;

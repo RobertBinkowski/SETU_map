@@ -1,9 +1,14 @@
 <?php
 
-class CampusController
+class CampusController extends BaseController
 {
     public function __construct(private CampusRepository $gateway)
     {
+    }
+
+    protected function getRepository()
+    {
+        return $this->gateway;
     }
     public function request(string $method, ?string $id): void
     {
@@ -13,7 +18,7 @@ class CampusController
             $this->processCollectionRequest($method);
         }
     }
-    private function processResourceRequest(string $method, string $id): void
+    public function processResourceRequest(string $method, string $id): void
     {
         $campus = $this->gateway->get($id);
 
@@ -59,7 +64,7 @@ class CampusController
                 break;
         }
     }
-    private function processCollectionRequest($method): void
+    public function processCollectionRequest($method): void
     {
         switch ($method) {
             case "GET":

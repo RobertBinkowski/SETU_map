@@ -1,9 +1,13 @@
 <?php
 
-class ImageController
+class ImageController extends BaseController
 {
     public function __construct(private ImageRepository $gateway)
     {
+    }
+    protected function getRepository()
+    {
+        return $this->gateway;
     }
     public function request(string $method, ?string $id): void
     {
@@ -13,7 +17,7 @@ class ImageController
             $this->processCollectionRequest($method);
         }
     }
-    private function processResourceRequest(string $method, string $id): void
+    public function processResourceRequest(string $method, string $id): void
     {
         $image = $this->gateway->get($id);
 
@@ -59,7 +63,7 @@ class ImageController
                 break;
         }
     }
-    private function processCollectionRequest($method): void
+    public function processCollectionRequest($method): void
     {
         switch ($method) {
             case "GET":
