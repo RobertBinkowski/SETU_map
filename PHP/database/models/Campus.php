@@ -11,6 +11,10 @@ class Campus
     private float $width;
     private string $layout;
 
+    public function __toString(): string
+    {
+        return json_encode($this->toArray());
+    }
 
     public function __construct(
         int $id,

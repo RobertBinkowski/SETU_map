@@ -6,6 +6,10 @@ class Log
     private string $type;
     private string $info;
 
+    public function __toString(): string
+    {
+        return json_encode($this->toArray());
+    }
     public function __construct(
         int $id,
         string $title,

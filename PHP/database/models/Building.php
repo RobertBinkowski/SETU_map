@@ -9,6 +9,11 @@ class Building
     private string $size;
     private int $campus;
 
+    public function __toString(): string
+    {
+        return json_encode($this->toArray());
+    }
+
     public function __construct(
         int $id,
         string $name,

@@ -9,6 +9,11 @@ class Floor
     private int $building;
     private int $floor;
 
+    public function __toString(): string
+    {
+        return json_encode($this->toArray());
+    }
+
     public function __construct(
         int $id,
         string $info,

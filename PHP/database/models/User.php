@@ -13,6 +13,11 @@ class User
     private string $created;
     private int $campus;
 
+    public function __toString(): string
+    {
+        return json_encode($this->toArray());
+    }
+
     public function __construct(
         int $id,
         string $username,

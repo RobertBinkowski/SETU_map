@@ -11,6 +11,11 @@ class Image
     private int $building;
     private int $room;
 
+    public function __toString(): string
+    {
+        return json_encode($this->toArray());
+    }
+
     public function __construct(
         int $id,
         string $name,

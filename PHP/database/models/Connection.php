@@ -7,6 +7,11 @@ class Connection
     private int $nodeOne;
     private int $nodeTwo;
 
+    public function __toString(): string
+    {
+        return json_encode($this->toArray());
+    }
+
     public function __construct(
         int $id,
         int $nodeOne,
