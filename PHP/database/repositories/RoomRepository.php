@@ -20,9 +20,9 @@ class RoomRepository extends BaseRepository
             ":name" => $data->getName(),
             ":info" => $data->getInfo(),
             ":size" => $data->getSize(),
-            ":building_id" => $data->getBuildingId(),
-            ":location_id" => $data->getLocationId(),
-            ":floor_id" => $data->getFloorId()
+            ":building_id" => $data->getBuilding(),
+            ":location_id" => $data->getLocation(),
+            ":floor_id" => $data->getFloor()
         ]);
 
         return $this->lastInsertId();
@@ -51,9 +51,9 @@ class RoomRepository extends BaseRepository
             ":name" => $new->getName() ?? $current->getName(),
             ":info" => $new->getInfo() ?? $current->getInfo(),
             ":size" => $new->getSize() ?? $current->getSize(),
-            ":building_id" => $new->getBuildingId() ?? $current->getBuildingId(),
-            ":location_id" => $new->getLocationId() ?? $current->getLocationId(),
-            ":floor_id" => $new->getFloorId() ?? $current->getFloorId(),
+            ":building_id" => $new->getBuilding() ?? $current->getBuilding(),
+            ":location_id" => $new->getLocation() ?? $current->getLocation(),
+            ":floor_id" => $new->getFloor() ?? $current->getFloor(),
             ":ID" => $current->getId()
         ]);
     }

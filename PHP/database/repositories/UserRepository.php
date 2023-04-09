@@ -15,13 +15,13 @@ class UserRepository extends BaseRepository
         foreach ($data as $row) {
             $user = new User(
                 $row['id'],
-                $row['enabled'],
                 $row['username'],
                 $row['email'],
                 $row['password'],
                 $row['privileges'],
                 $row['campus_id'],
-                (string)$row['created']
+                (string)$row['created'],
+                $row['enabled'],
             );
             $users[] = $user;
         }
@@ -51,13 +51,13 @@ class UserRepository extends BaseRepository
             $data["enabled"] = (bool)$data["enabled"];
             return new User(
                 $data['id'],
-                $data['enabled'],
                 $data['username'],
                 $data['email'],
                 $data['password'],
                 $data['privileges'],
                 $data['campus_id'],
-                (string)$data['created']
+                (string)$data['created'],
+                $data['enabled'],
             );
         }
 
@@ -74,13 +74,13 @@ class UserRepository extends BaseRepository
             $data["enabled"] = (bool)$data["enabled"];
             return new User(
                 $data['id'],
-                $data['enabled'],
                 $data['username'],
                 $data['email'],
                 $data['password'],
                 $data['privileges'],
                 $data['campus_id'],
-                (string)$data['created']
+                (string)$data['created'],
+                $data['enabled'],
             );
         }
 

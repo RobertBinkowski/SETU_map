@@ -76,7 +76,7 @@ class User
     }
     public function setPassword($password): void
     {
-        $this->password = hashPassword($password);
+        $this->password = $password;
     }
     public function setEmail($email): void
     {

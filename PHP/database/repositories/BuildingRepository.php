@@ -22,7 +22,7 @@ class BuildingRepository extends BaseRepository
             ':abbreviation' => $data->getAbbreviation(),
             ':info' => $data->getInfo(),
             ':size' => $data->getSize(),
-            ':campus_id' => $data->getCampusId(),
+            ':campus_id' => $data->getCampus(),
         ]);
     }
 
@@ -50,7 +50,7 @@ class BuildingRepository extends BaseRepository
             ':abbreviation' => $new->getAbbreviation() ?? $current->getAbbreviation(),
             ':info' => $new->getInfo() ?? $current->getInfo(),
             ':size' => $new->getSize() ?? $current->getSize(),
-            ':campus_id' => $new->getCampusId() ?? $current->getCampusId(),
+            ':campus_id' => $new->getCampus() ?? $current->getCampus(),
             ':id' => $current->getId(),
         ]);
     }

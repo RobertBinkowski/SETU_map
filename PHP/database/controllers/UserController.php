@@ -5,10 +5,15 @@ class UserController
     public function __construct(private UserRepository $gateway)
     {
     }
-    public function getAll(): void
+    public function getAll()
     {
-        echo json_encode($this->gateway->getAll());
+        $users = $this->gateway->getAll();
+
+        return array_map(function ($user) {
+            return $user->toArray();
+        }, $users);
     }
+
     public function request(string $method, ?string $id): void
     {
         if ($id) {
@@ -29,7 +34,7 @@ class UserController
 
         switch ($method) {
             case "GET":
-                echo json_encode($user);
+                echo json_encode($user->toArray());
                 break;
             case "PATCH":
                 $data = (array) json_decode(file_get_contents("php://input"), true);
@@ -67,7 +72,7 @@ class UserController
     {
         switch ($method) {
             case "GET":
-                echo json_encode($this->gateway->getAll());
+                echo json_encode($this->getAll());
                 break;
             case "POST":
                 $data = (array) json_decode(file_get_contents("php://input"), true);
