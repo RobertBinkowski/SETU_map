@@ -1,102 +1,92 @@
 <?php
 
-class UserController
+class UserController extends BaseController
 {
     public function __construct(private UserRepository $gateway)
     {
     }
-    public function getAll()
-    {
-        $users = $this->gateway->getAll();
 
-        return array_map(function ($user) {
-            return $user->toArray();
-        }, $users);
+    protected function getRepository()
+    {
+        return $this->gateway;
     }
 
-    public function request(string $method, ?string $id): void
-    {
-        if ($id) {
-            $this->processResourceRequest($method, $id);
-        } else {
-            $this->processCollectionRequest($method);
-        }
-    }
-    private function processResourceRequest(string $method, string $id): void
+    protected function processResourceRequest(string $method, string $id)
     {
         $user = $this->gateway->get($id);
 
         if (!$user) {
             http_response_code(404);
-            echo json_encode(["message" => "User Not found"]);
-            return;
+            return json_encode(["message" => "User Not found"]);
         }
 
-        switch ($method) {
-            case "GET":
-                echo json_encode($user->toArray());
-                break;
-            case "PATCH":
-                $data = (array) json_decode(file_get_contents("php://input"), true);
-
-                //Check if any errors
-                $errors = $this->getValidationErrors($data, false);
-                if (!empty($errors)) {
-                    http_response_code(422);
-                    echo json_encode(["errors" => $errors]);
-                    break;
-                }
-
-                //Update user
-                http_response_code(200);
-                $rows = $this->gateway->update($user, $data);
-                echo json_encode([
-                    "message" => "User $id - Updated",
-                    "rows affected" => $rows,
-                ]);
-                break;
-            case "DELETE":
-                $rows = $this->gateway->delete($id);
-                echo json_encode([
-                    "message" => "User $id - Deleted",
-                    "rows" => $rows
-                ]);
-                break;
-            default:
-                http_response_code(405);
-                header("Allowed: GET, PATCH, DELETE");
-                break;
+        if ($method == "GET") {
+            return json_encode($user->toArray());
         }
+        if ($method == "PATCH") {
+            $data = (array) json_decode(file_get_contents("php://input"), true);
+
+            // Check if any errors
+            $errors = $this->getValidationErrors($data, false);
+            if (!empty($errors)) {
+                http_response_code(422);
+                return json_encode(["errors" => $errors]);
+            }
+
+            // Update user
+            http_response_code(200);
+            $rows = $this->gateway->update($user, $data);
+            return json_encode([
+                "message" => "User $id - Updated",
+                "rows affected" => $rows,
+            ]);
+        }
+        if ($method == "DELETE") {
+            $rows = $this->gateway->delete($id);
+            return json_encode([
+                "message" => "User $id - Deleted",
+                "rows" => $rows
+            ]);
+        }
+        http_response_code(405);
+        header("Allowed: GET, PATCH, DELETE");
     }
-    private function processCollectionRequest($method): void
+
+    protected function processCollectionRequest(string $method)
     {
         switch ($method) {
             case "GET":
-                echo json_encode($this->getAll());
-                break;
+                return json_encode($this->getAll());
             case "POST":
                 $data = (array) json_decode(file_get_contents("php://input"), true);
 
-                //Check if any errors
+                // Check if any errors
                 $errors = $this->getValidationErrors($data);
                 if (!empty($errors)) {
                     http_response_code(422);
-                    echo json_encode(["errors" => $errors]);
-                    break;
+                    return json_encode(["errors" => $errors]);
                 }
-                //No errors create a user
+                $user = new User(
+                    0,
+                    $data['username'],
+                    $data['email'],
+                    $data['password'],
+                    $data['privileges'],
+                    $data['campus']
+                );
+                // No errors create a user
                 http_response_code(201);
-                $id = $this->gateway->create($data);
-                echo json_encode([
+                $id = $this->gateway->create($user);
+                return json_encode([
                     "message" => "User Was Created",
                     "ID" => $id,
                 ]);
-                break;
-            default: //Only allow GET and POST responses
+            default: // Only allow GET and POST responses
                 http_response_code(405);
                 header("Allowed: GET, POST");
         }
     }
+
     /**
      * Validate the inputs
      * @param array $data
