@@ -14,13 +14,13 @@
         </select>
       </h2>
     </div>
-    <MapComponent
+    <!-- <MapComponent
       :buildings="buildings"
       :rooms="rooms"
       :floors="floors"
       :nodes="locations"
       :campus="campuses[0]"
-    ></MapComponent>
+    ></MapComponent> -->
   </main>
 </template>
 

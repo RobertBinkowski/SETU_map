@@ -25,14 +25,14 @@ class LogRepository extends BaseRepository
 
         return $logs;
     }
-    public function create(Log $data): string
+    public function create(string $title, string $info, ?string $type = "Info"): string
     {
         $sql = "INSERT INTO logs (title, type, info) VALUES (:title, :type, :info)";
 
         $this->execute($sql, [
-            ':title' => $data->getTitle(),
-            ':type' => $data->getType(),
-            ':info' => $data->getInfo(),
+            ':title' => $title,
+            ':type' => $type,
+            ':info' => $info,
         ]);
 
         return $this->lastInsertId();

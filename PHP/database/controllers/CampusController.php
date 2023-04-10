@@ -4,9 +4,9 @@ class CampusController extends BaseController
 {
     public function __construct(
         private CampusRepository $gateway,
-        // private LogRepository $logRepository,
+        private LogRepository $logRepository
     ) {
-        // $this->logRepository = $logRepository;
+        $this->logRepository = $logRepository;
     }
 
     protected function getRepository()
@@ -15,11 +15,11 @@ class CampusController extends BaseController
     }
     public function request(string $method, ?string $id): void
     {
-        // $this->logRepository->create(
-        //     "Campus Request",
-        //     "Attempting to get data from campus with " . $method,
-        //     "Info"
-        // );
+        $this->logRepository->create(
+            "Campus Request",
+            "Attempting to get data from campus with " . $method,
+            "Info"
+        );
         if ($id) {
             $this->processResourceRequest($method, $id);
         } else {
@@ -28,6 +28,11 @@ class CampusController extends BaseController
     }
     public function processResourceRequest(string $method, string $id): void
     {
+        $this->logRepository->create(
+            "Campus Request with ID",
+            "Attempting to get data from campus with " . $method . " id: " . $id,
+            "Info"
+        );
         $campus = $this->gateway->get($id);
 
         if (!$campus) {
@@ -67,6 +72,11 @@ class CampusController extends BaseController
                 ]);
                 break;
             default:
+                $this->logRepository->create(
+                    "Campus Request",
+                    "Attempting to Reach Wrong method " . $method . " id: " . $id,
+                    "Error"
+                );
                 http_response_code(405);
                 header("Allowed: GET, PATCH, DELETE");
                 break;
@@ -97,6 +107,11 @@ class CampusController extends BaseController
                 ]);
                 break;
             default: //Only allow GET and POST responses
+                $this->logRepository->create(
+                    "Campus Request",
+                    "Attempting to Reach Wrong method " . $method . " id: " . $id,
+                    "Error"
+                );
                 http_response_code(405);
                 header("Allowed: GET, POST");
         }
@@ -116,6 +131,11 @@ class CampusController extends BaseController
         if ($is_new && empty($data["abbreviation"])) {
             $errors[] = "Abbreviation is required";
         }
+        $this->logRepository->create(
+            "Validation Error",
+            "Errors Found:  " . $errors,
+            "Error"
+        );
         return $errors;
     }
 }

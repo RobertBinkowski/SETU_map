@@ -1,21 +1,23 @@
 <?php
 class Log
 {
-
-    public function __toString(): string
-    {
-        return json_encode($this->toArray());
-    }
+    private ?string $timestamp;
     public function __construct(
         private int $id,
         private string $title = "",
-        private string $type = "",
+        private string $type = "info",
         private string $info = ""
     ) {
         $this->setId($id);
         $this->setInfo($info);
         $this->setTitle($title);
         $this->setType($type);
+        $this->timestamp = date('Y-m-d H:i:s');
+    }
+
+    public function __toString(): string
+    {
+        return json_encode($this->toArray());
     }
 
     // Getters
@@ -36,6 +38,11 @@ class Log
     public function getInfo(): string
     {
         return $this->info;
+    }
+
+    public function getTimestamp(): string
+    {
+        return $this->timestamp;
     }
 
     // Setters
@@ -65,7 +72,8 @@ class Log
             "id" => $this->getId(),
             "type" => $this->getType(),
             "title" => $this->getTitle(),
-            "info" => $this->getInfo()
+            "info" => $this->getInfo(),
+            // "TimeStamp" => $this->getTimestamp(),
         ];
     }
 }

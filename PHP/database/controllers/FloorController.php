@@ -2,8 +2,9 @@
 
 class FloorController extends BaseController
 {
-    public function __construct(private FloorRepository $gateway)
+    public function __construct(private FloorRepository $gateway, private LogRepository $logRepository)
     {
+        $this->logRepository = $logRepository;
     }
     protected function getRepository()
     {
@@ -11,6 +12,11 @@ class FloorController extends BaseController
     }
     public function request(string $method, ?string $id): void
     {
+        $this->logRepository->create(
+            "Floor Request",
+            "Attempting to get data from campus with " . $method,
+            "Info"
+        );
         if ($id) {
             $this->processResourceRequest($method, $id);
         } else {
@@ -19,6 +25,11 @@ class FloorController extends BaseController
     }
     public function processResourceRequest(string $method, string $id): void
     {
+        $this->logRepository->create(
+            "Floor Request with ID",
+            "Attempting to get data from campus with " . $method . " id: " . $id,
+            "Info"
+        );
         $floor = $this->gateway->get($id);
 
         if (!$floor) {
@@ -59,6 +70,11 @@ class FloorController extends BaseController
                 break;
             default:
                 http_response_code(405);
+                $this->logRepository->create(
+                    "Floor Request",
+                    "Attempting to Reach Wrong method " . $method . " id: " . $id,
+                    "Error"
+                );
                 header("Allowed: GET, PATCH, DELETE");
                 break;
         }
@@ -88,6 +104,11 @@ class FloorController extends BaseController
                 ]);
                 break;
             default: //Only allow GET and POST responses
+                $this->logRepository->create(
+                    "Floor Request",
+                    "Attempting to Reach Wrong method " . $method . " id: " . $id,
+                    "Error"
+                );
                 http_response_code(405);
                 header("Allowed: GET, POST");
         }
@@ -103,6 +124,11 @@ class FloorController extends BaseController
         if ($is_new && empty($data["name"])) {
             $errors[] = "name is required";
         }
+        $this->logRepository->create(
+            "Validation Error",
+            "Errors Found:  " . $errors,
+            "Error"
+        );
         return $errors;
     }
 }

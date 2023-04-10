@@ -27,35 +27,35 @@ if ($request[1] == "api") {
     switch ($request[2]) {
             // Database routes
         case "images":
-            $output = new ImageController($imageRepository);
+            $output = new ImageController($imageRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "users":
-            $output = new UserController($userRepository);
+            $output = new UserController($userRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "buildings":
-            $output = new BuildingController($buildingRepository);
+            $output = new BuildingController($buildingRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "campuses":
-            $output = new CampusController($campusRepository);
+            $output = new CampusController($campusRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "connections":
-            $output = new ConnectionController($connectionRepository);
+            $output = new ConnectionController($connectionRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "floors":
-            $output = new FloorController($floorRepository);
+            $output = new FloorController($floorRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "locations":
-            $output = new LocationController($locationRepository);
+            $output = new LocationController($locationRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "rooms":
-            $output = new RoomController($roomRepository);
+            $output = new RoomController($roomRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "tables":

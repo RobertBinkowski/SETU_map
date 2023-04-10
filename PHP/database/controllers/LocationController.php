@@ -2,8 +2,11 @@
 
 class LocationController extends BaseController
 {
-    public function __construct(private LocationRepository $gateway)
-    {
+    public function __construct(
+        private LocationRepository $gateway,
+        private LogRepository $logRepository
+    ) {
+        $this->logRepository = $logRepository;
     }
     protected function getRepository()
     {
@@ -11,6 +14,11 @@ class LocationController extends BaseController
     }
     public function request(string $method, ?string $id): void
     {
+        $this->logRepository->create(
+            "Location Request",
+            "Attempting to get data with " . $method,
+            "Info"
+        );
         if ($id) {
             $this->processResourceRequest($method, $id);
         } else {
@@ -19,6 +27,11 @@ class LocationController extends BaseController
     }
     public function processResourceRequest(string $method, string $id): void
     {
+        $this->logRepository->create(
+            "Location Request with ID",
+            "Attempting to get data with " . $method . " id: " . $id,
+            "Info"
+        );
         $location = $this->gateway->get($id);
 
         if (!$location) {
@@ -58,6 +71,11 @@ class LocationController extends BaseController
                 ]);
                 break;
             default:
+                $this->logRepository->create(
+                    "Location Request",
+                    "Attempting to Reach Wrong method " . $method . " id: " . $id,
+                    "Error"
+                );
                 http_response_code(405);
                 header("Allowed: GET, PATCH, DELETE");
                 break;
@@ -88,6 +106,11 @@ class LocationController extends BaseController
                 ]);
                 break;
             default: //Only allow GET and POST responses
+                $this->logRepository->create(
+                    "Location Request",
+                    "Attempting to Reach Wrong method " . $method . " id: " . $id,
+                    "Error"
+                );
                 http_response_code(405);
                 header("Allowed: GET, POST");
         }
