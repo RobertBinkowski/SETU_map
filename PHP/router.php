@@ -1,26 +1,31 @@
 <?php
-$logRepository = new LogRepository($database); //Done
-$campusRepository = new CampusRepository($database); //Done
-$userRepository = new UserRepository($database, $campusRepository); //Done
-$locationRepository = new LocationRepository($database); //Done
-$buildingRepository = new BuildingRepository($database, $campusRepository, $locationRepository); //Done
-$floorRepository = new FloorRepository($database, $buildingRepository); //Done
-$connectionRepository = new ConnectionRepository($database, $locationRepository); //Done
+
+// Initiate all repositories for later easier use
+$logRepository = new LogRepository($database);
+$campusRepository = new CampusRepository($database);
+$userRepository = new UserRepository($database, $campusRepository);
+$locationRepository = new LocationRepository($database);
+$buildingRepository = new BuildingRepository($database, $campusRepository, $locationRepository);
+$floorRepository = new FloorRepository($database, $buildingRepository);
+$connectionRepository = new ConnectionRepository($database, $locationRepository);
 $roomRepository = new RoomRepository(
     $database,
     $buildingRepository,
     $locationRepository,
     $floorRepository
-); //Done
+);
 $imageRepository = new ImageRepository($database, $campusRepository, $buildingRepository, $roomRepository);
 
+// explode the url request to create a router
 $request = explode("/", strtolower($_SERVER["REQUEST_URI"]));
 
+// Provided the first one is a /api/ call
 if ($request[1] == "api") {
     //Get The 2nd parameter
     $id = $request[3] ?? null;
 
     switch ($request[2]) {
+            // Database routes
         case "images":
             $output = new ImageController($imageRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
@@ -54,14 +59,17 @@ if ($request[1] == "api") {
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "tables":
+            // Returns all tables used to then display them in the admin panel
             $statement = $database->getTables();
             echo json_encode($statement->fetchAll(PDO::FETCH_ASSOC));
             break;
         case "logs":
+            // Logs
             $output = new LogController($logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         default:
+            // By Default respond with failiure
             http_response_code(404);
             // header("Location: ./hello.php");
             break;

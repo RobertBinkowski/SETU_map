@@ -16,12 +16,12 @@ class Image
         private BuildingRepository $buildingRepository,
         private RoomRepository $roomRepository,
         private int $id,
-        private string $name,
-        private string $info,
-        private string $src,
-        ?int $campus,
-        ?int $building,
-        ?int $room,
+        private string $name = "",
+        private string $info = "",
+        private string $src = "",
+        ?int $campus = null,
+        ?int $building = null,
+        ?int $room = null,
         private bool $enabled = true
     ) {
 

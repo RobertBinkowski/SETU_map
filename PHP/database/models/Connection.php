@@ -13,8 +13,8 @@ class Connection
     public function __construct(
         private LocationRepository $locationRepository,
         private int $id,
-        ?int $nodeOne,
-        ?int $nodeTwo,
+        ?int $nodeOne = null,
+        ?int $nodeTwo = null,
         private bool $enabled = true,
 
     ) {

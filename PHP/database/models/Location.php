@@ -9,11 +9,11 @@ class Location
     }
     public function __construct(
         private int $id,
-        private string $type,
-        private float $geoLongitude,
-        private float $geoLatitude,
-        private float $mapLongitude,
-        private float $mapLatitude,
+        private string $type = "",
+        private float $geoLongitude = 0,
+        private float $geoLatitude = 0,
+        private float $mapLongitude = 0,
+        private float $mapLatitude = 0,
         private int $altitude = 0,
         private bool $enabled = true
     ) {

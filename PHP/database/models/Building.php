@@ -24,12 +24,12 @@ class Building
         private CampusRepository $campusRepository,
         private LocationRepository $locationRepository,
         private int $id,
-        private string $name,
-        private string $abbreviation,
-        private string $info,
-        private string $size,
-        int $campus,
-        int $location,
+        private string $name = "",
+        private string $abbreviation = "",
+        private string $info = "",
+        private string $size = "",
+        ?int $campus = null,
+        ?int $location = null,
         private bool $enabled = true,
     ) {
         $this->campusRepository = $campusRepository;

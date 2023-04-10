@@ -30,7 +30,7 @@ class CampusController extends BaseController
 
         switch ($method) {
             case "GET":
-                echo json_encode($campus);
+                echo json_encode($campus->toArray());
                 break;
             case "PATCH":
                 $data = (array) json_decode(file_get_contents("php://input"), true);

@@ -8,9 +8,9 @@ class Log
     }
     public function __construct(
         private int $id,
-        private string $title,
-        private string $type,
-        private string $info
+        private string $title = "",
+        private string $type = "",
+        private string $info = ""
     ) {
         $this->setId($id);
         $this->setInfo($info);

@@ -29,7 +29,7 @@ class LogController extends BaseController
 
         switch ($method) {
             case "GET":
-                echo json_encode($log);
+                echo json_encode($log->toArray());
                 break;
             case "PATCH":
                 $data = (array) json_decode(file_get_contents("php://input"), true);

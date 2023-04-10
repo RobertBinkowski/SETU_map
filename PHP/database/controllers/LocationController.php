@@ -29,7 +29,7 @@ class LocationController extends BaseController
 
         switch ($method) {
             case "GET":
-                echo json_encode($location);
+                echo json_encode($location->toArray());
                 break;
             case "PATCH":
                 $data = (array) json_decode(file_get_contents("php://input"), true);

@@ -12,8 +12,8 @@ class Floor
     public function __construct(
         private BuildingRepository $buildingRepository,
         private int $id,
-        private string $size,
-        private int $floor,
+        private string $size = "",
+        private int $floor = 0,
         ?int $building = null,
         private bool $enabled = true,
     ) {

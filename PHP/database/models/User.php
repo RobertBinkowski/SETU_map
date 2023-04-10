@@ -14,11 +14,11 @@ class User
     public function __construct(
         private CampusRepository $campusRepository,
         private int $id,
-        private string $username,
-        private string $email,
-        private string $password,
-        private string $privileges,
-        ?int $campus,
+        private string $username = "",
+        private string $email = "",
+        private string $password = "",
+        private string $privileges = "",
+        ?int $campus = null,
         private string $created = "",
         private bool $enabled = true,
     ) {
@@ -65,7 +65,7 @@ class User
     {
         return $this->created;
     }
-    public function getCampus()
+    public function getCampus(): ?Campus
     {
         return $this->campus;
     }
@@ -115,7 +115,6 @@ class User
         if ($this->campus) {
             $data['campus'] = $this->getCampus()->toArray();
         }
-
 
         return $data;
     }
