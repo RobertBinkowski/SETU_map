@@ -2,10 +2,8 @@
 
 class Connection
 {
-    private int $id;
-    private bool $enabled;
-    private int $nodeOne;
-    private int $nodeTwo;
+    private ?Location $nodeOne;
+    private ?Location $nodeTwo;
 
     public function __toString(): string
     {
@@ -13,12 +11,14 @@ class Connection
     }
 
     public function __construct(
-        int $id,
-        int $nodeOne,
-        int $nodeTwo,
-        bool $enabled = true,
+        private LocationRepository $locationRepository,
+        private int $id,
+        ?int $nodeOne,
+        ?int $nodeTwo,
+        private bool $enabled = true,
 
     ) {
+        $this->locationRepository = $locationRepository;
         $this->id = $id;
         $this->setEnabled($enabled);
         $this->setNodeOne($nodeOne);
@@ -37,12 +37,12 @@ class Connection
     }
 
 
-    public function getNodeOne(): int
+    public function getNodeOne(): ?Location
     {
         return $this->nodeOne;
     }
 
-    public function getNodeTwo(): int
+    public function getNodeTwo(): ?Location
     {
         return $this->nodeTwo;
     }
@@ -53,24 +53,38 @@ class Connection
         $this->enabled = $enabled;
     }
 
-    public function setNodeOne(int $nodeOne): void
+    public function setNodeOne(?int $nodeOne): void
     {
-        $this->nodeOne = $nodeOne;
+        if ($nodeOne != null) {
+            $this->nodeOne = $this->locationRepository->get($nodeOne);
+        } else {
+            $this->nodeOne = null;
+        }
     }
 
-    public function setNodeTwo(int $nodeTwo): void
+    public function setNodeTwo(?int $nodeTwo): void
     {
-        $this->nodeTwo = $nodeTwo;
+        if ($nodeTwo != null) {
+            $this->nodeTwo = $this->locationRepository->get($nodeTwo);
+        } else {
+            $this->nodeTwo = null;
+        }
     }
 
     // to Array
     public function toArray(): array
     {
-        return [
+        $data =  [
             "id" => $this->getId(),
-            "nodeOne" => $this->getNodeOne(),
-            "nodeTwo" => $this->getNodeTwo(),
             "enabled" => $this->isEnabled(),
         ];
+        if ($this->nodeOne) {
+            $data['locationOne'] = $this->getNodeOne()->toArray();
+        }
+        if ($this->nodeTwo) {
+            $data['locationTwo'] = $this->getNodeTwo()->toArray();
+        }
+
+        return $data;
     }
 }

@@ -13,7 +13,18 @@ class ImageRepository extends BaseRepository
 
         $result = $this->conn->query($sql);
 
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+
+        $images = [];
+
+        foreach ($data as $row) {
+            $image = new Image(
+                // More Here
+            );
+            $images[] = $image;
+        }
+
+        return $images;
     }
     public function create(Image $data): bool
     {
@@ -44,6 +55,7 @@ class ImageRepository extends BaseRepository
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
             return new Image(
+                $data['id'],
                 $data['id'],
             );
         }

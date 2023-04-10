@@ -3,12 +3,10 @@ $logRepository = new LogRepository($database); //Done
 $campusRepository = new CampusRepository($database); //Done
 $userRepository = new UserRepository($database, $campusRepository); //Done
 $locationRepository = new LocationRepository($database); //Done
-
 $buildingRepository = new BuildingRepository($database, $campusRepository, $locationRepository); //Done
-
 $floorRepository = new FloorRepository($database, $buildingRepository); //Done
 
-$connectionRepository = new ConnectionRepository($database);
+$connectionRepository = new ConnectionRepository($database, $locationRepository);
 
 $roomRepository = new RoomRepository(
     $database,

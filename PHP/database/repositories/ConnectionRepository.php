@@ -2,6 +2,15 @@
 
 class ConnectionRepository extends BaseRepository
 {
+
+    public function __construct(
+        Database $conn,
+        private LocationRepository $locationRepository
+    ) {
+        parent::__construct($conn);
+        $this->locationRepository = $locationRepository;
+    }
+
     public function getAll(bool $disabled = false): array
     {
         $sql = "SELECT * FROM connections";
@@ -12,21 +21,35 @@ class ConnectionRepository extends BaseRepository
 
         $result = $this->conn->query($sql);
 
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+
+        $users = [];
+
+        foreach ($data as $row) {
+            $user = new Connection(
+                $this->locationRepository,
+                $row['id'],
+                $row['location_one'] ?? null,
+                $row['location_two'] ?? null,
+                $row['enabled'] ?? true,
+            );
+            $users[] = $user;
+        }
+
+        return $users;
     }
 
     public function create(array $data): string
     {
-        $sql = "INSERT INTO connections (enabled , distance, node_one_id, node_two_is) VALUES (enabled,:distance, :node_one_id, :node_two_is)";
+        $sql = "INSERT INTO connections (enabled , location_one, location_two) VALUES (enabled, :location_one, :location_two)";
 
         return $this->execute($sql, [
-            ':distance' => $data["distance"],
-            ':node_one_id' => $data["node_one_id"],
-            ':node_two_is' => $data["node_two_is"],
+            ':location_one' => $data["node_one_id"],
+            ':location_two' => $data["node_two_is"],
         ]);
     }
 
-    public function get(string $id): array|false
+    public function get(string $id): Connection|null
     {
         $sql = "SELECT * FROM connections WHERE id = :id";
 
@@ -34,10 +57,16 @@ class ConnectionRepository extends BaseRepository
 
 
         if ($data !== false) {
-            $data["enabled"] = (bool)$data["enabled"];
+            return new Connection(
+                $this->locationRepository,
+                $data['id'],
+                $data['location_one'] ?? null,
+                $data['location_two'] ?? null,
+                $data['enabled'] ?? true,
+            );
         }
 
-        return $data;
+        return null;
     }
 
     public function update(Connection $current, array $new): int

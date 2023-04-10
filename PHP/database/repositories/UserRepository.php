@@ -2,11 +2,10 @@
 
 class UserRepository extends BaseRepository
 {
-    private CampusRepository $campusRepository;
 
     public function __construct(
         Database $conn,
-        CampusRepository $campusRepository
+        private CampusRepository $campusRepository
     ) {
         parent::__construct($conn);
         $this->campusRepository = $campusRepository;

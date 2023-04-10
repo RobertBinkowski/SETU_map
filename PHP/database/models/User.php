@@ -91,7 +91,7 @@ class User
     {
         $this->enabled = $enabled;
     }
-    public function setCampus(int $campus): void
+    public function setCampus(?int $campus): void
     {
         if ($campus != null) {
             $this->campus = $this->campusRepository->get($campus);
