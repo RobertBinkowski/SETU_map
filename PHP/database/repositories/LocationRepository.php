@@ -13,7 +13,25 @@ class LocationRepository extends BaseRepository
 
         $result = $this->conn->query($sql);
 
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+
+        $locations = [];
+
+        foreach ($data as $row) {
+            $location = new Location(
+                $row['id'],
+                $row['type'] ?? "",
+                $row['geo_latitude'] ?? 0,
+                $row['geo_longitude'] ?? 0,
+                $row['x'] ?? 0,
+                $row['y'] ?? 0,
+                $row['z'] ?? 0,
+                $row["enabled"],
+            );
+            $locations[] = $location;
+        }
+
+        return $locations;
     }
     public function create(Location $data): string
     {

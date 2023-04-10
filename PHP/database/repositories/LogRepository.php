@@ -14,7 +14,7 @@ class LogRepository extends BaseRepository
         $logs = [];
 
         foreach ($data as $row) {
-            $log = new log(
+            $log = new Log(
                 $row['id'],
                 $row['title'] ?? "",
                 $row['type'] ?? "",
