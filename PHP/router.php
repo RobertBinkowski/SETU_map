@@ -5,15 +5,13 @@ $userRepository = new UserRepository($database, $campusRepository); //Done
 $locationRepository = new LocationRepository($database); //Done
 $buildingRepository = new BuildingRepository($database, $campusRepository, $locationRepository); //Done
 $floorRepository = new FloorRepository($database, $buildingRepository); //Done
-
-$connectionRepository = new ConnectionRepository($database, $locationRepository);
-
+$connectionRepository = new ConnectionRepository($database, $locationRepository); //Done
 $roomRepository = new RoomRepository(
     $database,
     $buildingRepository,
     $locationRepository,
     $floorRepository
-);
+); //Done
 $imageRepository = new ImageRepository($database, $campusRepository, $buildingRepository, $roomRepository);
 
 $request = explode("/", strtolower($_SERVER["REQUEST_URI"]));

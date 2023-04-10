@@ -3,6 +3,17 @@
 
 class ImageRepository extends BaseRepository
 {
+    public function __construct(
+        Database $conn,
+        private CampusRepository $campusRepository,
+        private BuildingRepository $buildingRepository,
+        private RoomRepository $roomRepository
+    ) {
+        parent::__construct($conn);
+        $this->campusRepository = $campusRepository;
+        $this->buildingRepository = $buildingRepository;
+        $this->roomRepository = $roomRepository;
+    }
     public function getAll(bool $disabled = false): array
     {
         $sql = "SELECT * FROM images";
@@ -19,7 +30,17 @@ class ImageRepository extends BaseRepository
 
         foreach ($data as $row) {
             $image = new Image(
-                // More Here
+                $this->campusRepository,
+                $this->buildingRepository,
+                $this->roomRepository,
+                $row['id'],
+                $row['name'] ?? "",
+                $row['info'] ?? "",
+                $row['src'] ?? "",
+                $row['campus_id'] ?? null,
+                $row['building_id'] ?? null,
+                $row['room_id'] ?? null,
+                $row['enabled'] ?? true,
             );
             $images[] = $image;
         }
@@ -55,8 +76,17 @@ class ImageRepository extends BaseRepository
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
             return new Image(
+                $this->campusRepository,
+                $this->buildingRepository,
+                $this->roomRepository,
                 $data['id'],
-                $data['id'],
+                $data['name'] ?? "",
+                $data['info'] ?? "",
+                $data['src'] ?? "",
+                $data['campus_id'] ?? null,
+                $data['building_id'] ?? null,
+                $data['room_id'] ?? null,
+                $data['enabled'] ?? true,
             );
         }
 

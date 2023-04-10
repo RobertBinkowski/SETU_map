@@ -19,9 +19,9 @@ class Image
         private string $name,
         private string $info,
         private string $src,
-        int $campus,
-        int $building,
-        int $room,
+        ?int $campus,
+        ?int $building,
+        ?int $room,
         private bool $enabled = true
     ) {
 
@@ -137,13 +137,13 @@ class Image
             "enabled" => $this->isEnabled(),
         ];
         if ($this->campus) {
-            $data["campus"] = $this->getCampus();
+            $data["campus"] = $this->getCampus()->toArray();
         }
         if ($this->building) {
-            $data["building"] = $this->getBuilding();
+            $data["building"] = $this->getBuilding()->toArray();
         }
         if ($this->room) {
-            $data["room"] = $this->getRoom();
+            $data["room"] = $this->getRoom()->toArray();
         }
 
         return $data;
