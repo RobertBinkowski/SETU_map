@@ -4,8 +4,7 @@
 class User
 {
 
-    private string $created;
-    private Campus $campus;
+    private ?Campus $campus;
 
     public function __toString(): string
     {
@@ -19,9 +18,9 @@ class User
         private string $email,
         private string $password,
         private string $privileges,
-        int $campus,
-        string $created = "",
-        bool $enabled = true,
+        ?int $campus,
+        private string $created = "",
+        private bool $enabled = true,
     ) {
         $this->campusRepository = $campusRepository;
 
@@ -94,17 +93,8 @@ class User
     }
     public function setCampus(int $campus): void
     {
-        $campusData = $this->campusRepository->get($campus);
-
-        if ($campusData) {
-            $this->campus = new Campus(
-                $campusData['id'],
-                $campusData['name'] ?? "",
-                $campusData['abbreviation'] ?? "",
-                $campusData['info'] ?? "",
-                $campusData['size'] ?? 0,
-                $campusData['enabled'] ?? true
-            );
+        if ($campus != null) {
+            $this->campus = $this->campusRepository->get($campus);
         } else {
             $this->campus = null;
         }
