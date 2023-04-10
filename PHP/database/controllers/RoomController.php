@@ -29,7 +29,7 @@ class RoomController extends BaseController
 
         switch ($method) {
             case "GET":
-                echo json_encode($room);
+                echo json_encode($room->toArray());
                 break;
             case "PATCH":
                 $data = (array) json_decode(file_get_contents("php://input"), true);
@@ -67,7 +67,7 @@ class RoomController extends BaseController
     {
         switch ($method) {
             case "GET":
-                echo json_encode($this->gateway->getAll());
+                echo json_encode($this->getAll());
                 break;
             case "POST":
                 $data = (array) json_decode(file_get_contents("php://input"), true);

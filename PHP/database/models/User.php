@@ -3,15 +3,9 @@
 
 class User
 {
-    private int $id;
-    private bool $enabled;
-    private string $username;
-    private string $email;
-    private string $password;
-    private string $privileges;
 
     private string $created;
-    private int $campus;
+    private Campus $campus;
 
     public function __toString(): string
     {
@@ -19,15 +13,18 @@ class User
     }
 
     public function __construct(
-        int $id,
-        string $username,
-        string $email,
-        string $password,
-        string $privileges,
+        private CampusRepository $campusRepository,
+        private int $id,
+        private string $username,
+        private string $email,
+        private string $password,
+        private string $privileges,
         int $campus,
         string $created = "",
-        bool $enabled = true
+        bool $enabled = true,
     ) {
+        $this->campusRepository = $campusRepository;
+
         $this->id = $id;
         $this->created = $created;
         $this->setEnabled($enabled);
@@ -75,35 +72,48 @@ class User
     }
 
     // Setters
-    public function setUsername($username): void
+    public function setUsername(string $username): void
     {
         $this->username = $username;
     }
-    public function setPassword($password): void
+    public function setPassword(string $password): void
     {
         $this->password = $password;
     }
-    public function setEmail($email): void
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
-    public function setPrivileges($privileges): void
+    public function setPrivileges(string $privileges): void
     {
         $this->privileges = $privileges;
     }
-    public function setEnabled($enabled): void
+    public function setEnabled(bool $enabled = true): void
     {
         $this->enabled = $enabled;
     }
-    public function setCampus($campus): void
+    public function setCampus(int $campus): void
     {
-        $this->campus = $campus;
+        $campusData = $this->campusRepository->get($campus);
+
+        if ($campusData) {
+            $this->campus = new Campus(
+                $campusData['id'],
+                $campusData['name'] ?? "",
+                $campusData['abbreviation'] ?? "",
+                $campusData['info'] ?? "",
+                $campusData['size'] ?? 0,
+                $campusData['enabled'] ?? true
+            );
+        } else {
+            $this->campus = null;
+        }
     }
 
     // To Array
     public function toArray(): array
     {
-        return [
+        $data = [
             'id' => $this->getId(),
             'enabled' => $this->isEnabled(),
             'username' => $this->getUsername(),
@@ -111,7 +121,12 @@ class User
             'password' => $this->getPassword(),
             'privileges' => $this->getPrivileges(),
             'created' => $this->getCreated(),
-            'campus' => $this->getCampus(),
         ];
+        if ($this->campus) {
+            $data['campus'] = $this->getCampus()->toArray();
+        }
+
+
+        return $data;
     }
 }

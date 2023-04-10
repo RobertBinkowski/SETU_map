@@ -28,7 +28,7 @@ class BuildingRepository extends BaseRepository
         ]);
     }
 
-    public function get(string $id): array|false
+    public function get(string $id): Building|null
     {
         $sql = "SELECT * FROM buildings WHERE id = :id";
 
@@ -36,10 +36,17 @@ class BuildingRepository extends BaseRepository
 
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
-            return $data;
+            return new Building(
+                $data['id'],
+                $data['name'] ?? "",
+                $data['abbreviation'] ?? "",
+                $data['info'] ?? "",
+                $data['size'] ?? 0,
+                $data['campus_id'] ?? 0,
+            );
         }
 
-        return false;
+        return null;
     }
 
     public function update(Building $current, array $new): bool

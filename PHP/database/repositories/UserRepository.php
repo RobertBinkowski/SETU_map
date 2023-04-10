@@ -2,6 +2,16 @@
 
 class UserRepository extends BaseRepository
 {
+    private CampusRepository $campusRepository;
+
+    public function __construct(
+        Database $conn,
+        CampusRepository $campusRepository
+    ) {
+        parent::__construct($conn);
+        $this->campusRepository = $campusRepository;
+    }
+
     public function getAll(bool $disabled = false): array
     {
         $sql = "SELECT * FROM users";
@@ -18,14 +28,15 @@ class UserRepository extends BaseRepository
 
         foreach ($data as $row) {
             $user = new User(
+                $this->campusRepository,
                 $row['id'],
-                $row['username'],
-                $row['email'],
-                $row['password'],
-                $row['privileges'],
-                $row['campus_id'],
-                (string)$row['created'],
-                $row['enabled'],
+                $row['username'] ?? "",
+                $row['email'] ?? "",
+                $row['password'] ?? "",
+                $row['privileges'] ?? "",
+                $row['campus_id'] ?? 0,
+                $row['created'] ?? "",
+                $row['enabled'] ?? true,
             );
             $users[] = $user;
         }
@@ -54,14 +65,15 @@ class UserRepository extends BaseRepository
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
             return new User(
+                $this->campusRepository,
                 $data['id'],
-                $data['username'],
-                $data['email'],
-                $data['password'],
-                $data['privileges'],
-                $data['campus_id'],
-                (string)$data['created'],
-                $data['enabled'],
+                $data['username'] ?? "",
+                $data['email'] ?? "",
+                $data['password'] ?? "",
+                $data['privileges'] ?? "",
+                $data['campus_id'] ?? 0,
+                $data['created'] ?? "",
+                $data['enabled'] ?? true,
             );
         }
 
@@ -77,14 +89,15 @@ class UserRepository extends BaseRepository
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
             return new User(
+                $this->campusRepository,
                 $data['id'],
-                $data['username'],
-                $data['email'],
-                $data['password'],
-                $data['privileges'],
-                $data['campus_id'],
-                (string)$data['created'],
-                $data['enabled'],
+                $data['username'] ?? "",
+                $data['email'] ?? "",
+                $data['password'] ?? "",
+                $data['privileges'] ?? "",
+                $data['campus_id'] ?? 0,
+                $data['created'] ?? "",
+                $data['enabled'] ?? true,
             );
         }
 

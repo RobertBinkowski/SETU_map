@@ -1,4 +1,21 @@
 <?php
+$logRepository = new LogRepository($database);
+
+$campusRepository = new CampusRepository($database);
+$userRepository = new UserRepository($database, $campusRepository);
+
+$imageRepository = new ImageRepository($database);
+$buildingRepository = new BuildingRepository($database);
+$connectionRepository = new ConnectionRepository($database);
+$floorRepository = new FloorRepository($database);
+$locationRepository = new LocationRepository($database);
+
+$roomRepository = new RoomRepository(
+    $database,
+    $buildingRepository,
+    $locationRepository,
+    $floorRepository
+);
 
 $request = explode("/", strtolower($_SERVER["REQUEST_URI"]));
 
@@ -8,43 +25,35 @@ if ($request[1] == "api") {
 
     switch ($request[2]) {
         case "images":
-            $output = new ImageRepository($database);
-            $output = new ImageController($output);
+            $output = new ImageController($imageRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "users":
-            $output = new UserRepository($database);
-            $output = new UserController($output);
+            $output = new UserController($userRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "buildings":
-            $output = new BuildingRepository($database);
-            $output = new BuildingController($output);
+            $output = new BuildingController($buildingRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "campuses":
-            $output = new CampusRepository($database);
-            $output = new CampusController($output);
+            $output = new CampusController($campusRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "connections":
-            $output = new ConnectionRepository($database);
-            $output = new ConnectionController($output);
+            $output = new ConnectionController($connectionRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "floors":
-            $output = new FloorRepository($database);
-            $output = new FloorController($output);
+            $output = new FloorController($floorRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "locations":
-            $output = new LocationRepository($database);
-            $output = new LocationController($output);
+            $output = new LocationController($locationRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "rooms":
-            $output = new RoomRepository($database);
-            $output = new RoomController($output);
+            $output = new RoomController($roomRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "tables":
@@ -52,8 +61,7 @@ if ($request[1] == "api") {
             echo json_encode($statement->fetchAll(PDO::FETCH_ASSOC));
             break;
         case "logs":
-            $output = new LogRepository($database);
-            $output = new LogController($output);
+            $output = new LogController($logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         default:

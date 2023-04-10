@@ -2,31 +2,48 @@
 
 class Room
 {
-    private int $id;
-    private string $type;
-    private string $name;
-    private string $info;
-    private float $size;
-    private bool $enabled;
-    private int $building;
-    private int $location;
-    private int $floor;
+    private ?Building $building = null;
+    private ?Location $location = null;
+    private ?Floor $floor = null;
 
     public function __toString(): string
     {
         return json_encode($this->toArray());
     }
+
+    /**
+     * 
+     * Constructs a new instance of a Room object
+     * 
+     * @param int $id 
+     * @param string $type 
+     * @param string $name 
+     * @param string $info 
+     * @param float $size 
+     * @param int $building 
+     * @param int $location 
+     * @param int $floor 
+     * @param bool $enabled
+     * @return void
+     */
     public function __construct(
-        int $id,
-        string $type,
-        string $name,
-        string $info,
-        float $size,
-        int $building,
-        int $location,
-        int $floor,
-        bool $enabled = true
+        private BuildingRepository $buildingRepository,
+        private LocationRepository $locationRepository,
+        private FloorRepository $floorRepository,
+        private int $id,
+        private string $type,
+        private string $name,
+        private string $info,
+        private float $size,
+        ?int $building = null,
+        ?int $location = null,
+        ?int $floor = null,
+        private bool $enabled = true,
     ) {
+        $this->buildingRepository = $buildingRepository;
+        $this->locationRepository = $locationRepository;
+        $this->floorRepository = $floorRepository;
+
         $this->id = $id;
         $this->setEnabled($enabled);
 
@@ -70,17 +87,17 @@ class Room
         return $this->enabled;
     }
 
-    public function getBuilding(): int
+    public function getBuilding(): ?Building
     {
         return $this->building;
     }
 
-    public function getLocation(): int
+    public function getLocation(): ?Location
     {
         return $this->location;
     }
 
-    public function getFloor(): int
+    public function getFloor(): ?Floor
     {
         return $this->floor;
     }
@@ -111,34 +128,53 @@ class Room
         $this->enabled = $enabled;
     }
 
-    public function setBuilding(int $building): void
+    public function setBuilding(?int $building = null): void
     {
-        $this->building = $building;
+        if ($building !== null) {
+            $this->building =  $this->buildingRepository->get($building);
+        } else {
+            $this->building = null;
+        }
     }
 
-    public function setLocation(int $location): void
+    public function setLocation(?int $location = null): void
     {
-        $this->location = $location;
+        if ($location !== null) {
+            $this->location = $this->locationRepository->get($location);
+        } else {
+            $this->location = null;
+        }
     }
 
-    public function setFloor(int $floor): void
+    public function setFloor(?int $floor = null): void
     {
-        $this->floor = $floor;
+        if ($floor !== null) {
+            $this->floor = $this->floorRepository->get($floor);
+        } else {
+            $this->floor = null;
+        }
     }
 
     // To Array
     public function toArray(): array
     {
-        return [
+        $data =  [
             "id" => $this->getId(),
             "type" => $this->getType(),
             "name" => $this->getName(),
             "info" => $this->getInfo(),
             "size" => $this->getSize(),
             "enabled" => $this->isEnabled(),
-            "building" => $this->getBuilding(),
-            "location" => $this->getLocation(),
-            "floor" => $this->getFloor(),
         ];
+        if ($this->building) {
+            $data["building"] = $this->getBuilding()->toArray();
+        }
+        if ($this->location) {
+            $data["location"] = $this->getLocation()->toArray();
+        }
+        if ($this->floor) {
+            $data["floor"] = $this->getFloor()->toArray();
+        }
+        return $data;
     }
 }

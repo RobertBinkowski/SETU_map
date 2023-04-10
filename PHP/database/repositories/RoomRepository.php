@@ -1,8 +1,24 @@
 <?php
 
+declare(strict_types=1);
 
 class RoomRepository extends BaseRepository
 {
+    private BuildingRepository $buildingRepository;
+    private LocationRepository $locationRepository;
+    private FloorRepository $floorRepository;
+
+    public function __construct(
+        Database $conn,
+        BuildingRepository $buildingRepository,
+        LocationRepository $locationRepository,
+        FloorRepository $floorRepository
+    ) {
+        parent::__construct($conn);
+        $this->buildingRepository = $buildingRepository;
+        $this->locationRepository = $locationRepository;
+        $this->floorRepository = $floorRepository;
+    }
     public function getAll(bool $disabled = false): array
     {
         $sql = "SELECT * FROM rooms";
@@ -13,11 +29,33 @@ class RoomRepository extends BaseRepository
 
         $result = $this->conn->query($sql);
 
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+
+        $rooms = [];
+
+        foreach ($data as $row) {
+            $room = new Room(
+                $this->buildingRepository,
+                $this->locationRepository,
+                $this->floorRepository,
+                $row['id'],
+                $row['type'] ?? "",
+                $row['name'] ?? "",
+                $row['info'] ?? "",
+                $row['size'] ?? "",
+                $row['building_id'] ?? null,
+                $row['location_id'] ?? null,
+                $row['floor_id'] ?? null,
+                (bool)$row['enabled'] ?? true,
+            );
+            $rooms[] = $room;
+        }
+
+        return $rooms;
     }
     public function create(Room $data): string
     {
-        $sql = "INSERT INTO rooms (enabled , type, name, info, size, building_id, location_id, floor_id) VALUES (enabled,:type, :name, :info, :size, :building_id, :location_id, :floor_id)";
+        $sql = "INSERT INTO rooms (enabled , type, name, info, size, building_id, location_id, floor_id) VALUES (true, :type, :name, :info, :size, :building_id, :location_id, :floor_id)";
 
         $this->execute($sql, [
             ":type" => $data->getType(),
@@ -32,7 +70,7 @@ class RoomRepository extends BaseRepository
         return $this->lastInsertId();
     }
 
-    public function get(string $id): array|false
+    public function get(string $id): Room|false
     {
         $sql = "SELECT * FROM rooms WHERE id = :id";
 
@@ -40,7 +78,20 @@ class RoomRepository extends BaseRepository
 
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
-            return $data;
+            return new Room(
+                $this->buildingRepository,
+                $this->locationRepository,
+                $this->floorRepository,
+                $data['id'],
+                $data['type'] ?? "",
+                $data['name'] ?? "",
+                $data['info'] ?? "",
+                $data['size'] ?? "",
+                $data['building_id'] ?? null,
+                $data['location_id'] ?? null,
+                $data['floor_id'] ?? null,
+                (bool)$data['enabled'] ?? true,
+            );
         }
         return false;
     }

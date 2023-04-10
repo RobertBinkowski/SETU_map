@@ -4,9 +4,8 @@ class Floor
 {
     private int $id;
     private bool $enabled;
-    private string $info;
     private string $size;
-    private int $building;
+    private ?int $building;
     private int $floor;
 
     public function __toString(): string
@@ -16,15 +15,13 @@ class Floor
 
     public function __construct(
         int $id,
-        string $info,
         string $size,
-        int $building,
         int $floor,
+        ?int $building = null,
         bool $enabled = true,
     ) {
         $this->id = $id;
         $this->setEnabled($enabled);
-        $this->setInfo($info);
         $this->setSize($size);
         $this->setBuilding($building);
         $this->setFloor($floor);
@@ -41,17 +38,12 @@ class Floor
         return $this->enabled;
     }
 
-    public function getInfo(): string
-    {
-        return $this->info;
-    }
-
     public function getSize(): string
     {
         return $this->size;
     }
 
-    public function getBuilding(): int
+    public function getBuilding(): ?int
     {
         return $this->building;
     }
@@ -62,10 +54,6 @@ class Floor
     }
 
     // Setters
-    public function setInfo(string $info): void
-    {
-        $this->info = $info;
-    }
 
     public function setEnabled(bool $enabled): void
     {
@@ -77,7 +65,7 @@ class Floor
         $this->size = $size;
     }
 
-    public function setBuilding(int $building): void
+    public function setBuilding(?int $building = null): void
     {
         $this->building = $building;
     }
@@ -93,9 +81,8 @@ class Floor
         return [
             "id" => $this->getId(),
             "enabled" => $this->isEnabled(),
-            "info" => $this->getInfo(),
             "size" => $this->getSize(),
-            "building" => $this->getBuilding(),
+            // "building" => $this->getBuilding(),
             "floor" => $this->getFloor(),
         ];
     }

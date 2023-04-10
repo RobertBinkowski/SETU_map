@@ -8,8 +8,8 @@ class Location
     private float $geoLatitude;
     private float $mapLongitude;
     private float $mapLatitude;
+    private int $altitude;
     private bool $enabled;
-    private string $created;
 
     public function __toString(): string
     {
@@ -22,7 +22,7 @@ class Location
         float $geoLatitude,
         float $mapLongitude,
         float $mapLatitude,
-        string $created,
+        int $altitude = 0,
         bool $enabled = true
     ) {
         $this->id = $id;
@@ -33,7 +33,7 @@ class Location
         $this->setGeoLatitude($geoLatitude);
         $this->setMapLatitude($mapLatitude);
         $this->setMapLongitude($mapLongitude);
-        $this->setCreated($created);
+        $this->setMapAltitude($altitude);
     }
 
     public function getId(): int
@@ -70,9 +70,9 @@ class Location
     {
         return $this->enabled;
     }
-    public function getCreated(): string
+    public function getMapAltitude(): int
     {
-        return $this->created;
+        return $this->altitude;
     }
 
     // Setters
@@ -106,9 +106,9 @@ class Location
         $this->enabled = $enabled;
     }
 
-    public function setCreated(string $created): void
+    public function setMapAltitude(int $altitude): void
     {
-        $this->created = $created;
+        $this->altitude = $altitude;
     }
 
     // to Array
@@ -121,6 +121,7 @@ class Location
             "geoLatitude" => $this->getGeoLatitude(),
             "mapLongitude" => $this->getMapLongitude(),
             "mapLatitude" => $this->getMapLatitude(),
+            "mapAltitude" => $this->getMapAltitude(),
             "enabled" => $this->isEnabled(),
         ];
     }

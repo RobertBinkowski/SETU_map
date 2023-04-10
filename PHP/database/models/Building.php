@@ -14,6 +14,17 @@ class Building
         return json_encode($this->toArray());
     }
 
+    /**
+     * Constructs a new instance of Building object
+     * 
+     * @param int $id
+     * @param string $name
+     * @param string $abbreviation
+     * @param string $info
+     * @param string $size
+     * @param int $campus
+     * @param bool $enabled
+     */
     public function __construct(
         int $id,
         string $name,

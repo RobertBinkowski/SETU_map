@@ -25,14 +25,14 @@ class LocationRepository extends BaseRepository
             ":type" => $data->getType(),
             ":geo_longitude" => $data->getGeoLongitude(),
             ":geo_latitude" => $data->getGeoLatitude(),
-            ":map_longitude" => $data->getMapLongitude(),
-            ":map_latitude" => $data->getMapLatitude(),
+            ":x" => $data->getMapLongitude(),
+            ":y" => $data->getMapLatitude(),
         ]);
 
         return $this->lastInsertId();
     }
 
-    public function get(string $id): array|false
+    public function get(string $id): null|Location
     {
         $sql = "SELECT * FROM locations WHERE id = :id";
 
@@ -40,9 +40,18 @@ class LocationRepository extends BaseRepository
 
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
-            return $data;
+            return new Location(
+                $data['id'],
+                $data['type'] ?? "",
+                $data['geo_latitude'] ?? 0,
+                $data['geo_longitude'] ?? 0,
+                $data['x'] ?? 0,
+                $data['y'] ?? 0,
+                $data['z'] ?? 0,
+                $data["enabled"],
+            );
         }
-        return false;
+        return null;
     }
 
     public function update(Location $current, array $new): bool

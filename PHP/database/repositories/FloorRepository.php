@@ -20,14 +20,13 @@ class FloorRepository extends BaseRepository
         $sql = "INSERT INTO floors (enabled , info, size, building_id, floor) VALUES (enabled, :info, :size, :building_id, :floor)";
 
         return $this->execute($sql, [
-            ':info' => $data["info"],
             ':size' => $data["size"],
             ':building_id' => $data["building_id"],
             ':floor' => $data["floor"],
         ]);
     }
 
-    public function get(string $id): array|false
+    public function get(string $id): null|Floor
     {
         $sql = "SELECT * FROM floors WHERE id = :id";
 
@@ -35,9 +34,15 @@ class FloorRepository extends BaseRepository
 
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
+            return new Floor(
+                $data['id'],
+                $data['size'] ?? 0,
+                $data['floor'] ?? 0,
+                $data['building_id'] ?? null,
+            );
         }
 
-        return $data;
+        return null;
     }
 
     public function update(Floor $current, array $new): int
@@ -45,7 +50,6 @@ class FloorRepository extends BaseRepository
         $sql = "UPDATE floors SET info = :info, enabled = :enabled, size = :size, building_id= :building_id, floor = :floor WHERE ID =:ID";
 
         return $this->execute($sql, [
-            ':info' => $new["info"] ?? $current->getInfo(),
             ':enabled' => $new["enabled"] ?? $current->isEnabled(),
             ':size' => $new["size"] ?? $current->getSize(),
             ':building_id' => $new["building_id"] ?? $current->getBuilding(),
