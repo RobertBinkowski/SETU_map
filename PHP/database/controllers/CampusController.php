@@ -2,8 +2,11 @@
 
 class CampusController extends BaseController
 {
-    public function __construct(private CampusRepository $gateway)
-    {
+    public function __construct(
+        private CampusRepository $gateway,
+        // private LogRepository $logRepository,
+    ) {
+        // $this->logRepository = $logRepository;
     }
 
     protected function getRepository()
@@ -12,6 +15,11 @@ class CampusController extends BaseController
     }
     public function request(string $method, ?string $id): void
     {
+        // $this->logRepository->create(
+        //     "Campus Request",
+        //     "Attempting to get data from campus with " . $method,
+        //     "Info"
+        // );
         if ($id) {
             $this->processResourceRequest($method, $id);
         } else {
@@ -68,7 +76,7 @@ class CampusController extends BaseController
     {
         switch ($method) {
             case "GET":
-                echo json_encode($this->gateway->getAll());
+                echo json_encode($this->getAll());
                 break;
             case "POST":
                 $data = (array) json_decode(file_get_contents("php://input"), true);

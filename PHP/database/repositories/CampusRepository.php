@@ -13,7 +13,24 @@ class CampusRepository extends BaseRepository
 
         $result = $this->conn->query($sql);
 
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+
+        $campuses = [];
+
+        foreach ($data as $row) {
+            $row["enabled"] = (bool)$row["enabled"];
+            $campus = new Campus(
+                $row['id'],
+                $row['name'] ?? "",
+                $row['abbreviation'] ?? "",
+                $row['info'] ?? "",
+                $row['size'] ?? 0,
+                $row['enabled'] ?? true
+            );
+            $campuses[] = $campus;
+        }
+
+        return $campuses;
     }
 
     public function create(Campus $data): string
