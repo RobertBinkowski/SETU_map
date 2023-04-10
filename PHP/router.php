@@ -6,7 +6,7 @@ $locationRepository = new LocationRepository($database); //Done
 
 $buildingRepository = new BuildingRepository($database, $campusRepository, $locationRepository); //Done
 
-$floorRepository = new FloorRepository($database, $buildingRepository);
+$floorRepository = new FloorRepository($database, $buildingRepository); //Done
 
 $connectionRepository = new ConnectionRepository($database);
 

@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 class RoomRepository extends BaseRepository
 {
-    private BuildingRepository $buildingRepository;
-    private LocationRepository $locationRepository;
-    private FloorRepository $floorRepository;
 
     public function __construct(
         Database $conn,
-        BuildingRepository $buildingRepository,
-        LocationRepository $locationRepository,
-        FloorRepository $floorRepository
+        private BuildingRepository $buildingRepository,
+        private LocationRepository $locationRepository,
+        private FloorRepository $floorRepository
     ) {
         parent::__construct($conn);
         $this->buildingRepository = $buildingRepository;

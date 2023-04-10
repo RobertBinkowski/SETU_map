@@ -2,6 +2,13 @@
 
 class FloorRepository extends BaseRepository
 {
+    public function __construct(
+        Database $conn,
+        private BuildingRepository $buildingRepository,
+    ) {
+        parent::__construct($conn);
+        $this->buildingRepository = $buildingRepository;
+    }
     public function getAll(bool $disabled = false): array
     {
         $sql = "SELECT * FROM floors";
@@ -12,7 +19,22 @@ class FloorRepository extends BaseRepository
 
         $result = $this->conn->query($sql);
 
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+
+        $floors = [];
+
+        foreach ($data as $row) {
+            $floor = new Floor(
+                $this->buildingRepository,
+                $row['id'],
+                $row['size'] ?? 0,
+                $row['floor'] ?? 0,
+                $row['building_id'] ?? null,
+            );
+            $floors[] = $floor;
+        }
+
+        return $floors;
     }
 
     public function create(array $data): string
@@ -35,6 +57,7 @@ class FloorRepository extends BaseRepository
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
             return new Floor(
+                $this->buildingRepository,
                 $data['id'],
                 $data['size'] ?? 0,
                 $data['floor'] ?? 0,

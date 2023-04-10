@@ -84,7 +84,6 @@ class Floor
             "id" => $this->getId(),
             "enabled" => $this->isEnabled(),
             "size" => $this->getSize(),
-            "building" => $this->getBuilding(),
             "floor" => $this->getFloor(),
         ];
         if ($this->building) {
