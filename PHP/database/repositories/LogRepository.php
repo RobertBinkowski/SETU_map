@@ -9,7 +9,21 @@ class LogRepository extends BaseRepository
 
         $result = $this->conn->query($sql);
 
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+
+        $logs = [];
+
+        foreach ($data as $row) {
+            $log = new log(
+                $row['id'],
+                $row['title'] ?? "",
+                $row['type'] ?? "",
+                $row['info'] ?? "",
+            );
+            $logs[] = $log;
+        }
+
+        return $logs;
     }
     public function create(Log $data): string
     {
