@@ -1,13 +1,8 @@
 <?php
 class Building
 {
-    private int $id;
-    private bool $enabled;
-    private string $name;
-    private string $abbreviation;
-    private string $info;
-    private string $size;
-    private int $campus;
+    private ?Campus $campus;
+    private ?Location $location;
 
     public function __toString(): string
     {
@@ -26,14 +21,19 @@ class Building
      * @param bool $enabled
      */
     public function __construct(
-        int $id,
-        string $name,
-        string $abbreviation,
-        string $info,
-        string $size,
+        private CampusRepository $campusRepository,
+        private LocationRepository $locationRepository,
+        private int $id,
+        private string $name,
+        private string $abbreviation,
+        private string $info,
+        private string $size,
         int $campus,
-        bool $enabled = true,
+        int $location,
+        private bool $enabled = true,
     ) {
+        $this->campusRepository = $campusRepository;
+        $this->locationRepository = $locationRepository;
         $this->id = $id;
         $this->setEnabled($enabled);
         $this->setName($name);
@@ -41,6 +41,7 @@ class Building
         $this->setInfo($info);
         $this->setSize($size);
         $this->setCampus($campus);
+        $this->setLocation($location);
     }
 
     // Getters
@@ -74,9 +75,13 @@ class Building
         return $this->size;
     }
 
-    public function getCampus(): int
+    public function getCampus(): ?Campus
     {
         return $this->campus;
+    }
+    public function getLocation(): ?Location
+    {
+        return $this->location;
     }
 
     // Setters
@@ -105,22 +110,40 @@ class Building
         $this->size = $size;
     }
 
-    public function setCampus(int $campus): void
+    public function setCampus(?int $campus): void
     {
-        $this->campus = $campus;
+        if ($campus != null) {
+            $this->campus = $this->campusRepository->get($campus);
+        } else {
+            $this->campus = null;
+        }
+    }
+    public function setLocation(?int $location): void
+    {
+        if ($location != null) {
+            $this->location = $this->locationRepository->get($location);
+        } else {
+            $this->location = null;
+        }
     }
 
     // To Array
     public function toArray(): array
     {
-        return [
+        $data = [
             'id' => $this->getId(),
             'enabled' => $this->isEnabled(),
             'name' => $this->getName(),
             'abbreviation' => $this->getAbbreviation(),
             'info' => $this->getInfo(),
             'size' => $this->getSize(),
-            'campus' => $this->getCampus(),
         ];
+        if ($this->campus) {
+            $data['campus'] = $this->getCampus()->toArray();
+        }
+        if ($this->location) {
+            $data['location'] = $this->getLocation()->toArray();
+        }
+        return $data;
     }
 }

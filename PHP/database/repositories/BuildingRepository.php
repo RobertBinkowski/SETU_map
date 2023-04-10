@@ -2,6 +2,16 @@
 
 class BuildingRepository extends BaseRepository
 {
+
+    public function __construct(
+        Database $conn,
+        private CampusRepository $campusRepository,
+        private LocationRepository $locationRepository,
+    ) {
+        parent::__construct($conn);
+        $this->campusRepository = $campusRepository;
+        $this->locationRepository = $locationRepository;
+    }
     public function getAll(bool $disabled = false): array
     {
         $sql = "SELECT * FROM buildings";
@@ -10,7 +20,28 @@ class BuildingRepository extends BaseRepository
         }
         $result = $this->conn->query($sql);
 
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+
+        $buildings = [];
+
+        foreach ($data as $row) {
+            $row["enabled"] = (bool)$row["enabled"];
+            $building = new Building(
+                $this->campusRepository,
+                $this->locationRepository,
+                $row['id'],
+                $row['name'] ?? "",
+                $row['abbreviation'] ?? "",
+                $row['info'] ?? "",
+                $row['size'] ?? 0,
+                $row['campus_id'] ?? null,
+                $row['location_id'] ?? null,
+                $row['enabled'] ?? true,
+            );
+            $buildings[] = $building;
+        }
+
+        return $buildings;
     }
 
     public function create(Building $data): bool
@@ -37,12 +68,16 @@ class BuildingRepository extends BaseRepository
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
             return new Building(
+                $this->campusRepository,
+                $this->locationRepository,
                 $data['id'],
                 $data['name'] ?? "",
                 $data['abbreviation'] ?? "",
                 $data['info'] ?? "",
                 $data['size'] ?? 0,
-                $data['campus_id'] ?? 0,
+                $data['campus_id'] ?? null,
+                $data['location_id'] ?? null,
+                $data['enabled'] ?? true,
             );
         }
 

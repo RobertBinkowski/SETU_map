@@ -8,7 +8,7 @@ class ImageRepository extends BaseRepository
         $sql = "SELECT * FROM images";
 
         if (!$disabled) {
-            $sql .= " WHERE enabled =1";
+            $sql .= " WHERE enabled = 1";
         }
 
         $result = $this->conn->query($sql);
@@ -35,7 +35,7 @@ class ImageRepository extends BaseRepository
         );
     }
 
-    public function get(string $id): array|false
+    public function get(string $id): Image|null
     {
         $sql = "SELECT * FROM images WHERE id = :id";
 
@@ -43,10 +43,12 @@ class ImageRepository extends BaseRepository
 
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
-            return $data;
+            return new Image(
+                $data['id'],
+            );
         }
 
-        return false;
+        return null;
     }
 
     public function update(Image $current, array $new): bool

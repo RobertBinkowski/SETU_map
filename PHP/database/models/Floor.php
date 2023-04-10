@@ -2,11 +2,7 @@
 
 class Floor
 {
-    private int $id;
-    private bool $enabled;
-    private string $size;
-    private ?int $building;
-    private int $floor;
+    private ?Building $building;
 
     public function __toString(): string
     {
@@ -14,12 +10,14 @@ class Floor
     }
 
     public function __construct(
-        int $id,
-        string $size,
-        int $floor,
+        private BuildingRepository $buildingRepository,
+        private int $id,
+        private string $size,
+        private int $floor,
         ?int $building = null,
-        bool $enabled = true,
+        private bool $enabled = true,
     ) {
+        $this->buildingRepository = $buildingRepository;
         $this->id = $id;
         $this->setEnabled($enabled);
         $this->setSize($size);
@@ -43,7 +41,7 @@ class Floor
         return $this->size;
     }
 
-    public function getBuilding(): ?int
+    public function getBuilding(): ?Building
     {
         return $this->building;
     }
@@ -67,7 +65,11 @@ class Floor
 
     public function setBuilding(?int $building = null): void
     {
-        $this->building = $building;
+        if ($building != null) {
+            $this->building = $this->buildingRepository->get($building);
+        } else {
+            $this->building = null;
+        }
     }
 
     public function setFloor(int $floor): void
@@ -78,12 +80,16 @@ class Floor
     // To Array
     function toArray(): array
     {
-        return [
+        $data = [
             "id" => $this->getId(),
             "enabled" => $this->isEnabled(),
             "size" => $this->getSize(),
-            // "building" => $this->getBuilding(),
+            "building" => $this->getBuilding(),
             "floor" => $this->getFloor(),
         ];
+        if ($this->building) {
+            $data['building'] = $this->getBuilding()->toArray();
+        }
+        return $data;
     }
 }

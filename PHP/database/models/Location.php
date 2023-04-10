@@ -2,28 +2,20 @@
 
 class Location
 {
-    private int $id;
-    private string $type;
-    private float $geoLongitude;
-    private float $geoLatitude;
-    private float $mapLongitude;
-    private float $mapLatitude;
-    private int $altitude;
-    private bool $enabled;
 
     public function __toString(): string
     {
         return json_encode($this->toArray());
     }
     public function __construct(
-        int $id,
-        string $type,
-        float $geoLongitude,
-        float $geoLatitude,
-        float $mapLongitude,
-        float $mapLatitude,
-        int $altitude = 0,
-        bool $enabled = true
+        private int $id,
+        private string $type,
+        private float $geoLongitude,
+        private float $geoLatitude,
+        private float $mapLongitude,
+        private float $mapLatitude,
+        private int $altitude = 0,
+        private bool $enabled = true
     ) {
         $this->id = $id;
         $this->setEnabled($enabled);

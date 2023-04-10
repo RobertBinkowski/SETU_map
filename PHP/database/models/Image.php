@@ -2,14 +2,9 @@
 
 class Image
 {
-    private int $id;
-    private string $name;
-    private string $info;
-    private string $src;
-    private bool $enabled;
-    private int $campus;
-    private int $building;
-    private int $room;
+    private ?Campus $campus;
+    private ?Building $building;
+    private ?Room $room;
 
     public function __toString(): string
     {
@@ -17,15 +12,23 @@ class Image
     }
 
     public function __construct(
-        int $id,
-        string $name,
-        string $info,
-        string $src,
+        private CampusRepository $campusRepository,
+        private BuildingRepository $buildingRepository,
+        private RoomRepository $roomRepository,
+        private int $id,
+        private string $name,
+        private string $info,
+        private string $src,
         int $campus,
         int $building,
         int $room,
-        bool $enabled = true
+        private bool $enabled = true
     ) {
+
+        $this->campusRepository = $campusRepository;
+        $this->buildingRepository = $buildingRepository;
+        $this->roomRepository = $roomRepository;
+
         $this->id = $id;
         $this->setName($name);
         $this->setInfo($info);
@@ -61,17 +64,17 @@ class Image
         return $this->enabled;
     }
 
-    public function getCampus(): int
+    public function getCampus(): ?Campus
     {
         return $this->campus;
     }
 
-    public function getBuilding(): int
+    public function getBuilding(): ?Building
     {
         return $this->building;
     }
 
-    public function getRoom(): int
+    public function getRoom(): ?Room
     {
         return $this->room;
     }
@@ -96,33 +99,53 @@ class Image
         $this->enabled = $enabled;
     }
 
-    public function setCampus(int $campus): void
+    public function setCampus(?int $campus): void
     {
-        $this->campus = $campus;
+        if ($campus != null) {
+            $this->campus = $this->campusRepository->get($campus);
+        } else {
+            $this->campus = null;
+        }
     }
 
-    public function setBuilding(int $building): void
+    public function setBuilding(?int $building): void
     {
-        $this->building = $building;
+        if ($building != null) {
+            $this->building = $this->buildingRepository->get($building);
+        } else {
+            $this->building = null;
+        }
     }
 
-    public function setRoom(int $room): void
+    public function setRoom(?int $room): void
     {
-        $this->room = $room;
+        if ($room != null) {
+            $this->room = $this->roomRepository->get($room);
+        } else {
+            $this->room = null;
+        }
     }
 
     // To Array
     public function toArray(): array
     {
-        return [
+        $data = [
             "id" => $this->getId(),
             "name" => $this->getName(),
             "info" => $this->getInfo(),
             "src" => $this->getSrc(),
             "enabled" => $this->isEnabled(),
-            "campus" => $this->getCampus(),
-            "building" => $this->getBuilding(),
-            "room" => $this->getRoom(),
         ];
+        if ($this->campus) {
+            $data["campus"] = $this->getCampus();
+        }
+        if ($this->building) {
+            $data["building"] = $this->getBuilding();
+        }
+        if ($this->room) {
+            $data["room"] = $this->getRoom();
+        }
+
+        return $data;
     }
 }

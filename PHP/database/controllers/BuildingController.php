@@ -9,14 +9,7 @@ class BuildingController extends BaseController
     {
         return $this->gateway;
     }
-    public function getAll()
-    {
-        $buildings = $this->gateway->getAll();
 
-        return array_map(function ($building) {
-            return $building->toArray();
-        }, $buildings);
-    }
     public function request(string $method, ?string $id): void
     {
         if ($id) {
@@ -37,7 +30,7 @@ class BuildingController extends BaseController
 
         switch ($method) {
             case "GET":
-                echo json_encode($building);
+                echo json_encode($building->toArray());
                 break;
             case "PATCH":
                 $data = (array) json_decode(file_get_contents("php://input"), true);
@@ -75,7 +68,7 @@ class BuildingController extends BaseController
     {
         switch ($method) {
             case "GET":
-                echo json_encode($this->gateway->getAll());
+                echo json_encode($this->getAll());
                 break;
             case "POST":
                 $data = (array) json_decode(file_get_contents("php://input"), true);

@@ -1,14 +1,14 @@
 <?php
-$logRepository = new LogRepository($database);
+$logRepository = new LogRepository($database); //Done
+$campusRepository = new CampusRepository($database); //Done
+$userRepository = new UserRepository($database, $campusRepository); //Done
+$locationRepository = new LocationRepository($database); //Done
 
-$campusRepository = new CampusRepository($database);
-$userRepository = new UserRepository($database, $campusRepository);
+$buildingRepository = new BuildingRepository($database, $campusRepository, $locationRepository);
 
-$imageRepository = new ImageRepository($database);
-$buildingRepository = new BuildingRepository($database);
+$floorRepository = new FloorRepository($database, $buildingRepository);
+
 $connectionRepository = new ConnectionRepository($database);
-$floorRepository = new FloorRepository($database);
-$locationRepository = new LocationRepository($database);
 
 $roomRepository = new RoomRepository(
     $database,
@@ -16,6 +16,7 @@ $roomRepository = new RoomRepository(
     $locationRepository,
     $floorRepository
 );
+$imageRepository = new ImageRepository($database, $campusRepository, $buildingRepository, $roomRepository);
 
 $request = explode("/", strtolower($_SERVER["REQUEST_URI"]));
 
