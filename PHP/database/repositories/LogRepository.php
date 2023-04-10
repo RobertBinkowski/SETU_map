@@ -24,16 +24,21 @@ class LogRepository extends BaseRepository
         return $this->lastInsertId();
     }
 
-    public function get(string $id): array|false
+    public function get(string $id): Log|null
     {
         $sql = "SELECT * FROM logs WHERE id = :id";
 
         $data = $this->fetch($sql, [':id' => $id]);
 
         if ($data !== false) {
-            return $data;
+            return new Log(
+                $data['id'],
+                $data['title'] ?? "",
+                $data['type'] ?? "",
+                $data['info'] ?? "",
+            );
         }
-        return false;
+        return null;
     }
 
     public function update(Log $current, array $new): bool

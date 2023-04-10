@@ -1,20 +1,16 @@
 <?php
 class Log
 {
-    private int $id;
-    private string $title;
-    private string $type;
-    private string $info;
 
     public function __toString(): string
     {
         return json_encode($this->toArray());
     }
     public function __construct(
-        int $id,
-        string $title,
-        string $type,
-        string $info
+        private int $id,
+        private string $title,
+        private string $type,
+        private string $info
     ) {
         $this->setId($id);
         $this->setInfo($info);
