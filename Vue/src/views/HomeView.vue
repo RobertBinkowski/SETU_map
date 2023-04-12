@@ -1,21 +1,7 @@
 <template>
   <main>
     <div v-if="error">{{ error.message }}</div>
-    <div class="campusSelect">
-      <h2>
-        <!-- Campus: -->
-        <select name="campus">
-          <option
-            v-for="campus in campuses"
-            :key="campus"
-            :value="campus.abbreviation"
-          >
-            {{ campus.name }}
-          </option>
-        </select>
-      </h2>
-    </div>
-    <SearchComponent :data="rooms"></SearchComponent>
+    <SearchComponent :locations="rooms" :campuses="campuses"></SearchComponent>
     <MapComponent
       :buildings="buildings"
       :rooms="rooms"
@@ -115,21 +101,4 @@
   };
 </script>
 
-<style lang="scss" scoped>
-  @import "@/assets/variables.scss";
-  .campusSelect {
-    width: 100%;
-    padding: 0.3em;
-    background-color: #ffffff00;
-    color: $txt-1;
-    text-align: center;
-
-    select {
-      border: none;
-      border-radius: 1em;
-      width: 10em;
-      text-align: center;
-      outline: none;
-    }
-  }
-</style>
+<style lang="scss" scoped></style>

@@ -5,6 +5,7 @@
       v-show="locationContent"
     ></LocationComponent>
     <div v-show="demo" id="demo">
+      <h2>Admin Panel</h2>
       <input type="checkbox" name="showOnlyNodes" @click="toggleNodes" />
       <label for="showOnlyNodes">Only Nodes & Connections</label>
     </div>
@@ -15,46 +16,43 @@
       <div
         v-show="!onlyNodes"
         class="location"
-        v-for="location in buildings"
-        :key="location.id"
+        v-for="building in buildings"
+        :key="building.id"
         :style="{
-          top: nodes[location.location_id - 1].y + 'em',
-          left: nodes[location.location_id - 1].x + 'em',
-          zIndex: nodes[location.location_id - 1].z + 2,
+          top: building.location.mapLatitude + 'em',
+          left: building.location.mapLongitude + 'em',
+          zIndex: building.location.mapAltitude + 100,
         }"
       >
-        {{ location.name }}
-        <div v-html="location.layout"></div>
+        {{ building.name }}
+        <div v-html="building.layout"></div>
       </div>
       <div
         v-show="!onlyNodes"
         class="location"
-        v-for="location in rooms"
-        :key="location.id"
+        v-for="room in rooms"
+        :key="room.id"
         :style="{
-          top: nodes[location.location_id - 1].y + 'em',
-          left: nodes[location.location_id - 1].x + 'em',
-          zIndex: nodes[location.location_id - 1].z + 1,
+          top: room.location.mapLatitude + 'em',
+          left: room.location.mapLongitude + 'em',
+          zIndex: room.location.mapAltitude + 10,
         }"
       >
-        {{ location.name }}
-        <div v-html="location.layout"></div>
+        {{ room.location.mapLongitude }}
+        <div v-html="room.layout"></div>
       </div>
       <div
         v-show="!onlyNodes"
         class="location"
-        v-for="location in floors"
-        :key="location.id"
+        v-for="floor in floors"
+        :key="floor.id"
         :style="{
-          top:
-            nodes[buildings[location.building_id - 1].location_id - 1].y + 'em',
-          left:
-            nodes[buildings[location.building_id - 1].location_id - 1].x + 'em',
-          zIndex: nodes[buildings[location.building_id - 1].location_id - 1].z,
+          top: floor.building.location.mapLatitude + 'em',
+          left: floor.building.location.mapLongitude + 'em',
+          zIndex: floor.building.location.mapAltitude,
         }"
       >
-        {{ location.name }}
-        <div v-html="location.layout"></div>
+        <div v-html="floor.layout"></div>
       </div>
       <div
         v-show="onlyNodes"
@@ -62,9 +60,9 @@
         v-for="node in nodes"
         :key="node.id"
         :style="{
-          top: node.y + 'em',
-          left: node.x + 'em',
-          zIndex: node.z,
+          top: node.mapLatitude + 'em',
+          left: node.mapLongitude + 'em',
+          zIndex: node.mapAltitude,
         }"
       >
         {{ node.id }}
