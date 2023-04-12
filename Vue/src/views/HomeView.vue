@@ -1,8 +1,9 @@
 <template>
   <main>
+    <div v-if="error">{{ error.message }}</div>
     <div class="campusSelect">
       <h2>
-        Campus:
+        <!-- Campus: -->
         <select name="campus">
           <option
             v-for="campus in campuses"
@@ -14,13 +15,14 @@
         </select>
       </h2>
     </div>
-    <!-- <MapComponent
+    <SearchComponent :data="rooms"></SearchComponent>
+    <MapComponent
       :buildings="buildings"
       :rooms="rooms"
       :floors="floors"
       :nodes="locations"
       :campus="campuses[0]"
-    ></MapComponent> -->
+    ></MapComponent>
   </main>
 </template>
 
@@ -29,10 +31,12 @@
   import { ref } from "vue";
 
   import MapComponent from "../components/MapComponent.vue";
+  import SearchComponent from "../components/SearchComponent.vue";
 
   export default {
     components: {
       MapComponent,
+      SearchComponent,
     },
     setup() {
       let buildings = ref([]);
@@ -43,29 +47,56 @@
 
       // Campuses
       async function getCampuses() {
-        const { data } = await axios.get("http://localhost:8000/api/campuses");
-        campuses.value = data;
+        try {
+          const { data } = await axios.get(
+            "http://localhost:8000/api/campuses"
+          );
+          campuses.value = data;
+        } catch (error) {
+          console.error("Error".error);
+        }
       }
+
       // Nodes
       async function getLocations() {
-        const { data } = await axios.get("http://localhost:8000/api/locations");
-        locations.value = data;
+        try {
+          const { data } = await axios.get(
+            "http://localhost:8000/api/locations"
+          );
+          locations.value = data;
+        } catch (error) {
+          console.error("Error".error);
+        }
       }
 
       // Other
       async function getFloors() {
-        const { data } = await axios.get("http://localhost:8000/api/floors");
-        floors.value = data;
+        try {
+          const { data } = await axios.get("http://localhost:8000/api/floors");
+          floors.value = data;
+        } catch (error) {
+          console.error("Error".error);
+        }
       }
 
       async function getBuildings() {
-        const { data } = await axios.get("http://localhost:8000/api/buildings");
-        buildings.value = data;
+        try {
+          const { data } = await axios.get(
+            "http://localhost:8000/api/buildings"
+          );
+          buildings.value = data;
+        } catch (error) {
+          console.error("Error".error);
+        }
       }
 
       async function getRooms() {
-        const { data } = await axios.get("http://localhost:8000/api/rooms");
-        rooms.value = data;
+        try {
+          const { data } = await axios.get("http://localhost:8000/api/rooms");
+          rooms.value = data;
+        } catch (error) {
+          console.error("Error".error);
+        }
       }
 
       getBuildings();
