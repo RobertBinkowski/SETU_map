@@ -28,6 +28,7 @@ class Building
         private string $abbreviation = "",
         private string $info = "",
         private string $size = "",
+        private string $layout = "",
         ?int $campus = null,
         ?int $location = null,
         private bool $enabled = true,
@@ -40,6 +41,7 @@ class Building
         $this->setAbbreviation($abbreviation);
         $this->setInfo($info);
         $this->setSize($size);
+        $this->setLayout($layout);
         $this->setCampus($campus);
         $this->setLocation($location);
     }
@@ -83,6 +85,10 @@ class Building
     {
         return $this->location;
     }
+    public function getLayout(): ?string
+    {
+        return $this->layout;
+    }
 
     // Setters
     public function setEnabled(bool $enabled): void
@@ -108,6 +114,10 @@ class Building
     public function setSize(string $size): void
     {
         $this->size = $size;
+    }
+    public function setLayout(string $layout): void
+    {
+        $this->layout = $layout;
     }
 
     public function setCampus(?int $campus): void
@@ -137,6 +147,7 @@ class Building
             'abbreviation' => $this->getAbbreviation(),
             'info' => $this->getInfo(),
             'size' => $this->getSize(),
+            'layout' => $this->getLayout(),
         ];
         if ($this->campus) {
             $data['campus'] = $this->getCampus()->toArray();

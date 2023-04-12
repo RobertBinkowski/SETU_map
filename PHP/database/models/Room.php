@@ -35,6 +35,7 @@ class Room
         private string $name = "",
         private string $info = "",
         private float $size = 0,
+        private string $layout = "",
         ?int $building = null,
         ?int $location = null,
         ?int $floor = null,
@@ -51,6 +52,7 @@ class Room
         $this->setName($name);
         $this->setInfo($info);
         $this->setSize($size);
+        $this->setLayout($layout);
         $this->setBuilding($building);
         $this->setLocation($location);
         $this->setFloor($floor);
@@ -101,6 +103,10 @@ class Room
     {
         return $this->floor;
     }
+    public function getLayout(): ?string
+    {
+        return $this->layout;
+    }
 
     // Setters
     public function setType(string $type): void
@@ -126,6 +132,10 @@ class Room
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+    public function setLayout(string $layout): void
+    {
+        $this->layout = $layout;
     }
 
     public function setBuilding(?int $building = null): void
@@ -165,6 +175,7 @@ class Room
             "info" => $this->getInfo(),
             "size" => $this->getSize(),
             "enabled" => $this->isEnabled(),
+            "layout" => $this->getLayout(),
         ];
         if ($this->building) {
             $data["building"] = $this->getBuilding()->toArray();

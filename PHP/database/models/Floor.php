@@ -14,6 +14,7 @@ class Floor
         private int $id,
         private string $size = "",
         private int $floor = 0,
+        private string $layout = "",
         ?int $building = null,
         private bool $enabled = true,
     ) {
@@ -21,6 +22,7 @@ class Floor
         $this->id = $id;
         $this->setEnabled($enabled);
         $this->setSize($size);
+        $this->setLayout($layout);
         $this->setBuilding($building);
         $this->setFloor($floor);
     }
@@ -50,6 +52,10 @@ class Floor
     {
         return $this->floor;
     }
+    public function getLayout(): ?string
+    {
+        return $this->layout;
+    }
 
     // Setters
 
@@ -61,6 +67,10 @@ class Floor
     public function setSize(string $size): void
     {
         $this->size = $size;
+    }
+    public function setLayout(string $layout): void
+    {
+        $this->layout = $layout;
     }
 
     public function setBuilding(?int $building = null): void
@@ -85,6 +95,7 @@ class Floor
             "enabled" => $this->isEnabled(),
             "size" => $this->getSize(),
             "floor" => $this->getFloor(),
+            'layout' => $this->getLayout(),
         ];
         if ($this->building) {
             $data['building'] = $this->getBuilding()->toArray();

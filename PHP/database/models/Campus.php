@@ -27,6 +27,7 @@ class Campus
         $this->setHeight($height);
         $this->setWidth($width);
         $this->setLayout($layout);
+        $this->setLayout($layout);
     }
 
     // Getters

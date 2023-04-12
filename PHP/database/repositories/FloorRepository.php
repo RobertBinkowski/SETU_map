@@ -29,6 +29,7 @@ class FloorRepository extends BaseRepository
                 $row['id'],
                 $row['size'] ?? 0,
                 $row['floor'] ?? 0,
+                $row['layout'] ?? "",
                 $row['building_id'] ?? null,
             );
             $floors[] = $floor;
@@ -61,6 +62,7 @@ class FloorRepository extends BaseRepository
                 $data['id'],
                 $data['size'] ?? 0,
                 $data['floor'] ?? 0,
+                $data['layout'] ?? "",
                 $data['building_id'] ?? null,
             );
         }
