@@ -1,15 +1,6 @@
 <?php
 class Campus
 {
-    private int $id;
-    private bool $enabled;
-    private string $name;
-    private string $abbreviation;
-    private string $info;
-    private float $size;
-    private float $height;
-    private float $width;
-    private string $layout;
 
     public function __toString(): string
     {
@@ -17,15 +8,15 @@ class Campus
     }
 
     public function __construct(
-        int $id,
-        string $name,
-        string $layout = "",
-        string $info = "",
-        float $size = 0,
-        float $height = 0,
-        float $width = 0,
-        string $abbreviation = "",
-        bool $enabled = true,
+        private int $id,
+        private string $name,
+        private string $layout = "",
+        private string $info = "",
+        private float $size = 0,
+        private float $height = 0,
+        private float $width = 0,
+        private string $abbreviation = "",
+        private bool $enabled = true,
     ) {
         $this->id = $id;
         $this->setEnabled($enabled);
@@ -107,7 +98,7 @@ class Campus
 
     public function setSize(string $size): void
     {
-        $this->size = $size;
+        $this->size = (float)$size;
     }
 
     public function setHeight(float $height): void
