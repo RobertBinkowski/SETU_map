@@ -1,7 +1,7 @@
 <template>
   <div id="locationDetails">
     <div class="images">
-      <img :src="images[0]" alt="images" />
+      <!-- <img :src="images[0]" alt="images" /> -->
     </div>
     <div class="details">
       <h1>{{ room.name }}</h1>
@@ -10,14 +10,14 @@
       <p>{{ room.info }}</p>
     </div>
     <div class="options">
-      <button>navigate</button>
+      <button @click="$emit('navigate')">navigate</button>
     </div>
   </div>
 </template>
 
 <script>
   import axios from "axios";
-  import { ref } from "vue";
+  import { ref, watch } from "vue";
 
   export default {
     props: {
@@ -25,17 +25,25 @@
         required: true,
       },
     },
-    setup() {
-      let images = ref([]);
-
-      async function getImages() {
-        const { data } = await axios.get("http://localhost:8000/api/images");
-        images.value = data;
-      }
-
-      getImages();
-      return { images };
+    methods: {
+      submit() {
+        this.$emit("navigate");
+      },
     },
+    setup(props) {
+      watch(() => props.room);
+    },
+    // setup() {
+    //   let images = ref([]);
+
+    //   async function getImages() {
+    //     const { data } = await axios.get("http://localhost:8000/api/images");
+    //     images.value = data;
+    //   }
+
+    //   getImages();
+    //   return { images };
+    // },
   };
 </script>
 
@@ -43,11 +51,11 @@
   @import "@/assets/variables.scss";
   #locationDetails {
     position: fixed;
-    z-index: 10;
+    z-index: 1000;
     top: 5em;
     left: 2em;
     border-radius: $rad-1;
-    background-color: gray;
+    background-color: $bg-2;
     width: 20em;
     overflow: hidden;
     .details {
