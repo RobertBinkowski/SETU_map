@@ -17,15 +17,18 @@
       v-for="location in locations"
       :key="location"
       :data="location"
-      v-show="false"
     ></SearchEntry>
   </div>
 </template>
 
 <script>
+  import { watch } from "vue";
   import SearchEntry from "./SearchEntry.vue";
 
   export default {
+    setup(props) {
+      watch([() => props.locations, () => props.campuses]);
+    },
     components: {
       SearchEntry,
     },

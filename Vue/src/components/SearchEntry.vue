@@ -8,7 +8,12 @@
 </template>
 
 <script>
+  import { watch } from "vue";
+
   export default {
+    setup(props) {
+      watch([() => props.data]);
+    },
     props: {
       data: {
         required: false,

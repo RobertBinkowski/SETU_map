@@ -2,11 +2,18 @@
   <main>
     <div v-if="error">{{ error.message }}</div>
     <AdminPanel :defaults="defaults" @toggle="updateNodes"></AdminPanel>
-    <SearchComponent :locations="rooms" :campuses="campuses"></SearchComponent>
-    <LocationComponent
-      v-show="defaults.locationContent"
+    <SearchComponent
+      :locations="rooms"
+      :campuses="campuses"
+      @toggle="toggleDetails"
+    ></SearchComponent>
+    <DetailsComponent
+      v-show="locationContent"
       :room="rooms[intValue]"
-    ></LocationComponent>
+      :image="1"
+      @close="toggleDetails"
+      @navigate="navigate"
+    ></DetailsComponent>
     <MapComponent
       v-show="true"
       :buildings="buildings"
@@ -37,14 +44,14 @@
   import CanvasComponent from "../components/CanvasComponent.vue";
 
   import SearchComponent from "../components/SearchComponent.vue";
-  import LocationComponent from "../components/LocationComponent.vue";
+  import DetailsComponent from "../components/DetailsComponent.vue";
   import AdminPanel from "../components/AdminPanel.vue";
 
   export default {
     components: {
       MapComponent,
       SearchComponent,
-      LocationComponent,
+      DetailsComponent,
       AdminPanel,
       CanvasComponent,
     },
@@ -125,16 +132,25 @@
     data() {
       return {
         defaults: {
-          locationContent: true,
           onlyNodes: false,
-          demo: true,
+          demo: false,
         },
         intValue: 0,
+        locationContent: true,
       };
     },
     methods: {
       updateNodes() {
         this.defaults.onlyNodes = !this.defaults.onlyNodes;
+      },
+      toggleDetails() {
+        this.locationContent = !this.locationContent;
+      },
+      showDetails(location) {
+        this.locationContent = true;
+      },
+      navigate(location) {
+        alert(location);
       },
     },
   };
