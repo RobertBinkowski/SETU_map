@@ -105,11 +105,6 @@
       },
       toggleNodes() {},
     },
-    data() {
-      return {
-        onlyNodes: false,
-      };
-    },
   };
 </script>
 

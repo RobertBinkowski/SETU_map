@@ -9,7 +9,7 @@
     ></SearchComponent>
     <DetailsComponent
       v-show="locationContent"
-      :room="rooms[intValue]"
+      :location="rooms[intValue]"
       :image="1"
       @close="toggleDetails"
       @navigate="navigate"
@@ -121,6 +121,7 @@
       getCampuses();
       getRooms();
       getFloors();
+
       return {
         buildings,
         locations,
@@ -150,7 +151,7 @@
         this.locationContent = true;
       },
       navigate(location) {
-        alert(location);
+        alert(JSON.stringify(location));
       },
     },
   };

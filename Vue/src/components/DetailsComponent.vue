@@ -5,13 +5,18 @@
       <img :src="image.src" :alt="image.name" />
     </div>
     <div class="details">
-      <h1>{{ room.name }}</h1>
-      <span class="building">{{ room.building.name }}</span>
-      <!-- <br /> -->
-      <p class="info">{{ room.info }}</p>
+      <h1 v-show="location.name">
+        {{ location.name }}
+      </h1>
+      <span v-show="location.abbreviation">{{ location.abbreviation }}</span>
+      <span v-if="location.building" class="building">{{
+        location.building.name
+      }}</span>
+      <span v-show="location.abbreviation">{{ location.abbreviation }}</span>
+      <p v-show="location.info" class="info">{{ location.info }}</p>
     </div>
     <div class="options">
-      <button @click="$emit('navigate', room)">navigate</button>
+      <button @click="$emit('navigate', location)">navigate</button>
     </div>
   </div>
 </template>
@@ -22,7 +27,7 @@
 
   export default {
     props: {
-      room: {
+      location: {
         required: true,
       },
       image: {
@@ -37,7 +42,7 @@
     },
     setup(props) {
       // Watch for changes
-      watch(() => props.room);
+      watch(() => props.location);
 
       let image = ref([]);
 
@@ -67,6 +72,7 @@
     box-shadow: $shadow;
     width: 20em;
     overflow: hidden;
+    font-weight: bold;
     .close {
       position: absolute;
       cursor: pointer;
@@ -84,7 +90,6 @@
     .details {
       padding: 1em;
       color: $txt-2;
-      font-weight: 900;
       text-shadow: $t-shadow;
       .building {
         color: $acc-2;
@@ -97,7 +102,8 @@
       border-radius: $rad-1;
       img {
         width: 100%;
-        background-position: bottom;
+        height: 100%;
+        object-fit: cover;
         background-repeat: no-repeat;
         background-size: cover;
       }
