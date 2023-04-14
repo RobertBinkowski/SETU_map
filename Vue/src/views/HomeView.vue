@@ -8,6 +8,7 @@
       :room="rooms[intValue]"
     ></LocationComponent>
     <MapComponent
+      v-show="true"
       :buildings="buildings"
       :rooms="rooms"
       :floors="floors"
@@ -15,6 +16,16 @@
       :campus="campuses[0]"
       :defaults="defaults"
     ></MapComponent>
+    <!-- <CanvasComponent
+      v-show="false"
+      :buildings="buildings"
+      :rooms="rooms"
+      :floors="floors"
+      :nodes="locations"
+      :campus="campuses[0]"
+      :defaults="defaults"
+    >
+    </CanvasComponent> -->
   </main>
 </template>
 
@@ -23,6 +34,8 @@
   import { ref } from "vue";
 
   import MapComponent from "../components/MapComponent.vue";
+  import CanvasComponent from "../components/CanvasComponent.vue";
+
   import SearchComponent from "../components/SearchComponent.vue";
   import LocationComponent from "../components/LocationComponent.vue";
   import AdminPanel from "../components/AdminPanel.vue";
@@ -33,6 +46,7 @@
       SearchComponent,
       LocationComponent,
       AdminPanel,
+      CanvasComponent,
     },
     setup() {
       let buildings = ref([]);

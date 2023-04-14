@@ -117,10 +117,9 @@
   @import "@/assets/variables.scss";
   #canvas {
     margin: auto;
-    background-color: gray;
     position: relative;
-    // overflow: hidden;
-    background-color: rgb(56, 56, 56);
+    overflow: hidden;
+    background-color: $bg-2;
     .location {
       position: absolute;
       // background-color: rgb(122, 122, 165);
