@@ -9,26 +9,25 @@
         v-model="searchTerm"
       />
       <select name="campus" class="campus" v-model="selectedCampus">
-        <option></option>
         <option
           v-for="campus in campuses"
           :key="campus"
           v-show="campus.enabled"
-          :value="campus.abbreviation"
+          :value="campus.name"
         >
           {{ campus.name }}
         </option>
       </select>
     </div>
     <SearchEntry
-      v-for="location in rooms"
+      v-for="location in filteredRooms"
       :key="location"
       :location="location"
       :data="location"
       @click="emitLocation(location)"
     ></SearchEntry>
     <SearchEntry
-      v-for="location in buildings"
+      v-for="location in filteredBuildings"
       :key="location"
       :location="location"
       :data="location"
@@ -37,7 +36,6 @@
   </div>
 </template>
 <script>
-  import { computed, watch } from "vue";
   import SearchEntry from "./SearchEntry.vue";
 
   export default {
@@ -58,22 +56,30 @@
     data() {
       return {
         searchTerm: "",
-        selectedCampus: "",
+        selectedCampus: "Carlow",
       };
     },
     computed: {
-      // filteredLocations() {
-      //   const filtered = this.locations.filter((location) => {
-      //     const nameMatch =
-      //       !this.searchTerm ||
-      //       location.name.toLowerCase().includes(this.searchTerm.toLowerCase());
-      //     const campusMatch =
-      //       !this.selectedCampus ||
-      //       location.campus.name === this.selectedCampus;
-      //     return nameMatch && campusMatch;
-      //   });
-      //   return filtered;
-      // },
+      filteredRooms() {
+        if (this.searchTerm == "") {
+          return null;
+        }
+        return this.rooms.filter(
+          (room) =>
+            room.building.campus.name == this.selectedCampus &&
+            room.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+      },
+      filteredBuildings() {
+        if (this.searchTerm == "") {
+          return null;
+        }
+        return this.buildings.filter(
+          (building) =>
+            building.campus.name == this.selectedCampus &&
+            building.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+      },
     },
     methods: {
       emitLocation(location) {
