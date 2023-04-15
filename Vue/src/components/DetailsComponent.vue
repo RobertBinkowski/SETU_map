@@ -1,17 +1,18 @@
 <template>
   <div id="locationDetails">
     <span class="close" @click="$emit('close')">X</span>
-    <div v-show="image.src != '' && image.enabled" class="image">
+    <!-- <div v-show="image.src != '' && image.enabled" class="image">
       <img :src="image.src" :alt="image.name" />
-    </div>
-    <div class="details">
-      <h1 v-if="location">
+    </div> -->
+    <div v-if="location" class="details">
+      <h1 v-if="location.name">
         {{ location.name }}
       </h1>
-      <span v-if="location">{{ location.abbreviation }}</span>
-      <span v-if="location" class="building">{{ location.building.name }}</span>
-      <span v-if="location">{{ location.abbreviation }}</span>
-      <p v-if="location" class="info">{{ location.info }}</p>
+      <span v-if="location.abbreviation">{{ location.abbreviation }}</span>
+      <span v-if="location.building" class="building">{{
+        location.building.name
+      }}</span>
+      <p v-if="location.info" class="info">{{ location.info }}</p>
     </div>
     <div class="options">
       <button @click="$emit('navigate', location)">navigate</button>
@@ -41,6 +42,7 @@
     setup(props) {
       // Watch for changes
       watch(() => props.location);
+      // alert(JSON.stringify(location));
 
       let image = ref([]);
 

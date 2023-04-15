@@ -3,16 +3,16 @@
     <div v-if="error">{{ error.message }}</div>
     <AdminPanel :defaults="defaults" @toggle="updateNodes"></AdminPanel>
     <SearchComponent
-      :locations="rooms"
+      :rooms="rooms"
+      :buildings="buildings"
       :campuses="campuses"
-      @toggle="toggleDetails"
       @selectLocation="setLocation"
     ></SearchComponent>
     <DetailsComponent
-      v-show="locationContent"
+      v-show="selectedLocation"
       :location="selectedLocation"
       :image="1"
-      @close="toggleDetails"
+      @close="closeDetails"
       @navigate="navigate"
     ></DetailsComponent>
     <MapComponent
@@ -140,7 +140,6 @@
           onlyNodes: false,
           demo: false,
         },
-        locationContent: false,
         selectedLocation: null,
       };
     },
@@ -148,18 +147,15 @@
       updateNodes() {
         this.defaults.onlyNodes = !this.defaults.onlyNodes;
       },
-      toggleDetails() {
-        this.locationContent = !this.locationContent;
-      },
-      showDetails(location) {
-        this.locationContent = true;
-      },
-      navigate(location) {
-        alert(JSON.stringify(location));
+      closeDetails() {
+        this.selectedLocation = null;
       },
       setLocation(location) {
         this.selectedLocation = location;
         this.locationContent = true;
+      },
+      navigate(location) {
+        alert(JSON.stringify(location));
       },
     },
   };
