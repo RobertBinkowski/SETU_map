@@ -5,15 +5,13 @@
       <img :src="image.src" :alt="image.name" />
     </div>
     <div class="details">
-      <h1 v-show="location.name">
+      <h1 v-if="location">
         {{ location.name }}
       </h1>
-      <span v-show="location.abbreviation">{{ location.abbreviation }}</span>
-      <span v-if="location.building" class="building">{{
-        location.building.name
-      }}</span>
-      <span v-show="location.abbreviation">{{ location.abbreviation }}</span>
-      <p v-show="location.info" class="info">{{ location.info }}</p>
+      <span v-if="location">{{ location.abbreviation }}</span>
+      <span v-if="location" class="building">{{ location.building.name }}</span>
+      <span v-if="location">{{ location.abbreviation }}</span>
+      <p v-if="location" class="info">{{ location.info }}</p>
     </div>
     <div class="options">
       <button @click="$emit('navigate', location)">navigate</button>

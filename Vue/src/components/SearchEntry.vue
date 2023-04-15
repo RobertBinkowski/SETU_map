@@ -1,27 +1,40 @@
 <template>
-  <div class="border">
-    <a href="">
-      <strong v-show="data.name">{{ data.name }}</strong>
-      - {{ data.type }}
-    </a>
+  <div
+    class="border"
+    @click="handleClick"
+    :style="{ backgroundColor: hoverColor }"
+  >
+    <strong v-if="location">{{ location.name }}</strong>
+    - {{ location.type }}
   </div>
 </template>
-
 <script>
   import { watch } from "vue";
 
   export default {
     setup(props) {
-      watch([() => props.data]);
+      watch([() => props.building, () => props.room]);
     },
     props: {
+      location: {
+        default: null,
+      },
       data: {
         required: false,
       },
     },
+    data() {
+      return {
+        hoverColor: "transparent",
+      };
+    },
+    methods: {
+      handleClick() {
+        this.$emit("click", this.location);
+      },
+    },
   };
 </script>
-
 <style lang="scss" scoped>
   @import "@/assets/variables.scss";
   .border {
@@ -32,18 +45,14 @@
     background-color: $bg-1;
     overflow: hidden;
     text-align: center;
-    padding: 0;
-    a {
-      display: block;
-      width: 100%;
-      color: gray;
-      padding: 1em;
-      strong {
-        color: $acc-2;
-      }
-      &:hover {
-        background-color: $bg-2;
-      }
+    padding: 1em;
+
+    strong {
+      color: $acc-2;
+    }
+    &:hover {
+      cursor: pointer;
+      background-color: $acc-2;
     }
   }
 </style>

@@ -6,10 +6,11 @@
       :locations="rooms"
       :campuses="campuses"
       @toggle="toggleDetails"
+      @selectLocation="setLocation"
     ></SearchComponent>
     <DetailsComponent
-      v-show="location != {}"
-      :location="location"
+      v-show="locationContent"
+      :location="selectedLocation"
       :image="1"
       @close="toggleDetails"
       @navigate="navigate"
@@ -23,17 +24,6 @@
       :campus="campuses[0]"
       :defaults="defaults"
     ></MapComponent>
-    <button @click="locFunction">Hello</button>
-    <!-- <CanvasComponent
-      v-show="false"
-      :buildings="buildings"
-      :rooms="rooms"
-      :floors="floors"
-      :nodes="locations"
-      :campus="campuses[0]"
-      :defaults="defaults"
-    >
-    </CanvasComponent> -->
   </main>
 </template>
 
@@ -150,7 +140,8 @@
           onlyNodes: false,
           demo: false,
         },
-        locationContent: true,
+        locationContent: false,
+        selectedLocation: null,
       };
     },
     methods: {
@@ -165,6 +156,10 @@
       },
       navigate(location) {
         alert(JSON.stringify(location));
+      },
+      setLocation(location) {
+        this.selectedLocation = location;
+        this.locationContent = true;
       },
     },
   };

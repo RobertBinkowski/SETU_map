@@ -29,7 +29,7 @@
           zIndex: room.location.mapAltitude + 10,
         }"
       >
-        {{ room.location.mapLongitude }}
+        <!-- {{ room.location.mapLongitude }} -->
         <div v-html="room.layout"></div>
       </div>
       <div
