@@ -31,7 +31,7 @@
           zIndex: room.location.mapAltitude + 10,
         }"
       >
-        <!-- {{ room.location.mapLongitude }} -->
+        <!-- {{ room.name }} -->
         <div v-html="room.layout"></div>
       </div>
       <div
@@ -66,10 +66,8 @@
 
 <script>
   import { watch } from "vue";
-  import { search } from "@/../js/main.js";
 
   export default {
-    components: {},
     props: {
       buildings: {
         required: true,
@@ -115,6 +113,7 @@
     position: relative;
     overflow: hidden;
     background-color: $bg-2;
+    border-radius: $rad-1;
     .location {
       position: absolute;
       // background-color: rgb(122, 122, 165);

@@ -37,13 +37,14 @@
     border: none;
     border-radius: $rad-1;
     margin: auto;
-    margin-top: 0.5em;
+    margin-top: 0.2em;
     max-width: 50em;
     background-color: $c-bg-1;
     overflow: hidden;
     text-align: center;
-    padding: 1em;
+    padding: 0.5em;
     color: $txt-2;
+
     strong {
       color: $acc-2;
     }

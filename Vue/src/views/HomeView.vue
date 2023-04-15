@@ -7,6 +7,7 @@
       :buildings="buildings"
       :campuses="campuses"
       @selectLocation="setLocation"
+      @updateSelectedCampus="handleSelectedCampusUpdate"
     ></SearchComponent>
     <DetailsComponent
       v-show="selectedLocation"
@@ -21,7 +22,7 @@
       :rooms="rooms"
       :floors="floors"
       :nodes="locations"
-      :campus="campuses[0]"
+      :campus="campuses[selectedCampus - 1]"
       :defaults="defaults"
       @selectLocation="setLocation"
     ></MapComponent>
@@ -31,6 +32,8 @@
 <script>
   import axios from "axios";
   import { ref } from "vue";
+
+  import { search } from "@/../js/main.js";
 
   import MapComponent from "../components/MapComponent.vue";
   import CanvasComponent from "../components/CanvasComponent.vue";
@@ -142,6 +145,7 @@
           demo: false,
         },
         selectedLocation: null,
+        selectedCampus: 1,
       };
     },
     methods: {
@@ -157,6 +161,10 @@
       },
       navigate(location) {
         alert(JSON.stringify(location));
+      },
+      handleSelectedCampusUpdate(campusId) {
+        this.selectedLocation = null;
+        this.selectedCampus = campusId;
       },
     },
   };

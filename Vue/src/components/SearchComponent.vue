@@ -13,7 +13,7 @@
           v-for="campus in campuses"
           :key="campus"
           v-show="campus.enabled"
-          :value="campus.name"
+          :value="campus.id"
         >
           {{ campus.name }}
         </option>
@@ -36,6 +36,7 @@
   </div>
 </template>
 <script>
+  import { watch } from "vue";
   import SearchEntry from "./SearchEntry.vue";
 
   export default {
@@ -56,7 +57,7 @@
     data() {
       return {
         searchTerm: "",
-        selectedCampus: "Carlow",
+        selectedCampus: "1",
       };
     },
     computed: {
@@ -66,7 +67,7 @@
         }
         return this.rooms.filter(
           (room) =>
-            room.building.campus.name == this.selectedCampus &&
+            room.building.campus.id == this.selectedCampus &&
             room.name.toLowerCase().includes(this.searchTerm.toLowerCase())
         );
       },
@@ -76,7 +77,7 @@
         }
         return this.buildings.filter(
           (building) =>
-            building.campus.name == this.selectedCampus &&
+            building.campus.id == this.selectedCampus &&
             building.name.toLowerCase().includes(this.searchTerm.toLowerCase())
         );
       },
@@ -84,6 +85,11 @@
     methods: {
       emitLocation(location) {
         this.$emit("selectLocation", location);
+      },
+    },
+    watch: {
+      selectedCampus(newVal) {
+        this.$emit("updateSelectedCampus", newVal);
       },
     },
   };
