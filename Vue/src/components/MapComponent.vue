@@ -9,6 +9,7 @@
         class="location"
         v-for="building in buildings"
         :key="building.id"
+        @click="emitLocation(building)"
         :style="{
           top: building.location.mapLatitude + 'px',
           left: building.location.mapLongitude + 'px',
@@ -23,6 +24,7 @@
         class="location"
         v-for="room in rooms"
         :key="room.id"
+        @click="emitLocation(room)"
         :style="{
           top: room.location.mapLatitude + 'px',
           left: room.location.mapLongitude + 'px',
@@ -99,11 +101,9 @@
       ]);
     },
     methods: {
-      searchTheArray() {
-        // alert(nodes.input.focus());
-        alert(search());
+      emitLocation(location) {
+        this.$emit("selectLocation", location);
       },
-      toggleNodes() {},
     },
   };
 </script>

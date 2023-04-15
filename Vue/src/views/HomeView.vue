@@ -23,6 +23,7 @@
       :nodes="locations"
       :campus="campuses[0]"
       :defaults="defaults"
+      @selectLocation="setLocation"
     ></MapComponent>
   </main>
 </template>
