@@ -42,10 +42,14 @@
     setup(props) {
       // Watch for changes
       watch(() => props.location);
-      // alert(JSON.stringify(location));
 
       let image = ref([]);
 
+      if (location.hasOwnProperty("type")) {
+        // This is a room
+      } else {
+        // this is a building
+      }
       // Get Image by ID
       async function getImage() {
         const { data } = await axios.get(
@@ -54,8 +58,8 @@
         image.value = data;
       }
 
-      getImage();
-      return { image };
+      // getImage();
+      // return { image };
     },
   };
 </script>
