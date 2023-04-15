@@ -8,8 +8,8 @@
       @toggle="toggleDetails"
     ></SearchComponent>
     <DetailsComponent
-      v-show="locationContent"
-      :location="rooms[intValue]"
+      v-show="location != {}"
+      :location="location"
       :image="1"
       @close="toggleDetails"
       @navigate="navigate"
@@ -23,6 +23,7 @@
       :campus="campuses[0]"
       :defaults="defaults"
     ></MapComponent>
+    <button @click="locFunction">Hello</button>
     <!-- <CanvasComponent
       v-show="false"
       :buildings="buildings"
@@ -62,6 +63,8 @@
       let campuses = ref([]);
       let rooms = ref([]);
 
+      let location = ref([]);
+
       // Campuses
       async function getCampuses() {
         try {
@@ -86,7 +89,7 @@
         }
       }
 
-      // Other
+      // Floors
       async function getFloors() {
         try {
           const { data } = await axios.get("http://localhost:8000/api/floors");
@@ -96,6 +99,7 @@
         }
       }
 
+      // Buildings
       async function getBuildings() {
         try {
           const { data } = await axios.get(
@@ -107,6 +111,7 @@
         }
       }
 
+      // Rooms
       async function getRooms() {
         try {
           const { data } = await axios.get("http://localhost:8000/api/rooms");
@@ -122,12 +127,21 @@
       getRooms();
       getFloors();
 
+      location = {};
+
+      function locFunction() {
+        // location = newLocation;
+        alert(JSON.stringify(location));
+      }
+
       return {
         buildings,
         locations,
         campuses,
         rooms,
         floors,
+        locFunction,
+        location,
       };
     },
     data() {
@@ -136,7 +150,6 @@
           onlyNodes: false,
           demo: false,
         },
-        intValue: 0,
         locationContent: true,
       };
     },
