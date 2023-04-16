@@ -155,20 +155,12 @@
       getRooms();
       getFloors();
 
-      location = {};
-
-      function locFunction() {
-        // location = newLocation;
-        alert(JSON.stringify(location));
-      }
-
       return {
         buildings,
         locations,
         campuses,
         rooms,
         floors,
-        locFunction,
         location,
         connections,
       };
