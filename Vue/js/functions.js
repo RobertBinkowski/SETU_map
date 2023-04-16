@@ -35,16 +35,37 @@ export function geoDistance(start, end, meters = false) {
   return output;
 }
 
-export function getClosestNode(locations = null, x = 0, y = 0) {
-  if (location === null) {
-    return [];
-  }
-  let output = locations[0];
-  for (location in location) {
-    if (location.mapLongitude) {
-      output = location;
-    }
+/**
+ *
+ * Algorithm to find the closest node to the specified location on the map
+ *
+ * @param {array} locations - To Search Through
+ * @param {int} x - latitude
+ * @param {int} y - longitude
+ * @param {int} z - altitude
+ * @returns
+ */
+export function getClosestNode(locations = null, x = 0, y = 0, z = 0) {
+  if (locations === null || locations.length === 0) {
+    return null;
   }
 
-  return output;
+  let closestDistance = Infinity;
+  let closestNode = null;
+
+  for (let i = 0; i < locations.length; i++) {
+    const location = locations[i];
+
+    const distance = Math.sqrt(
+      Math.pow(location.mapLongitude - x, 2) +
+        Math.pow(location.mapLatitude - y, 2) +
+        Math.pow(location.mapAltitude - z, 2)
+    );
+
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestNode = location;
+    }
+  }
+  return closestNode;
 }

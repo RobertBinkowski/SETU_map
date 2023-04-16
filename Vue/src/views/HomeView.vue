@@ -208,12 +208,18 @@
         this.navigation.destination = location;
         this.closeDetails();
       },
+      setDeparture(x = 0, y = 0, z = 0) {
+        if (this.navigation.set == false) {
+          this.navigation.departure = getClosestNode(this.locations, x, y, z);
+        }
+      },
       navigate() {
         this.closeNavigation();
         this.navigation.set = true;
-        // if (this.navigation.departure == null) {
-        //   this.navigation.departure = getClosestNode();
-        // }
+        if (this.navigation.departure == null) {
+          this.navigation.departure = getClosestNode(this.locations);
+        }
+
         let output = search(
           this.locations,
           this.connections,
@@ -221,9 +227,6 @@
           this.navigation.destination,
           this.navigation.disabled
         );
-        alert(JSON.stringify(this.navigation));
-        return;
-
         if (output === null) {
           alert("Wrong information provided");
           return;
