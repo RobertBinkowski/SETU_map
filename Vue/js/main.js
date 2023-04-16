@@ -14,13 +14,25 @@ import { Map } from "./map.js";
 export function search(
   nodes = [],
   connections = [],
-  departure,
-  destination,
+  departure = null,
+  destination = null,
   disabled = false
 ) {
-  //  Set Unset Locations
-  if (nodes.length === 0 || connections.length === 0) {
-    console.log("No Nodes/Connections Provided");
+  //  Check if set
+  if (nodes.length === 0) {
+    console.log("No Nodes");
+    return [];
+  }
+  if (connections.length === 0) {
+    console.log("No Connections");
+    return [];
+  }
+  if (departure === null) {
+    console.log("No Departure");
+    return [];
+  }
+  if (destination === null) {
+    console.log("No Destination");
     return [];
   }
 

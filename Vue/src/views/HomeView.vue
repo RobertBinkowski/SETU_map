@@ -10,12 +10,18 @@
       @updateSelectedCampus="handleSelectedCampusUpdate"
     ></SearchComponent>
     <DetailsComponent
-      v-show="selectedLocation"
+      v-show="selectedLocation && !navigation.enabled"
       :location="selectedLocation"
-      :image="1"
       @close="closeDetails"
-      @navigate="navigate"
+      @openNavigation="openNavigation"
     ></DetailsComponent>
+    <NavigationPanel
+      v-show="navigation.enabled"
+      :navigation="navigation"
+      @close="closeNavigation"
+      @navigate="navigate"
+      @updateDisabled="updateWheelchairAccessible"
+    ></NavigationPanel>
     <MapComponent
       v-show="true"
       :buildings="buildings"
@@ -26,6 +32,18 @@
       :defaults="defaults"
       @selectLocation="setLocation"
     ></MapComponent>
+
+    <!-- Still working on -->
+    <CanvasComponent
+      v-show="false"
+      :buildings="buildings"
+      :rooms="rooms"
+      :floors="floors"
+      :nodes="locations"
+      :campus="campuses[selectedCampus - 1]"
+      :defaults="defaults"
+      @selectLocation="setLocation"
+    ></CanvasComponent>
   </main>
 </template>
 
@@ -34,6 +52,7 @@
   import { ref } from "vue";
 
   import { search } from "@/../js/main.js";
+  import { getClosestNode } from "@/../js/functions.js";
 
   import MapComponent from "../components/MapComponent.vue";
   import CanvasComponent from "../components/CanvasComponent.vue";
@@ -41,6 +60,7 @@
   import SearchComponent from "../components/SearchComponent.vue";
   import DetailsComponent from "../components/DetailsComponent.vue";
   import AdminPanel from "../components/AdminPanel.vue";
+  import NavigationPanel from "../components/NavigationPanel.vue";
 
   export default {
     components: {
@@ -49,6 +69,7 @@
       DetailsComponent,
       AdminPanel,
       CanvasComponent,
+      NavigationPanel,
     },
     setup() {
       let buildings = ref([]);
@@ -56,6 +77,7 @@
       let floors = ref([]);
       let campuses = ref([]);
       let rooms = ref([]);
+      let connections = ref([]);
 
       let location = ref([]);
 
@@ -88,6 +110,18 @@
         try {
           const { data } = await axios.get("http://localhost:8000/api/floors");
           floors.value = data;
+        } catch (error) {
+          console.error("Error".error);
+        }
+      }
+
+      // Connections
+      async function getFloors() {
+        try {
+          const { data } = await axios.get(
+            "http://localhost:8000/api/connections"
+          );
+          connections.value = data;
         } catch (error) {
           console.error("Error".error);
         }
@@ -136,6 +170,7 @@
         floors,
         locFunction,
         location,
+        connections,
       };
     },
     data() {
@@ -146,6 +181,13 @@
         },
         selectedLocation: null,
         selectedCampus: 1,
+        navigation: {
+          enabled: false,
+          disabled: false,
+          set: false,
+          departure: null,
+          destination: null,
+        },
       };
     },
     methods: {
@@ -155,16 +197,46 @@
       closeDetails() {
         this.selectedLocation = null;
       },
+      closeNavigation() {
+        this.navigation.enabled = false;
+      },
       setLocation(location) {
         this.selectedLocation = location;
         this.locationContent = true;
       },
-      navigate(location) {
-        alert(JSON.stringify(location));
-      },
       handleSelectedCampusUpdate(campusId) {
         this.selectedLocation = null;
         this.selectedCampus = campusId;
+      },
+      updateWheelchairAccessible(isDisabled) {
+        this.navigation.disabled = isDisabled;
+      },
+      openNavigation(location) {
+        this.navigation.enabled = true;
+        this.navigation.destination = location;
+        this.closeDetails();
+      },
+      navigate() {
+        this.closeNavigation();
+        this.navigation.set = true;
+        // if (this.navigation.departure == null) {
+        //   this.navigation.departure = getClosestNode();
+        // }
+        let output = search(
+          this.locations,
+          this.connections,
+          this.navigation.departure,
+          this.navigation.destination,
+          this.navigation.disabled
+        );
+        alert(JSON.stringify(this.navigation));
+        return;
+
+        if (output === null) {
+          alert("Wrong information provided");
+          return;
+        }
+        return output;
       },
     },
   };

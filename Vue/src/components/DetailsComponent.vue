@@ -15,7 +15,7 @@
       <p v-if="location.info" class="info">{{ location.info }}</p>
     </div>
     <div class="options">
-      <button @click="$emit('navigate', location)">navigate</button>
+      <button @click="$emit('openNavigation', location)">navigate</button>
     </div>
   </div>
 </template>
@@ -29,13 +29,10 @@
       location: {
         required: true,
       },
-      image: {
-        required: false,
-      },
     },
     methods: {
       submit() {
-        this.$emit("navigate", location);
+        this.$emit("openNavigation", location);
         this.$emit("close");
       },
     },
@@ -74,9 +71,11 @@
     border-radius: $rad-1;
     background-color: $c-bg-1;
     box-shadow: $shadow;
-    width: 20em;
+    width: 30em;
+    padding: 1em;
     overflow: hidden;
     font-weight: bold;
+    color: $txt-2;
     .close {
       position: absolute;
       cursor: pointer;
@@ -93,7 +92,6 @@
     }
     .details {
       padding: 1em;
-      color: $txt-2;
       text-shadow: $t-shadow;
       .building {
         color: $acc-2;

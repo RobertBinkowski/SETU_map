@@ -34,3 +34,17 @@ export function geoDistance(start, end, meters = false) {
   }
   return output;
 }
+
+export function getClosestNode(locations = null, x = 0, y = 0) {
+  if (location === null) {
+    return [];
+  }
+  let output = locations[0];
+  for (location in location) {
+    if (location.mapLongitude) {
+      output = location;
+    }
+  }
+
+  return output;
+}
