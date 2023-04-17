@@ -2,15 +2,10 @@
   <main>
     <h1>Users</h1>
     <div class="table">
-      <div>
-        <button
-          v-for="table in tables"
-          :key="table.id"
-          @click="setData()"
-          v-show="table.Tables_in_setu_map != 'logs'"
-        >
-          {{ table.Tables_in_setu_map }}
-        </button>
+      <div class="top">
+        <a v-for="table in tables" :key="table.id" :href="table">
+          {{ table }}
+        </a>
       </div>
       <TableComponent :data="users"></TableComponent>
       <button>Create New</button>
@@ -57,7 +52,13 @@
 
 <style scoped lang="scss">
   @import "@/assets/variables.scss";
-  .table {
-    // padding: 1em;
+  .top {
+    padding: 2em;
+    a {
+      padding: 1em;
+      margin: 1em;
+      border-radius: $rad-1;
+      background-color: $c-bg-1;
+    }
   }
 </style>

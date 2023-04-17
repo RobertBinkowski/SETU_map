@@ -59,6 +59,54 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/admin/Logs.vue"),
     },
+    {
+      path: "/buildings",
+      name: "Buildings",
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import("../views/admin/CRUD/Buildings.vue"),
+    },
+    {
+      path: "/campuses",
+      name: "Campuses",
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import("../views/admin/CRUD/Campuses.vue"),
+    },
+    {
+      path: "/connections",
+      name: "Connections",
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import("../views/admin/CRUD/Connections.vue"),
+    },
+    {
+      path: "/floors",
+      name: "Floors",
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import("../views/admin/CRUD/Floors.vue"),
+    },
+    {
+      path: "/images",
+      name: "Images",
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import("../views/admin/CRUD/Images.vue"),
+    },
+    {
+      path: "/Rooms",
+      name: "Rooms",
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import("../views/admin/CRUD/Rooms.vue"),
+    },
   ],
 });
 

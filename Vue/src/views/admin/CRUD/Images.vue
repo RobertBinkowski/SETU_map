@@ -1,13 +1,14 @@
 <template>
   <main>
-    <h1>Logs</h1>
-    <div class="top">
-      <a v-for="table in tables" :key="table.id" :href="table">
-        {{ table }}
-      </a>
-    </div>
+    <h1>Images</h1>
     <div class="table">
-      <TableComponent :data="logs" :edit="false"></TableComponent>
+      <div class="top">
+        <a v-for="table in tables" :key="table.id" :href="table">
+          {{ table }}
+        </a>
+      </div>
+      <TableComponent :data="Images"></TableComponent>
+      <button>Create New</button>
     </div>
   </main>
 </template>
@@ -22,21 +23,22 @@
       TableComponent,
     },
     setup() {
-      let logs = ref([]);
       let tables = ref([]);
+      let Images = ref([]);
 
       async function getTables() {
         const { data } = await axios.get("http://localhost:8000/api/tables");
         tables.value = data;
       }
-      async function getLogs() {
-        const { data } = await axios.get("http://localhost:8000/api/logs");
-        logs.value = data;
+
+      async function getImages() {
+        const { data } = await axios.get("http://localhost:8000/api/Images");
+        Images.value = data;
       }
 
-      getLogs();
       getTables();
-      return { logs, tables };
+      getImages();
+      return { Images, tables };
     },
   };
 </script>
