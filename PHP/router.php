@@ -60,8 +60,8 @@ if ($request[1] == "api") {
             break;
         case "tables":
             // Returns all tables used to then display them in the admin panel
-            $statement = $database->getTables();
-            echo json_encode($statement->fetchAll(PDO::FETCH_ASSOC));
+            $tables = $database->getTables();
+            echo json_encode($tables);
             break;
         case "logs":
             // Logs

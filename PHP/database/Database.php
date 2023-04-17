@@ -18,11 +18,11 @@ class Database
     /**
      * @return string
      */
-    public function getTables(): string
+    public function getTables(): array
     {
         $sql = "SHOW TABLES";
         $output = $this->getConnection()->prepare($sql);
         $output->execute();
-        return $output;
+        return $output->fetchAll(PDO::FETCH_COLUMN);
     }
 }
