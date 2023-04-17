@@ -24,23 +24,25 @@
       @updateDisabled="updateWheelchairAccessible"
     ></NavigationPanel>
     <MapComponent
-      v-show="true"
+      v-if="true"
       :buildings="buildings"
       :rooms="rooms"
       :floors="floors"
       :nodes="locations"
       :campus="campuses[selectedCampus - 1]"
       :defaults="defaults"
+      :navigation="navigation"
       @selectLocation="setLocation"
     ></MapComponent>
 
     <!-- Still working on -->
     <CanvasComponent
-      v-show="false"
+      v-if="false"
       :buildings="buildings"
       :rooms="rooms"
       :floors="floors"
       :nodes="locations"
+      :connections="connections"
       :campus="campuses[selectedCampus - 1]"
       :defaults="defaults"
       @selectLocation="setLocation"
@@ -170,7 +172,7 @@
       return {
         defaults: {
           onlyNodes: false,
-          demo: false,
+          demo: true,
         },
         selectedLocation: null,
         selectedCampus: 1,
@@ -237,7 +239,7 @@
         }
 
         this.navigation.distance = output[0];
-        this.navigation.route = output[1];
+        this.navigation.route = output[2];
       },
     },
   };

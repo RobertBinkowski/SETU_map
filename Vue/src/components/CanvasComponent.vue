@@ -33,6 +33,9 @@
       defaults: {
         required: true,
       },
+      connections: {
+        required: false,
+      },
     },
     setup(props) {
       const canvas = ref(null);
@@ -71,7 +74,37 @@
           );
         });
 
-        // Draw other elements (rooms, floors, nodes) on the canvas here
+        // Draw connections
+        if (props.connections) {
+          drawConnections();
+        }
+      }
+
+      function drawConnections() {
+        ctx.value.lineWidth = 2;
+        ctx.value.strokeStyle = "white";
+
+        props.connections.forEach((connection) => {
+          const locationOne = props.buildings.find(
+            (building) => building.id === connection.locationOne.id
+          );
+          const locationTwo = props.buildings.find(
+            (building) => building.id === connection.locationTwo.id
+          );
+
+          if (locationOne && locationTwo) {
+            ctx.value.beginPath();
+            ctx.value.moveTo(
+              locationOne.location.mapLatitude,
+              locationOne.location.mapLongitude
+            );
+            ctx.value.lineTo(
+              locationTwo.location.mapLatitude,
+              locationTwo.location.mapLongitude
+            );
+            ctx.value.stroke();
+          }
+        });
       }
 
       function drawSvg(svg, x, y) {
@@ -84,6 +117,37 @@
 
       function handleClick(event) {
         // Handle canvas click events here
+      }
+
+      function drawConnections() {
+        ctx.value.lineWidth = 2;
+        ctx.value.strokeStyle = "red";
+
+        // Filter connections based on custom criteria
+        // const filteredConnections =
+        //   props.connections.filter(shouldDrawConnection);
+
+        filteredConnections.forEach((connection) => {
+          const locationOne = props.buildings.find(
+            (building) => building.id === connection.locationOne.id
+          );
+          const locationTwo = props.buildings.find(
+            (building) => building.id === connection.locationTwo.id
+          );
+
+          if (locationOne && locationTwo) {
+            ctx.value.beginPath();
+            ctx.value.moveTo(
+              locationOne.location.mapLatitude,
+              locationOne.location.mapLongitude
+            );
+            ctx.value.lineTo(
+              locationTwo.location.mapLatitude,
+              locationTwo.location.mapLongitude
+            );
+            ctx.value.stroke();
+          }
+        });
       }
 
       return {
@@ -101,6 +165,12 @@
 
 <style lang="scss" scoped>
   @import "@/assets/variables.scss";
+  #mapComponent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
   #canvas {
     margin: auto;
     position: relative;

@@ -87,6 +87,9 @@
       defaults: {
         required: true,
       },
+      navigation: {
+        required: false,
+      },
     },
     setup(props) {
       watch([
@@ -116,13 +119,6 @@
     border-radius: $rad-1;
     .location {
       position: absolute;
-      // background-color: rgb(122, 122, 165);
-      // width: 2em;
-      // border-radius: 1em;
-      // height: 2em;
-      // p {
-      //   padding: 0.3em 0 0 0.8em;
-      // }
     }
     .connection {
       display: none;

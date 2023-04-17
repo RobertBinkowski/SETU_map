@@ -1,9 +1,9 @@
 <template>
   <div id="locationDetails">
     <span class="close" @click="$emit('close')">X</span>
-    <!-- <div v-show="image.src != '' && image.enabled" class="image">
+    <div v-show="image.src != '' && image.enabled" class="image">
       <img :src="image.src" :alt="image.name" />
-    </div> -->
+    </div>
     <div v-if="location" class="details">
       <h1 v-if="location.name">
         {{ location.name }}
@@ -51,14 +51,12 @@
       }
       // Get Image by ID
       async function getImage() {
-        const { data } = await axios.get(
-          "http://localhost:8000/api/images/" + props.image
-        );
+        const { data } = await axios.get("http://localhost:8000/api/images/1");
         image.value = data;
       }
 
-      // getImage();
-      // return { image };
+      getImage();
+      return { image };
     },
   };
 </script>

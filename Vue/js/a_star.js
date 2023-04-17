@@ -21,6 +21,7 @@ export function A_Star(departure, destination, disabled = false) {
   const unchecked = new Map(); // Nodes to be checked
   const checked = new Set(); // Nodes that have been checked
   const path = []; // Path to the destination
+  const conn = [];
   let distance = 0; // Total distance to the destination
 
   // Add the departure node to the unchecked list
@@ -36,18 +37,20 @@ export function A_Star(departure, destination, disabled = false) {
     // If the current node is the destination, we're done
     if (current.id === destination.id) {
       let temp = current;
-      path.push(temp);
+      path.push(temp.id);
+
       // Backtrack from the destination to the departure to get the path
       while (temp.parent) {
-        path.push(temp.parent);
+        path.push(temp.parent.id);
         distance += geoDistance(temp, temp.parent, true);
         temp = temp.parent;
       }
+      // path.push(destination.id);
 
       distance = { distance: distance | 0, metric: "km" };
 
       // Return the path and distance in an array
-      return [distance, path.reverse()]; // Make distance a whole number
+      return [distance, path.reverse(), conn]; // Make distance a whole number
     }
 
     // Remove the current node from the unchecked list and add it to the checked list
