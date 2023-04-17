@@ -176,9 +176,10 @@
         navigation: {
           enabled: false,
           disabled: false,
-          set: false,
           departure: null,
           destination: null,
+          distance: null,
+          route: [],
         },
       };
     },
@@ -214,8 +215,6 @@
         }
       },
       navigate() {
-        this.closeNavigation();
-        this.navigation.set = true;
         if (this.navigation.departure == null) {
           this.navigation.departure = getClosestNode(this.locations);
         }
@@ -232,7 +231,8 @@
           return;
         }
 
-        return output;
+        this.navigation.distance = output[0];
+        this.navigation.route = output[1];
       },
     },
   };

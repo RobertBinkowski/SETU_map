@@ -14,6 +14,9 @@
         navigation.destination.name
       }}</strong>
     </p>
+    <p v-if="navigation.distance != null">
+      {{ navigation.distance.distance + " " + navigation.distance.metric }}
+    </p>
     <br />
     <input
       type="checkbox"
