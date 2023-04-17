@@ -2,8 +2,8 @@
   <main>
     <h1>Admin Page</h1>
 
-    <div>
-      <a v-for="table in tables" :key="table.id" href=""></a>
+    <div class="dashboard">
+      <a v-for="table in tables" :key="table.id" :href="table">{{ table }}</a>
     </div>
   </main>
 </template>
@@ -13,9 +13,6 @@
   import { ref } from "vue";
 
   export default {
-    components: {
-      TableComponent,
-    },
     setup() {
       let tables = ref([]);
 
@@ -30,4 +27,27 @@
   };
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="scss" scoped>
+  @import "@/assets/variables.scss";
+  .dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5em;
+    margin: auto;
+
+    a {
+      flex-basis: 25%;
+      height: 5em;
+      padding: 1em;
+      margin: 1em;
+      border-radius: $rad-1;
+      background-color: $c-bg-1;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+</style>

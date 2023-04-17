@@ -25,6 +25,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/SignIn.vue"),
     },
+
     // Admin Pages------------------------------------------------------------
     {
       path: "/admin",
@@ -35,7 +36,7 @@ const router = createRouter({
       component: () => import("../views/admin/AdminPage.vue"),
     },
     {
-      path: "/Locations",
+      path: "/locations",
       name: "Locations",
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
