@@ -182,7 +182,8 @@
           departure: null,
           destination: null,
           distance: null,
-          route: [],
+          nodeIds: [],
+          path: [],
         },
       };
     },
@@ -234,12 +235,17 @@
           this.navigation.disabled
         );
         if (output === []) {
-          alert("No route found");
+          alert("No Route found");
           return;
         }
 
-        this.navigation.distance = output[0];
-        this.navigation.route = output[2];
+        [
+          this.navigation.distance,
+          this.navigation.nodeIds,
+          this.navigation.path,
+        ] = output;
+
+        alert(this.navigation.nodeIds);
       },
     },
   };
