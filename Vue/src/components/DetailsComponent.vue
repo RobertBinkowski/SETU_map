@@ -16,6 +16,7 @@
     </div>
     <div class="options">
       <button @click="$emit('openNavigation', location)">navigate</button>
+      <button @click="$emit('setDeparture', location)">set as Departure</button>
     </div>
   </div>
 </template>
@@ -33,6 +34,7 @@
     methods: {
       submit() {
         this.$emit("openNavigation", location);
+        this.$emit("setDeparture", location);
         this.$emit("close");
       },
     },
@@ -65,7 +67,7 @@
   @import "@/assets/variables.scss";
   #locationDetails {
     position: fixed;
-    z-index: 1000;
+    z-index: 900;
     top: 5em;
     left: 2em;
     border-radius: $rad-1;

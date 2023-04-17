@@ -14,6 +14,7 @@
       :location="selectedLocation"
       @close="closeDetails"
       @openNavigation="openNavigation"
+      @setDeparture="setDepartureLoc"
     ></DetailsComponent>
     <NavigationPanel
       v-show="navigation.enabled"
@@ -208,6 +209,10 @@
         this.navigation.enabled = true;
         this.navigation.destination = location;
         this.closeDetails();
+      },
+      setDepartureLoc(location) {
+        this.navigation.departure = location;
+        this.selectedLocation = null;
       },
       setDeparture(x = 0, y = 0, z = 0) {
         if (this.navigation.set == false) {

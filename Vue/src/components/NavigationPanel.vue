@@ -5,7 +5,9 @@
     <p>
       From: <br />
       <strong v-if="navigation.departure">{{
-        navigation.departure ? "PinnedSpot" : "Entrance"
+        navigation.departure.name != null
+          ? navigation.departure.name
+          : "Entrance"
       }}</strong>
       <strong v-if="!navigation.departure">Select Location on the map</strong>
       <br />
