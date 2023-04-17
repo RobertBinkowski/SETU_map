@@ -95,6 +95,11 @@ class UserController extends BaseController
                 $errors = $this->getValidationErrors($data);
                 if (!empty($errors)) {
                     http_response_code(422);
+                    $this->logRepository->create(
+                        "User Request",
+                        "Attempting to Reach Wrong method " . $method . " id: " . $id,
+                        "Error"
+                    );
                     echo json_encode(["errors" => $errors]);
                     break;
                 }

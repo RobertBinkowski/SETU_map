@@ -10,24 +10,31 @@
                 <p class="text-white-50 mb-5"></p>
 
                 <div class="form-outline form-white mb-4">
-                  <label class="form-label" for="typeEmailX">Email</label>
+                  <label class="form-label" for="email">Email</label>
                   <input
                     type="email"
-                    id="typeEmailX"
+                    id="email"
+                    name="email"
+                    v-model="email"
                     class="form-control form-control-lg"
                   />
                 </div>
 
                 <div class="form-outline form-white mb-4">
-                  <label class="form-label" for="typePasswordX">Password</label>
+                  <label class="form-label" for="password">Password</label>
                   <input
                     type="password"
-                    id="typePasswordX"
+                    id="password"
+                    name="password"
+                    v-model="password"
                     class="form-control form-control-lg"
                   />
                 </div>
-
-                <button class="btn btn-outline-light btn-lg px-5" type="submit">
+                <button
+                  class="btn btn-outline-light btn-lg px-5"
+                  type="submit"
+                  @click="login"
+                >
                   Login
                 </button>
               </div>
@@ -39,6 +46,34 @@
   </section>
 </template>
 
-<style lang="sass" scoped></style>
+<script>
+  import axios from "axios";
+  export default {
+    data() {
+      return {
+        email: "",
+        password: "",
+      };
+    },
+    methods: {
+      async login() {
+        try {
+          const response = await axios.post("http://localhost:8000/api/login", {
+            email: this.email,
+            password: this.password,
+          });
+          const authToken = response.data.token;
+          // Store the authToken in localStorage
+          localStorage.setItem("authToken", authToken);
+          // Redirect to the protected route
+          this.$router.push({ name: "Admin" });
+        } catch (error) {
+          console.error(error);
+          alert("Invalid login credentials");
+        }
+      },
+    },
+  };
+</script>
 
-<script></script>
+<style lang="scss" scoped></style>

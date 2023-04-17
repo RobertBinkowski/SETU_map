@@ -23,7 +23,7 @@
       },
       edit: {
         required: false,
-        default: true,
+        default: false,
       },
     },
   };

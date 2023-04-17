@@ -68,6 +68,10 @@ if ($request[1] == "api") {
             $output = new LogController($logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
+        case "login":
+            // LogIn Service
+            $output = new SignInService($userRepository);
+            break;
         default:
             // By Default respond with failiure
             http_response_code(404);

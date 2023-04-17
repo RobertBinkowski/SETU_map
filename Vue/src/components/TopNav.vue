@@ -27,54 +27,18 @@
               :to="route.to"
               >{{ route.name }}</RouterLink
             >
-            <!-- Languages Support -->
-            <li
-              class="nav-item dropdown bg-dark text-white"
-              v-show="features.languageSupport"
+            <RouterLink
+              v-for="route in adminRoutes"
+              :key="route"
+              class="nav-item nav-link text-white"
+              :to="route.to"
+              >{{ route.name }}</RouterLink
             >
-              <a
-                class="nav-link dropdown-toggle bg-dark text-white"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Language
-              </a>
-              <ul class="dropdown-menu bg-dark">
-                <li>
-                  <a class="dropdown-item text-white" href="#">English</a>
-                </li>
-                <li>
-                  <a class="dropdown-item text-white" href="#">Gaeilge</a>
-                </li>
-                <!-- <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item text-white" href="#">Something else here</a>
-                </li> -->
-              </ul>
-            </li>
-            <!-- Language End -->
           </ul>
           <!-- Routes End -->
-          <!-- Dark Mode -->
-          <a href="#" v-show="features.darkMode">
-            <i class="fa-solid fa-moon"></i>
-          </a>
-          <!-- Dark Mode End -->
-          <!-- Search -->
-          <form class="d-flex" role="search" v-if="features.search">
-            <input
-              class="form-control me-2 text-white bg-dark"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success text-white" type="submit">
-              Search
-            </button>
-          </form>
-          <!-- Search End -->
+          <button class="btn btn-primary" v-if="token" @click="logout">
+            Logout
+          </button>
         </div>
       </div>
     </nav>
@@ -113,23 +77,29 @@
             name: "About",
             to: "about",
           },
+        ],
+        adminRoutes: [
           {
             enabled: true,
-            name: "Sign In",
-            to: "sign-in",
-          },
-          {
-            enabled: true,
+            logged: false,
             name: "Admin Page",
             to: "admin",
           },
         ],
+        token: localStorage.getItem("authToken"),
         features: {
           darkMode: false,
           languageSupport: false,
           search: false,
         },
       };
+    },
+    methods: {
+      logout() {
+        localStorage.removeItem("authToken");
+        alert("Logged Out");
+        this.$router.push({ name: "Login" });
+      },
     },
   };
 </script>

@@ -18,8 +18,8 @@ const router = createRouter({
       component: () => import("../views/AboutView.vue"),
     },
     {
-      path: "/sign-in",
-      name: "Sign-in",
+      path: "/signIn",
+      name: "SignIn",
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -109,5 +109,36 @@ const router = createRouter({
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  // Protected routes that require authentication
+  const protectedRoutes = [
+    "Admin",
+    "Locations",
+    "Users",
+    "Logs",
+    "Buildings",
+    "Campuses",
+    "Connections",
+    "Floors",
+    "Images",
+    "Rooms",
+  ];
+
+  // Check if logged in and if the location requires login
+  if (protectedRoutes.includes(to.name) && !isLoggedIn()) {
+    // Redirect to the sign-in page
+    next({ name: "SignIn" });
+  } else {
+    // Continue to the destination route
+    next();
+  }
+});
+
+const isLoggedIn = () => {
+  // Check if the authentication token exists in localStorage
+  const authToken = localStorage.getItem("authToken");
+  return authToken !== null;
+};
 
 export default router;
