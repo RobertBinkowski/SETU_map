@@ -1,3 +1,5 @@
+import { Node } from "./node.js"; // Make sure to import updated classes
+import { Connection } from "./connection.js";
 import { geoDistance } from "./functions.js";
 
 /**
@@ -32,13 +34,13 @@ export function A_Star(departure, destination, disabled = false) {
     );
 
     // If the current node is the destination, we're done
-    if (current === destination) {
+    if (current.id === destination.id) {
       let temp = current;
       path.push(temp);
       // Backtrack from the destination to the departure to get the path
       while (temp.parent) {
         path.push(temp.parent);
-        distance = geoDistance(temp, temp.parent, true);
+        distance += geoDistance(temp, temp.parent, true);
         temp = temp.parent;
       }
 

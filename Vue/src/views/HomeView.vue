@@ -224,13 +224,14 @@
           this.locations,
           this.connections,
           this.navigation.departure,
-          this.navigation.destination,
+          this.navigation.destination.location,
           this.navigation.disabled
         );
-        if (output === null) {
-          alert("Wrong information provided");
+        if (output === []) {
+          alert("No route found");
           return;
         }
+
         return output;
       },
     },

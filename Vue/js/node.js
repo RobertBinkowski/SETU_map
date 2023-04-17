@@ -11,23 +11,19 @@ export class Node {
    *
    *    Node Class
    *
+   * @param {int} id - number of the node
    * @param {str} name - Name of the location
-   * @param {int} priority - priority
    * @param {double} x - X Coordinates
    * @param {double} y - Y Coordinates
    * @param {double} z - Z Coordinates
-   * @param {str} info - Location Information
-   * @param {str} acronym - Acronym of the location
    * @param {str} type - Type of the location [room, bathroom] - Pulled from database
-   * @param {bool} blocked - Set weather it is accusable
    *
    */
-  constructor(name, x, y, z = 0, type = "Location", info = "", acronym = "") {
+  constructor(id, name, x, y, z = 0, type = "Location") {
+    this.id = id;
     this.name = name;
 
     //Location Information
-    this.info = info;
-    this.acronym = acronym;
     this.type = type;
 
     //Location Info
