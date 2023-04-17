@@ -8,7 +8,7 @@
         </a>
       </div>
       <TableComponent :data="connections"></TableComponent>
-      <button>Create New</button>
+      <!-- <button>Create New</button> -->
     </div>
   </main>
 </template>
