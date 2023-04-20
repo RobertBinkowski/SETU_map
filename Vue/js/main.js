@@ -39,8 +39,8 @@ export function search(
   //  connect locations
   let map = Map(locations, connections);
 
-  departure = map[departure.id];
-  destination = map[destination.id];
+  departure = map[departure.id - 1];
+  destination = map[destination.id - 1];
 
   // set unset locations
   if (typeof departure == "undefined" || typeof destination == "undefined") {
