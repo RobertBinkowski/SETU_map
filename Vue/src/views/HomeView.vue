@@ -23,8 +23,9 @@
       @navigate="navigate"
       @updateDisabled="updateWheelchairAccessible"
     ></NavigationPanel>
+
     <MapComponent
-      v-if="true"
+      v-if="false"
       :buildings="buildings"
       :rooms="rooms"
       :floors="floors"
@@ -35,6 +36,7 @@
       @selectLocation="setLocation"
     ></MapComponent>
 
+    <GoogleMap></GoogleMap>
     <!-- Still working on -->
     <CanvasComponent
       v-if="false"
@@ -58,6 +60,7 @@
   import { getClosestNode } from "@/../js/functions.js";
 
   import MapComponent from "../components/MapComponent.vue";
+  import GoogleMap from "../components/map/GoogleMap.vue";
   import CanvasComponent from "../components/CanvasComponent.vue";
 
   import SearchComponent from "../components/SearchComponent.vue";
@@ -67,12 +70,13 @@
 
   export default {
     components: {
-      MapComponent,
+      // MapComponent,
       SearchComponent,
       DetailsComponent,
       AdminPanel,
       CanvasComponent,
       NavigationPanel,
+      GoogleMap,
     },
     setup() {
       let buildings = ref([]);
