@@ -25,8 +25,8 @@ class CampusRepository extends BaseRepository
                 $row['abbreviation'] ?? "",
                 $row['info'] ?? "",
                 $row['size'] ?? 0,
-                $row['height'] ?? 0,
-                $row['width'] ?? 0,
+                $row['lat'] ?? 0,
+                $row['lng'] ?? 0,
                 $row['enabled'] ?? true
             );
             $campuses[] = $campus;
@@ -64,8 +64,8 @@ class CampusRepository extends BaseRepository
                 $data['abbreviation'] ?? "",
                 $data['info'] ?? "",
                 $data['size'] ?? 0,
-                $data['height'] ?? 0,
-                $data['width'] ?? 0,
+                $data['lat'] ?? 0,
+                $data['lng'] ?? 0,
                 $data['enabled'] ?? true
             );
         }

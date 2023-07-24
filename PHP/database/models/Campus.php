@@ -13,8 +13,8 @@ class Campus
         private string $layout = "",
         private string $info = "",
         private float $size = 0,
-        private float $height = 0,
-        private float $width = 0,
+        private float $lat = 0,
+        private float $lng = 0,
         private string $abbreviation = "",
         private bool $enabled = true,
     ) {
@@ -24,8 +24,8 @@ class Campus
         $this->setAbbreviation($abbreviation);
         $this->setInfo($info);
         $this->setSize($size);
-        $this->setHeight($height);
-        $this->setWidth($width);
+        $this->setLat($lat);
+        $this->setlng($lng);
         $this->setLayout($layout);
         $this->setLayout($layout);
     }
@@ -61,14 +61,14 @@ class Campus
         return $this->size;
     }
 
-    public function getHeight(): float
+    public function getLat(): float
     {
-        return $this->height;
+        return $this->lat;
     }
 
-    public function getWidth(): float
+    public function getLng(): float
     {
-        return $this->width;
+        return $this->lng;
     }
 
     public function getLayout(): string
@@ -102,14 +102,14 @@ class Campus
         $this->size = (float)$size;
     }
 
-    public function setHeight(float $height): void
+    public function setLat(float $lat): void
     {
-        $this->height = $height;
+        $this->lat = $lat;
     }
 
-    public function setWidth(float $width): void
+    public function setLng(float $width): void
     {
-        $this->width = $width;
+        $this->lng = $width;
     }
     public function setLayout(string $layout): void
     {
@@ -126,8 +126,8 @@ class Campus
             'abbreviation' => $this->getAbbreviation(),
             'info' => $this->getInfo(),
             'size' => $this->getSize(),
-            'height' => $this->getHeight(),
-            'width' => $this->getWidth(),
+            'lat' => $this->getLat(),
+            'lng' => $this->getLng(),
             'layout' => $this->getLayout(),
         ];
     }

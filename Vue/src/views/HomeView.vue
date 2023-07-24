@@ -1,7 +1,11 @@
 <template>
   <main>
     <div v-if="error">{{ error.message }}</div>
-    <AdminPanel :defaults="defaults" @toggle="updateNodes"></AdminPanel>
+    <AdminPanel
+      v-if="false"
+      :defaults="defaults"
+      @toggle="updateNodes"
+    ></AdminPanel>
     <SearchComponent
       :rooms="rooms"
       :buildings="buildings"
@@ -36,7 +40,10 @@
       @selectLocation="setLocation"
     ></MapComponent>
 
-    <GoogleMap></GoogleMap>
+    <GoogleMap
+      :locations="locations"
+      :campus="campuses[selectedCampus - 1]"
+    ></GoogleMap>
     <!-- Still working on -->
     <CanvasComponent
       v-if="false"
