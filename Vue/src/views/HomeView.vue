@@ -1,11 +1,6 @@
 <template>
   <main>
     <div v-if="error">{{ error.message }}</div>
-    <AdminPanel
-      v-if="false"
-      :defaults="defaults"
-      @toggle="updateNodes"
-    ></AdminPanel>
     <SearchComponent
       :rooms="rooms"
       :buildings="buildings"
@@ -27,18 +22,6 @@
       @navigate="navigate"
       @updateDisabled="updateWheelchairAccessible"
     ></NavigationPanel>
-
-    <MapComponent
-      v-if="false"
-      :buildings="buildings"
-      :rooms="rooms"
-      :floors="floors"
-      :nodes="locations"
-      :campus="campuses[selectedCampus - 1]"
-      :defaults="defaults"
-      :navigation="navigation"
-      @selectLocation="setLocation"
-    ></MapComponent>
 
     <GoogleMap
       :locations="locations"
@@ -66,21 +49,17 @@
   import { search } from "@/../js/main.js";
   import { getClosestNode } from "@/../js/functions.js";
 
-  import MapComponent from "../components/MapComponent.vue";
   import GoogleMap from "../components/map/GoogleMap.vue";
   import CanvasComponent from "../components/CanvasComponent.vue";
 
-  import SearchComponent from "../components/SearchComponent.vue";
-  import DetailsComponent from "../components/DetailsComponent.vue";
-  import AdminPanel from "../components/AdminPanel.vue";
+  import SearchComponent from "../components/search/SearchComponent.vue";
+  import DetailsComponent from "../components/search/DetailsComponent.vue";
   import NavigationPanel from "../components/NavigationPanel.vue";
 
   export default {
     components: {
-      // MapComponent,
       SearchComponent,
       DetailsComponent,
-      AdminPanel,
       CanvasComponent,
       NavigationPanel,
       GoogleMap,

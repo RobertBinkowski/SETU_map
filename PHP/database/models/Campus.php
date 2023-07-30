@@ -25,7 +25,7 @@ class Campus
         $this->setInfo($info);
         $this->setSize($size);
         $this->setLat($lat);
-        $this->setlng($lng);
+        $this->setLng($lng);
         $this->setLayout($layout);
         $this->setLayout($layout);
     }

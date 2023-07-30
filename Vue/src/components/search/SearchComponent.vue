@@ -100,6 +100,8 @@
   #searchDiv {
     padding: 1em;
     .search {
+      border: $acc-1 2px solid;
+      border-radius: 1em;
       width: 100%;
       max-width: 50em;
       margin: auto;

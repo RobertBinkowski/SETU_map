@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import TableComponent from "@/components/TableComponent.vue";
+  import TableComponent from "@/components/admin/TableComponent.vue";
   import axios from "axios";
   import { ref } from "vue";
 

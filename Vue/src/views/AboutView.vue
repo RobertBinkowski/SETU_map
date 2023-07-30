@@ -23,10 +23,10 @@
       <dd>MySQL</dd>
     </dl>
     <div class="technologies">
-      <img src="../../public/Vue_Logo.svg" alt="Vue" /><br />
-      <img src="../../public/Bootstrap_Logo.png" alt="Bootstrap" /><br />
-      <img src="../../public/PHP_Logo.png" alt="MySQL" /><br />
-      <img src="../../public/MySQL_Logo.png" alt="MySQL" /><br />
+      <img src="../../Vue_Logo.svg" alt="Vue" /><br />
+      <img src="../../Bootstrap_Logo.png" alt="Bootstrap" /><br />
+      <img src="../../PHP_Logo.png" alt="MySQL" /><br />
+      <img src="../../MySQL_Logo.png" alt="MySQL" /><br />
     </div>
     <dl>
       <dt>Algorithms</dt>
