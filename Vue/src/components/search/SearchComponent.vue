@@ -114,6 +114,7 @@
         width: 70%;
         border: none;
         border-radius: $rad-1 0 0 $rad-1;
+        outline: none;
         text-align: center;
       }
       .campus {

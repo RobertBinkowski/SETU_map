@@ -23,10 +23,10 @@
       @updateDisabled="updateWheelchairAccessible"
     ></NavigationPanel>
 
-    <GoogleMap
+    <MapParentComponent
       :locations="locations"
       :campus="campuses[selectedCampus - 1]"
-    ></GoogleMap>
+    ></MapParentComponent>
     <!-- Still working on -->
     <CanvasComponent
       v-if="false"
@@ -49,7 +49,7 @@
   import { search } from "@/../js/main.js";
   import { getClosestNode } from "@/../js/functions.js";
 
-  import GoogleMap from "../components/map/GoogleMap.vue";
+  import MapParentComponent from "../components/map/MapParentComponent.vue";
   import CanvasComponent from "../components/CanvasComponent.vue";
 
   import SearchComponent from "../components/search/SearchComponent.vue";
@@ -62,7 +62,7 @@
       DetailsComponent,
       CanvasComponent,
       NavigationPanel,
-      GoogleMap,
+      MapParentComponent,
     },
     setup() {
       let buildings = ref([]);

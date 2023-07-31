@@ -1,12 +1,15 @@
 <template>
   <div>
-    <h1>Map</h1>
-    <div id="map"></div>
+    <div v-if="campus" id="map"></div>
+    <div v-else>
+      <h2>Loading...</h2>
+    </div>
   </div>
 </template>
 
 <script>
   import { Loader } from "@googlemaps/js-api-loader";
+
   export default {
     name: "GoogleMap",
     props: {
@@ -20,6 +23,14 @@
       },
     },
     watch: {
+      locations: {
+        deep: true,
+        handler(newLocations, oldLocations) {
+          // React to changes in the 'locations' prop
+          // Update the map with new location data if needed
+          // Example: Call a method to update markers or draw new shapes on the map
+        },
+      },
       "campus.lat": function (newLat, oldLat) {
         // React to changes in the 'lat' property
         this.updateMapLocation();
@@ -32,7 +43,7 @@
     mounted() {
       // Replace YOUR_API_KEY with your actual API key
       const loader = new Loader({
-        apiKey: "AIzaSyBQODOwT6hgWsOyWQPTf7C0B2Rp9m2u5uI",
+        apiKey: import.meta.env.VITE_GOOGLE_MAPS_API,
         version: "weekly", // Use a specific version if needed
       });
 
@@ -42,12 +53,17 @@
     },
     methods: {
       initMap() {
+        if (!this.campus) {
+          // Campus data is not available yet, do not initialize the map
+          return;
+        }
+
         // Initialize the map
         this.map = new google.maps.Map(document.getElementById("map"), {
           center: {
             lat: parseFloat(this.campus.lat),
             lng: parseFloat(this.campus.lng),
-          }, // coordinates
+          },
           zoom: parseFloat(this.campus.size),
         });
       },
@@ -58,6 +74,7 @@
             lat: parseFloat(this.campus.lat),
             lng: parseFloat(this.campus.lng),
           });
+          this.map.setZoom(parseFloat(this.campus.size));
         }
       },
     },
