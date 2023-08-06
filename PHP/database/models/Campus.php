@@ -10,13 +10,12 @@ class Campus
     public function __construct(
         private int $id,
         private string $name,
-        private string $layout = "",
+        private string $abbreviation = "",
         private string $info = "",
         private float $size = 0,
         private float $latitude = 0,
         private float $longitude = 0,
-        private string $abbreviation = "",
-        private bool $enabled = true,
+        private bool $enabled = true
     ) {
         $this->id = $id;
         $this->setEnabled($enabled);
@@ -26,7 +25,6 @@ class Campus
         $this->setSize($size);
         $this->setLat($latitude);
         $this->setLng($longitude);
-        $this->setLayout($layout);
     }
 
     // Getters
@@ -70,11 +68,6 @@ class Campus
         return $this->longitude;
     }
 
-    public function getLayout(): string
-    {
-        return $this->layout;
-    }
-
     // Setters
     public function setEnabled(bool $enabled): void
     {
@@ -110,10 +103,6 @@ class Campus
     {
         $this->longitude = $width;
     }
-    public function setLayout(string $layout): void
-    {
-        $this->layout = $layout;
-    }
 
     // To Array
     public function toArray(): array
@@ -127,7 +116,6 @@ class Campus
             'size' => $this->getSize(),
             'latitude' => $this->getLat(),
             'longitude' => $this->getLng(),
-            'layout' => $this->getLayout(),
         ];
     }
 }

@@ -5,7 +5,20 @@ class CampusRepository extends BaseRepository
 {
     public function getAll(bool $disabled = false): array
     {
-        $sql = "SELECT * FROM campuses";
+        // $sql = "SELECT * FROM campuses";
+
+        $sql = "SELECT 
+                    campuses.id as id, 
+                    campuses.name as name, 
+                    campuses.abbreviation as abbreviation, 
+                    campuses.info as info, 
+                    campuses.size as size, 
+                    campuses.enabled as enabled, 
+                    coordinates.latitude as latitude, 
+                    coordinates.longitude as longitude 
+                FROM campuses 
+                LEFT JOIN coordinates ON campuses.coordinates = coordinates.id
+                ";
 
         if (!$disabled) {
             $sql .= " WHERE enabled=1";
@@ -13,7 +26,9 @@ class CampusRepository extends BaseRepository
 
         $result = $this->conn->query($sql);
 
+
         $data = $result->fetchAll(PDO::FETCH_ASSOC);
+
 
         $campuses = [];
 

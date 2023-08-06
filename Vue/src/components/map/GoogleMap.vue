@@ -35,15 +35,20 @@
           this.updateMarkers(newLocations);
         },
       },
-      "campus.lat": function (newLat, oldLat) {
-        // React to changes in the 'lat' property
-        this.updateMapLocation();
-      },
-      "campus.lng": function (newLng, oldLng) {
-        // React to changes in the 'lng' property
-        this.updateMapLocation();
+      campus: {
+        deep: true,
+        handler(newCampus, oldCampus) {
+          // Check if latitude or longitude has changed
+          if (
+            newCampus.latitude !== oldCampus.latitude ||
+            newCampus.longitude !== oldCampus.longitude
+          ) {
+            this.updateMapLocation();
+          }
+        },
       },
     },
+
     mounted() {
       // Replace YOUR_API_KEY with your actual API key
       const loader = new Loader({

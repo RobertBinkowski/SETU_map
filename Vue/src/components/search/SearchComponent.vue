@@ -13,7 +13,7 @@
           v-for="campus in campuses"
           :key="campus"
           v-show="campus.enabled"
-          :value="campus.id"
+          :value="campus"
         >
           {{ campus.name }}
         </option>
@@ -57,7 +57,7 @@
     data() {
       return {
         searchTerm: "",
-        selectedCampus: "1",
+        selectedCampus: this.campuses[0],
       };
     },
     computed: {
@@ -67,7 +67,7 @@
         }
         return this.rooms.filter(
           (room) =>
-            room.building.campus.id == this.selectedCampus &&
+            room.building.campus.id == this.selectedCampus.id &&
             room.name.toLowerCase().includes(this.searchTerm.toLowerCase())
         );
       },
@@ -77,7 +77,7 @@
         }
         return this.buildings.filter(
           (building) =>
-            building.campus.id == this.selectedCampus &&
+            building.campus.id == this.selectedCampus.id &&
             building.name.toLowerCase().includes(this.searchTerm.toLowerCase())
         );
       },

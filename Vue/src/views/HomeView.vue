@@ -1,6 +1,5 @@
 <template>
   <main>
-    <div v-if="error">{{ error.message }}</div>
     <SearchComponent
       v-if="rooms && buildings && campuses"
       :rooms="rooms"
@@ -23,11 +22,10 @@
       @navigate="navigate"
       @updateDisabled="updateWheelchairAccessible"
     ></NavigationPanel>
-
     <MapParentComponent
       v-if="locations"
       :locations="locations"
-      :campus="campuses[selectedCampus - 1]"
+      :campus="this.campus"
     ></MapParentComponent>
   </main>
 </template>
@@ -148,12 +146,8 @@
     },
     data() {
       return {
-        defaults: {
-          onlyNodes: false,
-          demo: true,
-        },
         selectedLocation: null,
-        selectedCampus: 1,
+        campus: null,
         navigation: {
           enabled: false,
           disabled: false,
@@ -179,9 +173,9 @@
         this.selectedLocation = location;
         this.locationContent = true;
       },
-      handleSelectedCampusUpdate(campusId) {
+      handleSelectedCampusUpdate(campus) {
         this.selectedLocation = null;
-        this.selectedCampus = campusId;
+        this.campus = campus;
       },
       updateWheelchairAccessible(isDisabled) {
         this.navigation.disabled = isDisabled;
