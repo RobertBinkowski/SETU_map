@@ -12,6 +12,12 @@
 
   export default {
     name: "GoogleMap",
+    data() {
+      return {
+        map: null,
+        markers: [],
+      };
+    },
     props: {
       locations: {
         type: Array,
@@ -26,9 +32,7 @@
       locations: {
         deep: true,
         handler(newLocations, oldLocations) {
-          // React to changes in the 'locations' prop
-          // Update the map with new location data if needed
-          // Example: Call a method to update markers or draw new shapes on the map
+          this.updateMarkers(newLocations);
         },
       },
       "campus.lat": function (newLat, oldLat) {
@@ -65,7 +69,18 @@
             lng: parseFloat(this.campus.lng),
           },
           zoom: parseFloat(this.campus.size),
+          selectedCampus: null,
         });
+
+        // Create markers
+        this.createMarkers();
+      },
+      updateMarkers() {
+        // Remove old markers
+        this.clearMarkers();
+
+        // Create new markers
+        this.createMarkers();
       },
       updateMapLocation() {
         if (this.map) {
@@ -76,6 +91,35 @@
           });
           this.map.setZoom(parseFloat(this.campus.size));
         }
+      },
+      createMarkers() {
+        this.locations.forEach((location) => {
+          const marker = new google.maps.Marker({
+            position: {
+              lat: parseFloat(location.geoLatitude),
+              lng: parseFloat(location.geoLongitude),
+            },
+            map: this.map,
+          });
+
+          // Add click event to the marker
+          marker.addListener("click", () => {
+            this.onMarkerClick(location);
+          });
+
+          this.markers.push(marker);
+        });
+      },
+      clearMarkers() {
+        this.markers.forEach((marker) => {
+          marker.setMap(null);
+        });
+        this.markers = [];
+      },
+      onMarkerClick(location) {
+        // For demonstration purposes, display an alert with the location name
+        alert(`Clicked on location: ${location.type}`);
+        // You can replace the above with any action you'd like to perform
       },
     },
     beforeDestroy() {
