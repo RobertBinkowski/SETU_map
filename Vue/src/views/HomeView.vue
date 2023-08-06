@@ -2,6 +2,7 @@
   <main>
     <div v-if="error">{{ error.message }}</div>
     <SearchComponent
+      v-if="rooms && buildings && campuses"
       :rooms="rooms"
       :buildings="buildings"
       :campuses="campuses"
@@ -9,14 +10,14 @@
       @updateSelectedCampus="handleSelectedCampusUpdate"
     ></SearchComponent>
     <DetailsComponent
-      v-show="selectedLocation && !navigation.enabled"
+      v-if="selectedLocation && !navigation.enabled"
       :location="selectedLocation"
       @close="closeDetails"
       @openNavigation="openNavigation"
       @setDeparture="setDepartureLoc"
     ></DetailsComponent>
     <NavigationPanel
-      v-show="navigation.enabled"
+      v-if="navigation.enabled"
       :navigation="navigation"
       @close="closeNavigation"
       @navigate="navigate"
@@ -24,21 +25,10 @@
     ></NavigationPanel>
 
     <MapParentComponent
+      v-if="locations"
       :locations="locations"
       :campus="campuses[selectedCampus - 1]"
     ></MapParentComponent>
-    <!-- Still working on -->
-    <CanvasComponent
-      v-if="false"
-      :buildings="buildings"
-      :rooms="rooms"
-      :floors="floors"
-      :nodes="locations"
-      :connections="connections"
-      :campus="campuses[selectedCampus - 1]"
-      :defaults="defaults"
-      @selectLocation="setLocation"
-    ></CanvasComponent>
   </main>
 </template>
 
@@ -50,7 +40,6 @@
   import { getClosestNode } from "@/../js/functions.js";
 
   import MapParentComponent from "../components/map/MapParentComponent.vue";
-  import CanvasComponent from "../components/CanvasComponent.vue";
 
   import SearchComponent from "../components/search/SearchComponent.vue";
   import DetailsComponent from "../components/search/DetailsComponent.vue";
@@ -60,7 +49,6 @@
     components: {
       SearchComponent,
       DetailsComponent,
-      CanvasComponent,
       NavigationPanel,
       MapParentComponent,
     },
