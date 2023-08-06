@@ -65,8 +65,8 @@
         // Initialize the map
         this.map = new google.maps.Map(document.getElementById("map"), {
           center: {
-            lat: parseFloat(this.campus.lat),
-            lng: parseFloat(this.campus.lng),
+            lat: parseFloat(this.campus.latitude),
+            lng: parseFloat(this.campus.longitude),
           },
           zoom: parseFloat(this.campus.size),
           selectedCampus: null,
@@ -86,8 +86,8 @@
         if (this.map) {
           // If the map is initialized, update its center based on new lat/lng values
           this.map.setCenter({
-            lat: parseFloat(this.campus.lat),
-            lng: parseFloat(this.campus.lng),
+            lat: parseFloat(this.campus.latitude),
+            lng: parseFloat(this.campus.longitude),
           });
           this.map.setZoom(parseFloat(this.campus.size));
         }
@@ -96,17 +96,15 @@
         this.locations.forEach((location) => {
           const marker = new google.maps.Marker({
             position: {
-              lat: parseFloat(location.geoLatitude),
-              lng: parseFloat(location.geoLongitude),
+              lat: parseFloat(location.latitude),
+              lng: parseFloat(location.longitude),
             },
             map: this.map,
           });
-
           // Add click event to the marker
           marker.addListener("click", () => {
             this.onMarkerClick(location);
           });
-
           this.markers.push(marker);
         });
       },

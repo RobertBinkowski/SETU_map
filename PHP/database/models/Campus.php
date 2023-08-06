@@ -13,8 +13,8 @@ class Campus
         private string $layout = "",
         private string $info = "",
         private float $size = 0,
-        private float $lat = 0,
-        private float $lng = 0,
+        private float $latitude = 0,
+        private float $longitude = 0,
         private string $abbreviation = "",
         private bool $enabled = true,
     ) {
@@ -24,9 +24,8 @@ class Campus
         $this->setAbbreviation($abbreviation);
         $this->setInfo($info);
         $this->setSize($size);
-        $this->setLat($lat);
-        $this->setLng($lng);
-        $this->setLayout($layout);
+        $this->setLat($latitude);
+        $this->setLng($longitude);
         $this->setLayout($layout);
     }
 
@@ -63,12 +62,12 @@ class Campus
 
     public function getLat(): float
     {
-        return $this->lat;
+        return $this->latitude;
     }
 
     public function getLng(): float
     {
-        return $this->lng;
+        return $this->longitude;
     }
 
     public function getLayout(): string
@@ -97,19 +96,19 @@ class Campus
         $this->info = $info;
     }
 
-    public function setSize(string $size): void
+    public function setSize(float $size): void
     {
-        $this->size = (float)$size;
+        $this->size = $size;
     }
 
-    public function setLat(float $lat): void
+    public function setLat(float $latitude): void
     {
-        $this->lat = $lat;
+        $this->latitude = $latitude;
     }
 
     public function setLng(float $width): void
     {
-        $this->lng = $width;
+        $this->longitude = $width;
     }
     public function setLayout(string $layout): void
     {
@@ -126,8 +125,8 @@ class Campus
             'abbreviation' => $this->getAbbreviation(),
             'info' => $this->getInfo(),
             'size' => $this->getSize(),
-            'lat' => $this->getLat(),
-            'lng' => $this->getLng(),
+            'latitude' => $this->getLat(),
+            'longitude' => $this->getLng(),
             'layout' => $this->getLayout(),
         ];
     }

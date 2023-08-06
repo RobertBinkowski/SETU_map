@@ -21,11 +21,9 @@ class LocationRepository extends BaseRepository
             $location = new Location(
                 $row['id'],
                 $row['type'] ?? "",
-                $row['geo_latitude'] ?? 0,
-                $row['geo_longitude'] ?? 0,
-                $row['x'] ?? 0,
-                $row['y'] ?? 0,
-                $row['z'] ?? 0,
+                $row['latitude'] ?? 0,
+                $row['longitude'] ?? 0,
+                $row['altitude'] ?? 0,
                 $row["enabled"],
             );
             $locations[] = $location;
@@ -35,16 +33,14 @@ class LocationRepository extends BaseRepository
     }
     public function create(Location $data): string
     {
-        $sql = "INSERT INTO locations (enabled , type, geo_longitude, geo_latitude, map_longitude, map_latitude, type) 
-        VALUES (enabled,:type, :geo_longitude, :geo_latitude, :map_longitude, :map_latitude, :type)";
+        $sql = "INSERT INTO locations (enabled , type, longitude, latitude, type) 
+        VALUES (enabled,:type, :longitude, :latitude, :type)";
 
         $this->execute($sql, [
 
             ":type" => $data->getType(),
-            ":geo_longitude" => $data->getGeoLongitude(),
-            ":geo_latitude" => $data->getGeoLatitude(),
-            ":x" => $data->getMapLongitude(),
-            ":y" => $data->getMapLatitude(),
+            ":longitude" => $data->getLongitude(),
+            ":latitude" => $data->getLatitude()
         ]);
 
         return $this->lastInsertId();
@@ -61,11 +57,9 @@ class LocationRepository extends BaseRepository
             return new Location(
                 $data['id'],
                 $data['type'] ?? "",
-                $data['geo_latitude'] ?? 0,
-                $data['geo_longitude'] ?? 0,
-                $data['x'] ?? 0,
-                $data['y'] ?? 0,
-                $data['z'] ?? 0,
+                $data['latitude'] ?? 0,
+                $data['longitude'] ?? 0,
+                $data['altitude'] ?? 0,
                 $data["enabled"],
             );
         }
@@ -74,15 +68,13 @@ class LocationRepository extends BaseRepository
 
     public function update(Location $current, array $new): bool
     {
-        $sql = "UPDATE locations SET type = :type, geo_longitude = :geo_longitude, geo_latitude = :geo_latitude, enabled = :enabled, map_longitude = :map_longitude, map_latitude= :map_latitude, type = :type WHERE ID =:ID";
+        $sql = "UPDATE locations SET type = :type, longitude = :longitude, latitude = :latitude, enabled = :enabled, type = :type WHERE ID =:ID";
 
         return $this->execute($sql, [
 
             ":type" => $new['type'] ?? $current->getType(),
-            ":geo_longitude" => $new['geo_longitude'] ?? $current->getGeoLongitude(),
-            ":geo_latitude" => $new['geo_latitude'] ?? $current->getGeoLatitude(),
-            ":map_longitude" => $new['map_longitude'] ?? $current->getMapLongitude(),
-            ":map_latitude" => $new['map_latitude'] ?? $current->getMapLatitude(),
+            ":longitude" => $new['longitude'] ?? $current->getLongitude(),
+            ":latitude" => $new['latitude'] ?? $current->getLatitude(),
             ":enabled" => $new['enabled'] ?? $current->isEnabled(),
             'ID' => $current->getId()
         ]);

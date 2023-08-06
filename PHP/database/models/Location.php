@@ -10,10 +10,8 @@ class Location
     public function __construct(
         private int $id,
         private string $type = "",
-        private float $geoLongitude = 0,
-        private float $geoLatitude = 0,
-        private float $mapLongitude = 0,
-        private float $mapLatitude = 0,
+        private float $longitude = 0,
+        private float $latitude = 0,
         private int $altitude = 0,
         private bool $enabled = true
     ) {
@@ -21,11 +19,9 @@ class Location
         $this->setEnabled($enabled);
 
         $this->setType($type);
-        $this->setGeoLongitude($geoLongitude);
-        $this->setGeoLatitude($geoLatitude);
-        $this->setMapLatitude($mapLatitude);
-        $this->setMapLongitude($mapLongitude);
-        $this->setMapAltitude($altitude);
+        $this->setLongitude($longitude);
+        $this->setLatitude($latitude);
+        $this->setAltitude($altitude);
     }
 
     public function getId(): int
@@ -38,31 +34,22 @@ class Location
         return $this->type;
     }
 
-    public function getGeoLongitude(): float
+    public function getLongitude(): float
     {
-        return $this->geoLongitude;
+        return $this->longitude;
     }
 
-    public function getGeoLatitude(): float
+    public function getLatitude(): float
     {
-        return $this->geoLatitude;
+        return $this->latitude;
     }
 
-    public function getMapLongitude(): float
-    {
-        return $this->mapLongitude;
-    }
-
-    public function getMapLatitude(): float
-    {
-        return $this->mapLatitude;
-    }
 
     public function isEnabled(): bool
     {
         return $this->enabled;
     }
-    public function getMapAltitude(): int
+    public function getAltitude(): int
     {
         return $this->altitude;
     }
@@ -73,24 +60,14 @@ class Location
         $this->type = $type;
     }
 
-    public function setGeoLongitude(float $longitude): void
+    public function setLongitude(float $longitude): void
     {
-        $this->geoLongitude = $longitude;
+        $this->longitude = $longitude;
     }
 
-    public function setGeoLatitude(float $latitude): void
+    public function setLatitude(float $latitude): void
     {
-        $this->geoLatitude = $latitude;
-    }
-
-    public function setMapLongitude(float $longitude): void
-    {
-        $this->mapLongitude = $longitude;
-    }
-
-    public function setMapLatitude(float $latitude): void
-    {
-        $this->mapLatitude = $latitude;
+        $this->latitude = $latitude;
     }
 
     public function setEnabled(bool $enabled): void
@@ -98,7 +75,7 @@ class Location
         $this->enabled = $enabled;
     }
 
-    public function setMapAltitude(int $altitude): void
+    public function setAltitude(int $altitude): void
     {
         $this->altitude = $altitude;
     }
@@ -109,11 +86,9 @@ class Location
         return [
             "id" => $this->getId(),
             "type" => $this->getType(),
-            "geoLongitude" => $this->getGeoLongitude(),
-            "geoLatitude" => $this->getGeoLatitude(),
-            "mapLongitude" => $this->getMapLongitude(),
-            "mapLatitude" => $this->getMapLatitude(),
-            "mapAltitude" => $this->getMapAltitude(),
+            "longitude" => $this->getLongitude(),
+            "latitude" => $this->getLatitude(),
+            "altitude" => $this->getAltitude(),
             "enabled" => $this->isEnabled(),
         ];
     }
