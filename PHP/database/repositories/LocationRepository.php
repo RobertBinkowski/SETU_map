@@ -5,7 +5,17 @@ class LocationRepository extends BaseRepository
 {
     public function getAll(bool $disabled = false): array
     {
-        $sql = "SELECT * FROM locations";
+        $sql = "
+            SELECT 
+                locations.id as id, 
+                locations.type as type, 
+                coordinates.latitude as latitude, 
+                coordinates.longitude as longitude, 
+                coordinates.altitude as altitude, 
+                locations.enabled as enabled
+            FROM locations
+            LEFT JOIN coordinates ON locations.coordinates = coordinates.id
+        ";
 
         if (!$disabled) {
             $sql .= " WHERE enabled = 1";

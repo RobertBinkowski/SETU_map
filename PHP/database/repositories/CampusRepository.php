@@ -8,27 +8,28 @@ class CampusRepository extends BaseRepository
         // $sql = "SELECT * FROM campuses";
 
         $sql = "SELECT 
-                    campuses.id as id, 
-                    campuses.name as name, 
-                    campuses.abbreviation as abbreviation, 
-                    campuses.info as info, 
-                    campuses.size as size, 
-                    campuses.enabled as enabled, 
-                    coordinates.latitude as latitude, 
-                    coordinates.longitude as longitude 
+                    campuses.*,
+                    coordinates.*,
+                    details.*,
+                    images.enabled as photo_enabled,
+                    images.name as photo_name,
+                    images.src as photo_src,
+                    images.details as photo_details_id
                 FROM campuses 
                 LEFT JOIN coordinates ON campuses.coordinates = coordinates.id
-                ";
+                LEFT JOIN details ON campuses.details = details.id
+                LEFT JOIN images ON details.id = images.details";
 
-        if (!$disabled) {
-            $sql .= " WHERE enabled=1";
-        }
+        // if (!$disabled) {
+        //     $sql .= " WHERE enabled=1";
+        // }
 
         $result = $this->conn->query($sql);
 
 
         $data = $result->fetchAll(PDO::FETCH_ASSOC);
 
+        return $data;
 
         $campuses = [];
 

@@ -8,6 +8,7 @@ abstract class BaseController
     {
         $items = $this->getRepository()->getAll();
 
+        return $items;
 
         return array_map(function ($item) {
             return $item->toArray();

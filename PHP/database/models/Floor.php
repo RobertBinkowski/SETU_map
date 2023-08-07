@@ -2,7 +2,6 @@
 
 class Floor
 {
-    private ?Building $building;
 
     public function __toString(): string
     {
@@ -10,21 +9,17 @@ class Floor
     }
 
     public function __construct(
-        private BuildingRepository $buildingRepository,
         private int $id,
-        private string $size = "",
-        private int $floor = 0,
-        private string $layout = "",
-        ?int $building = null,
         private bool $enabled = true,
+        private int $floor = 0,
+        private ?Building $building = null,
+        private ?Details $details = null,
     ) {
-        $this->buildingRepository = $buildingRepository;
         $this->id = $id;
         $this->setEnabled($enabled);
-        $this->setSize($size);
-        $this->setLayout($layout);
         $this->setBuilding($building);
         $this->setFloor($floor);
+        $this->setDetails($details);
     }
 
     // Getters
@@ -38,23 +33,17 @@ class Floor
         return $this->enabled;
     }
 
-    public function getSize(): string
-    {
-        return $this->size;
-    }
-
-    public function getBuilding(): ?Building
-    {
-        return $this->building;
-    }
-
     public function getFloor(): string
     {
         return $this->floor;
     }
-    public function getLayout(): ?string
+    public function getBuilding(): ?Building
     {
-        return $this->layout;
+        return $this->building;
+    }
+    public function getDetails(): ?Details
+    {
+        return $this->details;
     }
 
     // Setters
@@ -64,22 +53,14 @@ class Floor
         $this->enabled = $enabled;
     }
 
-    public function setSize(string $size): void
+    public function setBuilding(?Building $building): void
     {
-        $this->size = $size;
-    }
-    public function setLayout(string $layout): void
-    {
-        $this->layout = $layout;
+        $this->building = $building;
     }
 
-    public function setBuilding(?int $building = null): void
+    public function setDetails(?Details $details): void
     {
-        if ($building != null) {
-            $this->building = $this->buildingRepository->get($building);
-        } else {
-            $this->building = null;
-        }
+        $this->details = $details;
     }
 
     public function setFloor(int $floor): void
@@ -93,12 +74,13 @@ class Floor
         $data = [
             "id" => $this->getId(),
             "enabled" => $this->isEnabled(),
-            "size" => $this->getSize(),
             "floor" => $this->getFloor(),
-            'layout' => $this->getLayout(),
         ];
         if ($this->building) {
             $data['building'] = $this->getBuilding()->toArray();
+        }
+        if ($this->details) {
+            $data['details'] = $this->getDetails()->toArray();
         }
         return $data;
     }

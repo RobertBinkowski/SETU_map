@@ -1,23 +1,26 @@
-<?php
+<?
+include_once "Device.php";
 class Log
 {
-    private ?string $timestamp;
+
+    public function __toString(): string
+    {
+        return json_encode($this->toArray());
+    }
     public function __construct(
         private int $id,
         private string $title = "",
         private string $type = "info",
-        private string $info = ""
+        private string $info = "",
+        private string $timestamp = "",
+        private Device $device = null
     ) {
         $this->setId($id);
         $this->setInfo($info);
         $this->setTitle($title);
         $this->setType($type);
         $this->timestamp = date('Y-m-d H:i:s');
-    }
-
-    public function __toString(): string
-    {
-        return json_encode($this->toArray());
+        $this->device = $device;
     }
 
     // Getters
@@ -44,6 +47,10 @@ class Log
     {
         return $this->timestamp;
     }
+    public function getDevice(): Device
+    {
+        return $this->device;
+    }
 
     // Setters
     public function setId(int $id): void
@@ -64,16 +71,25 @@ class Log
     {
         $this->info = $info;
     }
+    public function setTimestamp(?string $timestamp): void
+    {
+        $this->timestamp = $timestamp;
+    }
 
     // to Array
     public function toArray(): array
     {
-        return [
+        $data =  [
             "id" => $this->getId(),
             "type" => $this->getType(),
             "title" => $this->getTitle(),
             "info" => $this->getInfo(),
-            // "TimeStamp" => $this->getTimestamp(),
+            "TimeStamp" => $this->getTimestamp(),
         ];
+        if ($this->getDevice() != null) {
+            $data["device"] = $this->getDevice()->toArray();
+        }
+
+        return $data;
     }
 }

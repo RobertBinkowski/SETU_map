@@ -1,49 +1,26 @@
 <?php
+include_once "Campus.php";
+include_once "Location.php";
+include_once "Details.php";
 class Building
 {
-    private ?Campus $campus;
-    private ?Location $location;
 
     public function __toString(): string
     {
         return json_encode($this->toArray());
     }
-
-    /**
-     * Constructs a new instance of Building object
-     * 
-     * @param int $id
-     * @param string $name
-     * @param string $abbreviation
-     * @param string $info
-     * @param string $size
-     * @param int $campus
-     * @param bool $enabled
-     */
     public function __construct(
-        private CampusRepository $campusRepository,
-        private LocationRepository $locationRepository,
         private int $id,
-        private string $name = "",
-        private string $abbreviation = "",
-        private string $info = "",
-        private string $size = "",
-        private string $layout = "",
-        ?int $campus = null,
-        ?int $location = null,
         private bool $enabled = true,
+        private ?Campus $campus,
+        private ?Location $location,
+        private ?Details $details,
     ) {
-        $this->campusRepository = $campusRepository;
-        $this->locationRepository = $locationRepository;
         $this->id = $id;
         $this->setEnabled($enabled);
-        $this->setName($name);
-        $this->setAbbreviation($abbreviation);
-        $this->setInfo($info);
-        $this->setSize($size);
-        $this->setLayout($layout);
         $this->setCampus($campus);
         $this->setLocation($location);
+        $this->setDetails($details);
     }
 
     // Getters
@@ -57,37 +34,19 @@ class Building
         return $this->enabled;
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getAbbreviation(): string
-    {
-        return $this->abbreviation;
-    }
-
-    public function getInfo(): string
-    {
-        return $this->info;
-    }
-
-    public function getSize(): string
-    {
-        return $this->size;
-    }
-
     public function getCampus(): ?Campus
     {
         return $this->campus;
     }
+
     public function getLocation(): ?Location
     {
         return $this->location;
     }
-    public function getLayout(): ?string
+
+    public function getDetails(): ?Details
     {
-        return $this->layout;
+        return $this->details;
     }
 
     // Setters
@@ -96,45 +55,19 @@ class Building
         $this->enabled = $enabled;
     }
 
-    public function setName(string $name): void
+    public function setCampus(?Campus $campus): void
     {
-        $this->name = $name;
+        $this->campus = $campus;
     }
 
-    public function setAbbreviation(string $abbreviation): void
+    public function setLocation(?Location $location): void
     {
-        $this->abbreviation = $abbreviation;
+        $this->location = $location;
     }
 
-    public function setInfo(string $info): void
+    public function setDetails(?Details $details): void
     {
-        $this->info = $info;
-    }
-
-    public function setSize(string $size): void
-    {
-        $this->size = $size;
-    }
-    public function setLayout(string $layout): void
-    {
-        $this->layout = $layout;
-    }
-
-    public function setCampus(?int $campus): void
-    {
-        if ($campus != null) {
-            $this->campus = $this->campusRepository->get($campus);
-        } else {
-            $this->campus = null;
-        }
-    }
-    public function setLocation(?int $location): void
-    {
-        if ($location != null) {
-            $this->location = $this->locationRepository->get($location);
-        } else {
-            $this->location = null;
-        }
+        $this->details = $details;
     }
 
     // To Array
@@ -143,11 +76,6 @@ class Building
         $data = [
             'id' => $this->getId(),
             'enabled' => $this->isEnabled(),
-            'name' => $this->getName(),
-            'abbreviation' => $this->getAbbreviation(),
-            'info' => $this->getInfo(),
-            'size' => $this->getSize(),
-            'layout' => $this->getLayout(),
         ];
         if ($this->campus) {
             $data['campus'] = $this->getCampus()->toArray();

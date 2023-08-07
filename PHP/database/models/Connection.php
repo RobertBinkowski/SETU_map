@@ -1,9 +1,8 @@
 <?php
+require_once "Location.php";
 
 class Connection
 {
-    private ?Location $nodeOne;
-    private ?Location $nodeTwo;
 
     public function __toString(): string
     {
@@ -11,14 +10,12 @@ class Connection
     }
 
     public function __construct(
-        private LocationRepository $locationRepository,
         private int $id,
-        ?int $nodeOne = null,
-        ?int $nodeTwo = null,
+        private ?Location $nodeOne = null,
+        private ?Location $nodeTwo = null,
         private bool $enabled = true,
 
     ) {
-        $this->locationRepository = $locationRepository;
         $this->id = $id;
         $this->setEnabled($enabled);
         $this->setNodeOne($nodeOne);
@@ -53,22 +50,14 @@ class Connection
         $this->enabled = $enabled;
     }
 
-    public function setNodeOne(?int $nodeOne): void
+    public function setNodeOne(?Location $nodeOne): void
     {
-        if ($nodeOne != null) {
-            $this->nodeOne = $this->locationRepository->get($nodeOne);
-        } else {
-            $this->nodeOne = null;
-        }
+        $this->nodeOne = $nodeOne;
     }
 
-    public function setNodeTwo(?int $nodeTwo): void
+    public function setNodeTwo(?Location $nodeTwo): void
     {
-        if ($nodeTwo != null) {
-            $this->nodeTwo = $this->locationRepository->get($nodeTwo);
-        } else {
-            $this->nodeTwo = null;
-        }
+        $this->nodeTwo = $nodeTwo;
     }
 
     // to Array

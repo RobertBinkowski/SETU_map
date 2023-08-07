@@ -25,21 +25,14 @@ class ImageRepository extends BaseRepository
         $result = $this->conn->query($sql);
 
         $data = $result->fetchAll(PDO::FETCH_ASSOC);
-
+        // return $data;
         $images = [];
 
         foreach ($data as $row) {
             $image = new Image(
-                $this->campusRepository,
-                $this->buildingRepository,
-                $this->roomRepository,
                 $row['id'],
                 $row['name'] ?? "",
-                $row['info'] ?? "",
                 $row['src'] ?? "",
-                $row['campus_id'] ?? null,
-                $row['building_id'] ?? null,
-                $row['room_id'] ?? null,
                 $row['enabled'] ?? true,
             );
             $images[] = $image;
@@ -49,20 +42,15 @@ class ImageRepository extends BaseRepository
     }
     public function create(Image $data): bool
     {
-        $sql = "INSERT INTO images (enabled ,name, info, src, campus_id,building_id, room_id) 
-        VALUES (enabled,:name, :info, :src, :campus_id, :building_id ,:room_id)";
+        $sql = "INSERT INTO images (enabled ,name, src,) 
+        VALUES (enabled,:name, :src)";
 
         return $this->execute(
             $sql,
             [
                 ':enable' => 1,
                 ':name' => $data->getName(),
-                ':info' => $data->getInfo(),
                 ':src' => $data->getSrc(),
-                ':campus_id' => $data->getCampus(),
-                ':building_id' => $data->getBuilding(),
-                ':room_id' => $data->getBuilding(),
-
             ]
         );
     }
@@ -76,16 +64,10 @@ class ImageRepository extends BaseRepository
         if ($data !== false) {
             $data["enabled"] = (bool)$data["enabled"];
             return new Image(
-                $this->campusRepository,
-                $this->buildingRepository,
-                $this->roomRepository,
                 $data['id'],
                 $data['name'] ?? "",
                 $data['info'] ?? "",
                 $data['src'] ?? "",
-                $data['campus_id'] ?? null,
-                $data['building_id'] ?? null,
-                $data['room_id'] ?? null,
                 $data['enabled'] ?? true,
             );
         }
@@ -95,16 +77,12 @@ class ImageRepository extends BaseRepository
 
     public function update(Image $current, array $new): bool
     {
-        $sql = "UPDATE images SET name = :name, src = :src, info = :info, enabled = :enabled, campus_id = :campus_id, building_id = :building_id , room_id= :room_id WHERE ID =:ID";
+        $sql = "UPDATE images SET name = :name, src = :src, info = :info, enabled = :enabled WHERE ID =:ID";
 
         return $this->execute($sql, [
             ':name' => $new['name'] ?? $current->getName(),
             ':src' => $new['src'] ?? $current->getSrc(),
-            ':info' => $new['info'] ?? $current->getInfo(),
             ':enabled' => $new['enabled'] ?? $current->isEnabled(),
-            ':campus_id' => $new['campus'] ?? $current->getCampus(),
-            ':building_id' => $new['building'] ?? $current->getBuilding(),
-            ':room_id' => $new['room'] ?? $current->getRoom(),
             ':id' => $current->getId(),
         ]);
     }

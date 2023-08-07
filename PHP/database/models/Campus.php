@@ -1,4 +1,8 @@
 <?php
+
+include_once "Coordinates.php";
+include_once "Details.php";
+
 class Campus
 {
 
@@ -9,22 +13,14 @@ class Campus
 
     public function __construct(
         private int $id,
-        private string $name,
-        private string $abbreviation = "",
-        private string $info = "",
-        private float $size = 0,
-        private float $latitude = 0,
-        private float $longitude = 0,
-        private bool $enabled = true
+        private bool $enabled = true,
+        private ?Coordinates $coordinates,
+        private ?Details $details,
     ) {
         $this->id = $id;
         $this->setEnabled($enabled);
-        $this->setName($name);
-        $this->setAbbreviation($abbreviation);
-        $this->setInfo($info);
-        $this->setSize($size);
-        $this->setLat($latitude);
-        $this->setLng($longitude);
+        $this->setCoordinates($coordinates);
+        $this->setDetails($details);
     }
 
     // Getters
@@ -38,35 +34,16 @@ class Campus
         return $this->enabled;
     }
 
-    public function getName(): string
+    public function getCoordinates(): ?Coordinates
     {
-        return $this->name;
+        return $this->coordinates;
     }
 
-    public function getAbbreviation(): string
+    public function getDetails(): ?Details
     {
-        return $this->abbreviation;
+        return $this->details;
     }
 
-    public function getInfo(): string
-    {
-        return $this->info;
-    }
-
-    public function getSize(): string
-    {
-        return $this->size;
-    }
-
-    public function getLat(): float
-    {
-        return $this->latitude;
-    }
-
-    public function getLng(): float
-    {
-        return $this->longitude;
-    }
 
     // Setters
     public function setEnabled(bool $enabled): void
@@ -74,48 +51,32 @@ class Campus
         $this->enabled = $enabled;
     }
 
-    public function setName(string $name): void
+    public function setCoordinates(?Coordinates $Coordinates): void
     {
-        $this->name = $name;
+        $this->coordinates = $Coordinates;
     }
 
-    public function setAbbreviation(string $abbreviation): void
+    public function setDetails(?Details $details): void
     {
-        $this->abbreviation = $abbreviation;
+        $this->details = $details;
     }
 
-    public function setInfo(string $info): void
-    {
-        $this->info = $info;
-    }
 
-    public function setSize(float $size): void
-    {
-        $this->size = $size;
-    }
-
-    public function setLat(float $latitude): void
-    {
-        $this->latitude = $latitude;
-    }
-
-    public function setLng(float $width): void
-    {
-        $this->longitude = $width;
-    }
 
     // To Array
     public function toArray(): array
     {
-        return [
+        $data = [
             'id' => $this->getId(),
             'enabled' => $this->isEnabled(),
-            'name' => $this->getName(),
-            'abbreviation' => $this->getAbbreviation(),
-            'info' => $this->getInfo(),
-            'size' => $this->getSize(),
-            'latitude' => $this->getLat(),
-            'longitude' => $this->getLng(),
         ];
+        if ($this->coordinates) {
+            $data['coordinates'] = $this->getCoordinates()->toArray();
+        }
+        if ($this->details) {
+            $data['details'] = $this->getDetails()->toArray();
+        }
+
+        return $data;
     }
 }

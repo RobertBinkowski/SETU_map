@@ -1,4 +1,5 @@
 <?php
+include_once "Coordinates.php";
 
 class Location
 {
@@ -9,19 +10,15 @@ class Location
     }
     public function __construct(
         private int $id,
+        private bool $enabled = true,
         private string $type = "",
-        private float $longitude = 0,
-        private float $latitude = 0,
-        private int $altitude = 0,
-        private bool $enabled = true
+        private ?Coordinates $coordinates = null,
     ) {
         $this->id = $id;
         $this->setEnabled($enabled);
 
         $this->setType($type);
-        $this->setLongitude($longitude);
-        $this->setLatitude($latitude);
-        $this->setAltitude($altitude);
+        $this->setCoordinates($coordinates);
     }
 
     public function getId(): int
@@ -33,15 +30,9 @@ class Location
     {
         return $this->type;
     }
-
-    public function getLongitude(): float
+    public function getCoordinates(): ?Coordinates
     {
-        return $this->longitude;
-    }
-
-    public function getLatitude(): float
-    {
-        return $this->latitude;
+        return $this->coordinates;
     }
 
 
@@ -49,35 +40,19 @@ class Location
     {
         return $this->enabled;
     }
-    public function getAltitude(): int
-    {
-        return $this->altitude;
-    }
 
     // Setters
     public function setType(string $type): void
     {
         $this->type = $type;
     }
-
-    public function setLongitude(float $longitude): void
-    {
-        $this->longitude = $longitude;
-    }
-
-    public function setLatitude(float $latitude): void
-    {
-        $this->latitude = $latitude;
-    }
-
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
     }
-
-    public function setAltitude(int $altitude): void
+    public function setCoordinates(?Coordinates $coordinates): void
     {
-        $this->altitude = $altitude;
+        $this->coordinates = $coordinates;
     }
 
     // to Array
@@ -86,10 +61,8 @@ class Location
         return [
             "id" => $this->getId(),
             "type" => $this->getType(),
-            "longitude" => $this->getLongitude(),
-            "latitude" => $this->getLatitude(),
-            "altitude" => $this->getAltitude(),
             "enabled" => $this->isEnabled(),
+            "coordinates" => $this->getCoordinates()->toArray() ?? null,
         ];
     }
 }
