@@ -11,38 +11,19 @@ class UserRepository extends BaseRepository
 
     public function getAll(bool $disabled = false): array
     {
-        $sql = "SELECT users.*, campuses.id as campus
-                FROM users
-                LEFT JOIN campuses ON users.campus = campuses.id
-                ";
-
-        // if (!$disabled) {
-        //     $sql .= " WHERE enabled = 1";
-        // }
-
-        $result = $this->conn->query($sql);
-
-        $data = $result->fetchAll(PDO::FETCH_ASSOC);
-
-        return $data;
-
-        $users = [];
-
-        foreach ($data as $row) {
-            $user = new User(
-                $row['id'],
-                $row['enabled'] ?? true,
-                $row['email'] ?? "",
-                $row['name'] ?? "",
-                $row['password'] ?? "",
-                $row['created'] ?? "",
-                $row['privileges'] ?? "",
-                $row['campus'] ?? null,
-            );
-            $users[] = $user;
+        $sql = "SELECT * FROM users";
+        $params = [];
+        if (!$disabled) {
+            $sql .= " WHERE enabled = :enabled";
+            $params = ['enabled' => 1];
         }
 
-        return $users;
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $this->hydrate($data);
     }
 
     public function create(User $user): bool
@@ -57,51 +38,16 @@ class UserRepository extends BaseRepository
         ]);
     }
 
-    public function get(int $id): User|false
+
+    public function get(string $id): User
     {
         $sql = "SELECT * FROM users WHERE id = :id";
 
         $data = $this->fetch($sql, [':id' => $id]);
 
-        if ($data !== false) {
-            $data["enabled"] = (bool)$data["enabled"];
-            return new User(
-                $data['id'],
-                $data['enabled'] ?? true,
-                $data['email'] ?? "",
-                $data['name'] ?? "",
-                $data['password'] ?? "",
-                $data['created'] ?? "",
-                $data['privileges'] ?? "",
-                $data['campus'] ?? null,
-            );
-        }
-
-        return false;
+        return $data;
     }
 
-    public function getByCampus(int $id): User|false
-    {
-        $sql = "SELECT * FROM users WHERE campus_id = :id";
-
-        $data = $this->fetch($sql, [':id' => $id]);
-
-        if ($data !== false) {
-            $data["enabled"] = (bool)$data["enabled"];
-            return new User(
-                $data['id'],
-                $data['enabled'] ?? true,
-                $data['email'] ?? "",
-                $data['name'] ?? "",
-                $data['password'] ?? "",
-                $data['created'] ?? "",
-                $data['privileges'] ?? "",
-                $data['campus'] ?? null,
-            );
-        }
-
-        return false;
-    }
 
     public function findByEmail(string $email): User|false
     {

@@ -5,37 +5,28 @@ class FloorRepository extends BaseRepository
     public function __construct(
         Database $conn,
         private BuildingRepository $buildingRepository,
+        private DetailsRepository $detailsRepository
     ) {
         parent::__construct($conn);
         $this->buildingRepository = $buildingRepository;
+        $this->detailsRepository = $detailsRepository;
     }
+
     public function getAll(bool $disabled = false): array
     {
         $sql = "SELECT * FROM floors";
-
+        $params = [];
         if (!$disabled) {
-            $sql .= " WHERE enabled = 1";
+            $sql .= " WHERE enabled = :enabled";
+            $params = ['enabled' => 1];
         }
 
-        $result = $this->conn->query($sql);
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
 
-        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $floors = [];
-
-        foreach ($data as $row) {
-            $floor = new Floor(
-                $this->buildingRepository,
-                $row['id'],
-                $row['size'] ?? 0,
-                $row['floor'] ?? 0,
-                $row['layout'] ?? "",
-                $row['building_id'] ?? null,
-            );
-            $floors[] = $floor;
-        }
-
-        return $floors;
+        return $this->hydrate($data);
     }
 
     public function create(array $data): string
@@ -49,26 +40,7 @@ class FloorRepository extends BaseRepository
         ]);
     }
 
-    public function get(string $id): null|Floor
-    {
-        $sql = "SELECT * FROM floors WHERE id = :id";
 
-        $data = $this->fetch($sql, [':id' => $id]);
-
-        if ($data !== false) {
-            $data["enabled"] = (bool)$data["enabled"];
-            return new Floor(
-                $this->buildingRepository,
-                $data['id'],
-                $data['size'] ?? 0,
-                $data['floor'] ?? 0,
-                $data['layout'] ?? "",
-                $data['building_id'] ?? null,
-            );
-        }
-
-        return null;
-    }
 
     public function update(Floor $current, array $new): int
     {
@@ -76,7 +48,6 @@ class FloorRepository extends BaseRepository
 
         return $this->execute($sql, [
             ':enabled' => $new["enabled"] ?? $current->isEnabled(),
-            ':size' => $new["size"] ?? $current->getSize(),
             ':building_id' => $new["building_id"] ?? $current->getBuilding(),
             ':floor' => $new["floor"] ?? $current->getFloor(),
             ':ID' => $current->getId(),
@@ -98,5 +69,27 @@ class FloorRepository extends BaseRepository
         $sql = "DELETE FROM floors WHERE ID = :ID";
 
         return $this->execute($sql, [':ID' => $id]);
+    }
+
+    private function hydrate(array $data): array
+    {
+        $output = [];
+        foreach ($data as $row) {
+            $output[] = $this->hydrateRow($row);
+        }
+        return $output;
+    }
+
+    private function hydrateRow(array $row): Connection
+    {
+        $details = $this->detailsRepository->getByFloor($row['details']);
+        $locationOne = $this->buildingRepository->getById($row['location']);
+
+        return new Connection(
+            $row['id'],
+            $row['enabled'] == 1 ? true : false,
+            $locationOne,
+            $locationTwo,
+        );
     }
 }

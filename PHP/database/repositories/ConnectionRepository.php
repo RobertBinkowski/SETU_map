@@ -14,29 +14,18 @@ class ConnectionRepository extends BaseRepository
     public function getAll(bool $disabled = false): array
     {
         $sql = "SELECT * FROM connections";
-
+        $params = [];
         if (!$disabled) {
-            $sql .= " WHERE enabled =1";
+            $sql .= " WHERE enabled = :enabled";
+            $params = ['enabled' => 1];
         }
 
-        $result = $this->conn->query($sql);
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
 
-        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $users = [];
-
-        foreach ($data as $row) {
-            $user = new Connection(
-                $this->locationRepository,
-                $row['id'],
-                $row['location_one'] ?? null,
-                $row['location_two'] ?? null,
-                $row['enabled'] ?? true,
-            );
-            $users[] = $user;
-        }
-
-        return $users;
+        return $this->hydrate($data);
     }
 
     public function create(array $data): string
@@ -47,26 +36,6 @@ class ConnectionRepository extends BaseRepository
             ':location_one' => $data["node_one_id"],
             ':location_two' => $data["node_two_is"],
         ]);
-    }
-
-    public function get(string $id): Connection|null
-    {
-        $sql = "SELECT * FROM connections WHERE id = :id";
-
-        $data = $this->fetch($sql, [':id' => $id]);
-
-
-        if ($data !== false) {
-            return new Connection(
-                $this->locationRepository,
-                $data['id'],
-                $data['location_one'] ?? null,
-                $data['location_two'] ?? null,
-                $data['enabled'] ?? true,
-            );
-        }
-
-        return null;
     }
 
     public function update(Connection $current, array $new): int
@@ -95,5 +64,28 @@ class ConnectionRepository extends BaseRepository
         $sql = "DELETE FROM connections WHERE ID = :ID";
 
         return $this->execute($sql, [':ID' => $id]);
+    }
+
+    private function hydrate(array $data): array
+    {
+        $output = [];
+        foreach ($data as $row) {
+            $output[] = $this->hydrateRow($row);
+        }
+        return $output;
+    }
+
+    private function hydrateRow(array $row): Connection
+    {
+        $locationOne = $this->locationRepository->getById($row['location_one']);
+
+        $locationTwo = $this->locationRepository->getById($row['location_two']);
+
+        return new Connection(
+            $row['id'],
+            $row['enabled'] == 1 ? true : false,
+            $locationOne,
+            $locationTwo,
+        );
     }
 }

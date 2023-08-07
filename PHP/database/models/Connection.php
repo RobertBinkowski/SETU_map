@@ -11,9 +11,9 @@ class Connection
 
     public function __construct(
         private int $id,
+        private bool $enabled = true,
         private ?Location $nodeOne = null,
         private ?Location $nodeTwo = null,
-        private bool $enabled = true,
 
     ) {
         $this->id = $id;
