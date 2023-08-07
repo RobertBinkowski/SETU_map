@@ -1,10 +1,8 @@
 <?php
-
+require_once "Campus.php";
 
 class User
 {
-
-    private ?Campus $campus;
 
     public function __toString(): string
     {
@@ -12,23 +10,19 @@ class User
     }
 
     public function __construct(
-        private CampusRepository $campusRepository,
         private int $id,
-        private string $username = "",
-        private string $email = "",
-        private string $password = "",
-        private string $privileges = "",
-        ?int $campus = null,
-        private string $created = "",
         private bool $enabled = true,
+        private string $email = "",
+        private string $name = "",
+        private string $password = "",
+        private string $created = "",
+        private ?string $privileges = null,
+        private ?Campus $campus = null,
     ) {
-        $this->campusRepository = $campusRepository;
-
         $this->id = $id;
         $this->created = $created;
         $this->setEnabled($enabled);
-
-        $this->setUsername($username);
+        $this->setUsername($name);
         $this->setEmail($email);
         $this->setPassword($password);
         $this->setPrivileges($privileges);
@@ -43,7 +37,7 @@ class User
     }
     public function getUsername(): string
     {
-        return $this->username;
+        return $this->name;
     }
     public function getEmail(): string
     {
@@ -73,7 +67,7 @@ class User
     // Setters
     public function setUsername(string $username): void
     {
-        $this->username = $username;
+        $this->name = $username;
     }
     public function setPassword(string $password): void
     {
@@ -91,13 +85,10 @@ class User
     {
         $this->enabled = $enabled;
     }
-    public function setCampus(?int $campus): void
+
+    public function setCampus(?Campus $campus = null): void
     {
-        if ($campus != null) {
-            $this->campus = $this->campusRepository->get($campus);
-        } else {
-            $this->campus = null;
-        }
+        $this->campus = $campus;
     }
 
     // To Array
