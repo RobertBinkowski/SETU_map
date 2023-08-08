@@ -29,29 +29,13 @@ class FloorRepository extends BaseRepository
         return $this->hydrate($data);
     }
 
-    public function create(array $data): string
+    public function get(string $id): Floor
     {
-        $sql = "INSERT INTO floors (enabled , info, size, building_id, floor) VALUES (enabled, :info, :size, :building_id, :floor)";
+        $sql = "SELECT * FROM floors WHERE id = :id";
 
-        return $this->execute($sql, [
-            ':size' => $data["size"],
-            ':building_id' => $data["building_id"],
-            ':floor' => $data["floor"],
-        ]);
-    }
+        $data = $this->fetch($sql, [':id' => $id]);
 
-
-
-    public function update(Floor $current, array $new): int
-    {
-        $sql = "UPDATE floors SET info = :info, enabled = :enabled, size = :size, building_id= :building_id, floor = :floor WHERE ID =:ID";
-
-        return $this->execute($sql, [
-            ':enabled' => $new["enabled"] ?? $current->isEnabled(),
-            ':building_id' => $new["building_id"] ?? $current->getBuilding(),
-            ':floor' => $new["floor"] ?? $current->getFloor(),
-            ':ID' => $current->getId(),
-        ]);
+        return $this->hydrateRow($data);
     }
 
     public function disable(array $current, bool $enabled = false): int
@@ -80,16 +64,23 @@ class FloorRepository extends BaseRepository
         return $output;
     }
 
-    private function hydrateRow(array $row): Connection
+    private function hydrateRow(array $row): Floor
     {
-        $details = $this->detailsRepository->getByFloor($row['details']);
-        $locationOne = $this->buildingRepository->getById($row['location']);
+        $details = null;
+        $building = null;
+        if ($row['details'] != null) {
+            $details = $this->detailsRepository->get($row['details']);
+        }
+        if ($row['building'] != null) {
+            $building = $this->buildingRepository->get($row['building']);
+        }
 
-        return new Connection(
+        return new Floor(
             $row['id'],
-            $row['enabled'] == 1 ? true : false,
-            $locationOne,
-            $locationTwo,
+            $row['enabled'],
+            $row['floor'],
+            $building,
+            $details,
         );
     }
 }

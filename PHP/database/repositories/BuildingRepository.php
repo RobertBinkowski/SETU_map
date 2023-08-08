@@ -96,7 +96,7 @@ class BuildingRepository extends BaseRepository
         }
         return new Building(
             $row['id'],
-            $row['enabled'] == 1 ? true : false,
+            $row['enabled'],
             $campus,
             $location,
             $details
