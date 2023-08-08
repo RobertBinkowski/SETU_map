@@ -19,8 +19,8 @@ class Campus implements JsonSerializable
     public function __construct(
         private int $id,
         private bool $enabled = true,
-        private ?Coordinates $coordinates,
-        private ?Details $details,
+        private ?Coordinates $coordinates = null,
+        private ?Details $details = null,
     ) {
         $this->id = $id;
         $this->setEnabled($enabled);

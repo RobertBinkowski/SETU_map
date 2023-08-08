@@ -43,6 +43,18 @@ class CampusRepository extends BaseRepository
         return $this->lastInsertId();
     }
 
+    public function get(string $id): Campus|null
+    {
+        $sql = "SELECT * FROM campuses WHERE ID = :ID";
+
+        $data = $this->fetch($sql, [':ID' => $id]);
+
+        if (!$data) {
+            return null;
+        }
+
+        return $this->hydrateRow($data);
+    }
     public function disable(Campus $current, bool $enabled = false): bool
     {
         $sql = "UPDATE campuses SET enabled = :enabled WHERE ID =:ID";
@@ -70,15 +82,22 @@ class CampusRepository extends BaseRepository
 
     private function hydrateRow(array $row): Campus
     {
-        $coordinates = $this->coordinatesRepository->get($row['coordinates']);
+        if ($row['coordinates'] !== null) {
+            $coordinates = $this->coordinatesRepository->get($row['coordinates']);
+        } else {
+            $coordinates = null;
+        }
 
-        $details = $this->detailsRepository->get($row['details']);
-
+        if ($row['details'] !== null) {
+            $details = $this->detailsRepository->get($row['details']);
+        } else {
+            $details = null;
+        }
         return new Campus(
             $row['id'],
-            $row['enabled'] == 1 ? true : false,
+            $row['enabled'],
             $coordinates,
-            $details,
+            $details
         );
     }
 }

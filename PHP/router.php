@@ -3,9 +3,9 @@
 // Initiate all repositories for later easier use
 $detailsRepository = new DetailsRepository($database);
 $logRepository = new LogRepository($database);
+$coordinatesRepository = new CoordinatesRepository($database);
+$campusRepository = new CampusRepository($database, $coordinatesRepository, $detailsRepository);
 
-// $coordinatesRepository = new CoordinatesRepository($database);
-// $campusRepository = new CampusRepository($database, $coordinatesRepository, $detailsRepository);
 // $userRepository = new UserRepository($database, $campusRepository);
 // $locationRepository = new LocationRepository($database);
 // $buildingRepository = new BuildingRepository($database, $campusRepository, $locationRepository);
@@ -42,10 +42,10 @@ if ($request[1] == "api") {
             //     $output = new BuildingController($buildingRepository, $logRepository);
             //     $output->request($_SERVER["REQUEST_METHOD"], $id);
             //     break;
-            // case "campuses":
-            //     $output = new CampusController($campusRepository, $logRepository);
-            //     $output->request($_SERVER["REQUEST_METHOD"], $id);
-            //     break;
+        case "campuses":
+            $output = new CampusController($campusRepository, $logRepository);
+            $output->request($_SERVER["REQUEST_METHOD"], $id);
+            break;
             // case "connections":
             //     $output = new ConnectionController($connectionRepository, $logRepository);
             //     $output->request($_SERVER["REQUEST_METHOD"], $id);
@@ -67,14 +67,19 @@ if ($request[1] == "api") {
             //     $tables = $database->getTables();
             //     echo json_encode($tables);
             //     break;
-        case "logs":
-            // Logs
-            $output = new LogController($logRepository);
-            $output->request($_SERVER["REQUEST_METHOD"], $id);
-            break;
+            // case "logs":
+            //     // Logs
+            //     $output = new LogController($logRepository);
+            //     $output->request($_SERVER["REQUEST_METHOD"], $id);
+            //     break;
         case "details":
             // Details
             $output = new DetailsController($detailsRepository, $logRepository);
+            $output->request($_SERVER["REQUEST_METHOD"], $id);
+            break;
+        case "coordinates":
+            // Details
+            $output = new CoordinatesController($coordinatesRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
             // case "login":
