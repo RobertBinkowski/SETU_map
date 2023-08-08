@@ -1,12 +1,17 @@
 <?php
 include_once "Details.php";
 
-class Image
+class Image implements JsonSerializable
 {
 
     public function __toString(): string
     {
         return json_encode($this->toArray());
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 
     public function __construct(

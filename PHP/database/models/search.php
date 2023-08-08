@@ -2,8 +2,12 @@
 require_once "Location.php";
 require_once "Device.php";
 
-class Search
+class Search implements JsonSerializable
 {
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
     private ?string $timestamp;
     public function __construct(
         private int $id,

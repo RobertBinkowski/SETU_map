@@ -1,8 +1,13 @@
 <?php
 require_once "Campus.php";
 
-class User
+class User implements JsonSerializable
 {
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
 
     public function __toString(): string
     {

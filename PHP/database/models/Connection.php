@@ -1,12 +1,17 @@
 <?php
 require_once "Location.php";
 
-class Connection
+class Connection implements JsonSerializable
 {
 
     public function __toString(): string
     {
         return json_encode($this->toArray());
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 
     public function __construct(

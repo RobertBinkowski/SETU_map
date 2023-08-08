@@ -1,11 +1,16 @@
 <?php
 
-class Coordinates
+class Coordinates implements JsonSerializable
 {
 
     public function __toString(): string
     {
         return json_encode($this->toArray());
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
     public function __construct(
         private int $id,

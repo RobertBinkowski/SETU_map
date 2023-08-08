@@ -1,6 +1,6 @@
 <?php
 
-class Device
+class Device implements JsonSerializable
 {
     public function __construct(
         private int $id,
@@ -13,6 +13,11 @@ class Device
         $this->setName($name);
         $this->setTimestamp($timestamp);
         $this->timestamp = date('Y-m-d H:i:s');
+    }
+
+    function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 
     public function __toString(): string

@@ -3,12 +3,17 @@
 include_once "Coordinates.php";
 include_once "Details.php";
 
-class Campus
+class Campus implements JsonSerializable
 {
 
     public function __toString(): string
     {
         return json_encode($this->toArray());
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 
     public function __construct(
@@ -60,8 +65,6 @@ class Campus
     {
         $this->details = $details;
     }
-
-
 
     // To Array
     public function toArray(): array
