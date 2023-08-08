@@ -1,8 +1,11 @@
 <?php
 
 // Initiate all repositories for later easier use
+$detailsRepository = new DetailsRepository($database);
 $logRepository = new LogRepository($database);
-// $campusRepository = new CampusRepository($database);
+
+// $coordinatesRepository = new CoordinatesRepository($database);
+// $campusRepository = new CampusRepository($database, $coordinatesRepository, $detailsRepository);
 // $userRepository = new UserRepository($database, $campusRepository);
 // $locationRepository = new LocationRepository($database);
 // $buildingRepository = new BuildingRepository($database, $campusRepository, $locationRepository);
@@ -16,7 +19,6 @@ $logRepository = new LogRepository($database);
 // );
 // $imageRepository = new ImageRepository($database, $campusRepository, $buildingRepository, $roomRepository);
 
-$detailsRepository = new DetailsRepository($database);
 
 // explode the url request to create a router
 $request = explode("/", strtolower($_SERVER["REQUEST_URI"]));
@@ -65,13 +67,13 @@ if ($request[1] == "api") {
             //     $tables = $database->getTables();
             //     echo json_encode($tables);
             //     break;
-            // case "logs":
-            //     // Logs
-            //     $output = new LogController($logRepository);
-            //     $output->request($_SERVER["REQUEST_METHOD"], $id);
-            //     break;
+        case "logs":
+            // Logs
+            $output = new LogController($logRepository);
+            $output->request($_SERVER["REQUEST_METHOD"], $id);
+            break;
         case "details":
-            // DEtails
+            // Details
             $output = new DetailsController($detailsRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;

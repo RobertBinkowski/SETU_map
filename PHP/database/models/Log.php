@@ -2,11 +2,6 @@
 include_once "Device.php";
 class Log implements JsonSerializable
 {
-
-    public function __toString(): string
-    {
-        return json_encode($this->toArray());
-    }
     public function jsonSerialize(): array
     {
         return $this->toArray();
@@ -17,8 +12,8 @@ class Log implements JsonSerializable
         private string $title = "",
         private string $type = "info",
         private string $info = "",
-        private string $timestamp = "",
-        private Device $device = null
+        private ?string $timestamp = "",
+        private ?Device $device = null
     ) {
         $this->setId($id);
         $this->setInfo($info);
