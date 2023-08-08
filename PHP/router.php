@@ -9,7 +9,7 @@ $privilegeValueRepository = new PrivilegeValueRepository($database);
 $privilegesRepository = new PrivilegesRepository($database, $privilegeValueRepository);
 $userRepository = new UserRepository($database, $campusRepository, $privilegesRepository);
 
-// $locationRepository = new LocationRepository($database);
+$locationRepository = new LocationRepository($database, $coordinatesRepository);
 // $buildingRepository = new BuildingRepository($database, $campusRepository, $locationRepository);
 // $floorRepository = new FloorRepository($database, $buildingRepository);
 // $connectionRepository = new ConnectionRepository($database, $locationRepository);
@@ -56,10 +56,10 @@ if ($request[1] == "api") {
             //     $output = new FloorController($floorRepository, $logRepository);
             //     $output->request($_SERVER["REQUEST_METHOD"], $id);
             //     break;
-            // case "locations":
-            //     $output = new LocationController($locationRepository, $logRepository);
-            //     $output->request($_SERVER["REQUEST_METHOD"], $id);
-            //     break;
+        case "locations":
+            $output = new LocationController($locationRepository, $logRepository);
+            $output->request($_SERVER["REQUEST_METHOD"], $id);
+            break;
             // case "rooms":
             //     $output = new RoomController($roomRepository, $logRepository);
             //     $output->request($_SERVER["REQUEST_METHOD"], $id);

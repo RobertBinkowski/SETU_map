@@ -1,109 +1,97 @@
 <?php
 
-
 class LocationRepository extends BaseRepository
 {
+
+    private CoordinatesRepository $coordinatesRepository;
+
+    public function __construct(
+        Database $conn,
+        CoordinatesRepository $coordinatesRepository
+    ) {
+        parent::__construct($conn);
+        $this->coordinatesRepository = $coordinatesRepository;
+    }
+
     public function getAll(bool $disabled = false): array
     {
-        $sql = "
-            SELECT 
-                locations.id as id, 
-                locations.type as type, 
-                coordinates.latitude as latitude, 
-                coordinates.longitude as longitude, 
-                coordinates.altitude as altitude, 
-                locations.enabled as enabled
-            FROM locations
-            LEFT JOIN coordinates ON locations.coordinates = coordinates.id
-        ";
-
+        $sql = "SELECT * FROM locations";
+        $params = [];
         if (!$disabled) {
-            $sql .= " WHERE enabled = 1";
+            $sql .= " WHERE enabled = :enabled";
+            $params = ['enabled' => 1];
         }
 
-        $result = $this->conn->query($sql);
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
 
-        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $locations = [];
-
-        foreach ($data as $row) {
-            $location = new Location(
-                $row['id'],
-                $row['type'] ?? "",
-                $row['latitude'] ?? 0,
-                $row['longitude'] ?? 0,
-                $row['altitude'] ?? 0,
-                $row["enabled"],
-            );
-            $locations[] = $location;
-        }
-
-        return $locations;
+        return $this->hydrate($data);
     }
+
     public function create(Location $data): string
     {
-        $sql = "INSERT INTO locations (enabled , type, longitude, latitude, type) 
-        VALUES (enabled,:type, :longitude, :latitude, :type)";
+        $sql = "INSERT INTO locations (enabled, name, abbreviation, info, size) VALUES (:enabled, :name, :abbreviation, :info, :size)";
 
         $this->execute($sql, [
-
-            ":type" => $data->getType(),
-            ":longitude" => $data->getLongitude(),
-            ":latitude" => $data->getLatitude()
+            ':enabled' => $data->isEnabled(),
         ]);
 
         return $this->lastInsertId();
     }
 
-    public function get(string $id): null|Location
+    public function get(string $id): Location|null
     {
-        $sql = "SELECT * FROM locations WHERE id = :id";
+        $sql = "SELECT * FROM locations WHERE ID = :ID";
 
-        $data = $this->fetch($sql, [':id' => $id]);
+        $data = $this->fetch($sql, [':ID' => $id]);
 
-        if ($data !== false) {
-            $data["enabled"] = (bool)$data["enabled"];
-            return new Location(
-                $data['id'],
-                $data['type'] ?? "",
-                $data['latitude'] ?? 0,
-                $data['longitude'] ?? 0,
-                $data['altitude'] ?? 0,
-                $data["enabled"],
-            );
+        if (!$data) {
+            return null;
         }
-        return null;
+
+        return $this->hydrateRow($data);
     }
-
-    public function update(Location $current, array $new): bool
-    {
-        $sql = "UPDATE locations SET type = :type, longitude = :longitude, latitude = :latitude, enabled = :enabled, type = :type WHERE ID =:ID";
-
-        return $this->execute($sql, [
-
-            ":type" => $new['type'] ?? $current->getType(),
-            ":longitude" => $new['longitude'] ?? $current->getLongitude(),
-            ":latitude" => $new['latitude'] ?? $current->getLatitude(),
-            ":enabled" => $new['enabled'] ?? $current->isEnabled(),
-            'ID' => $current->getId()
-        ]);
-    }
-
-    public function disable(Location $location, bool $enabled = false): int
+    public function disable(Location $current, bool $enabled = false): bool
     {
         $sql = "UPDATE locations SET enabled = :enabled WHERE ID =:ID";
 
         return $this->execute($sql, [
             ':enabled' => $enabled,
-            ':ID' => $location->getId()
+            ':ID' => $current->getId()
         ]);
     }
-
-    public function delete(string $id): int
+    public function delete(string $id): bool
     {
         $sql = "DELETE FROM locations WHERE ID = :ID";
 
         return $this->execute($sql, [':ID' => $id]);
+    }
+
+    private function hydrate(array $data): array
+    {
+        $output = [];
+        foreach ($data as $row) {
+            $output[] = $this->hydrateRow($row);
+        }
+        return $output;
+    }
+
+    private function hydrateRow(array $row): Location
+    {
+        $coordinates = null;
+        if ($row['coordinates']) {
+            $coordinates = $this->coordinatesRepository->get($row['coordinates']);
+        } else {
+            $coordinates = null;
+        }
+
+        return new Location(
+            $row['id'],
+            $row['enabled'],
+            $row['type'],
+            $coordinates
+        );
     }
 }

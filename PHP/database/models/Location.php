@@ -68,7 +68,7 @@ class Location implements JsonSerializable
             "id" => $this->getId(),
             "type" => $this->getType(),
             "enabled" => $this->isEnabled(),
-            "coordinates" => $this->getCoordinates()->toArray() ?? null,
+            "coordinates" => $this->getCoordinates(),
         ];
     }
 }
