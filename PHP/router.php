@@ -11,8 +11,8 @@ $userRepository = new UserRepository($database, $campusRepository, $privilegesRe
 $locationRepository = new LocationRepository($database, $coordinatesRepository);
 $buildingRepository = new BuildingRepository($database, $campusRepository, $locationRepository, $detailsRepository);
 $floorRepository = new FloorRepository($database, $buildingRepository, $detailsRepository);
+$connectionRepository = new ConnectionRepository($database, $locationRepository);
 
-// $connectionRepository = new ConnectionRepository($database, $locationRepository);
 // $roomRepository = new RoomRepository(
 //     $database,
 //     $buildingRepository,
@@ -48,10 +48,10 @@ if ($request[1] == "api") {
             $output = new CampusController($campusRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
-            // case "connections":
-            //     $output = new ConnectionController($connectionRepository, $logRepository);
-            //     $output->request($_SERVER["REQUEST_METHOD"], $id);
-            //     break;
+        case "connections":
+            $output = new ConnectionController($connectionRepository, $logRepository);
+            $output->request($_SERVER["REQUEST_METHOD"], $id);
+            break;
         case "floors":
             $output = new FloorController($floorRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);

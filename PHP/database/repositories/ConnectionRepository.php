@@ -28,6 +28,15 @@ class ConnectionRepository extends BaseRepository
         return $this->hydrate($data);
     }
 
+    public function get(string $id): Connection
+    {
+        $sql = "SELECT * FROM connections WHERE id = :id";
+
+        $data = $this->fetch($sql, [':id' => $id]);
+
+        return $this->hydrateRow($data);
+    }
+
     public function create(array $data): string
     {
         $sql = "INSERT INTO connections (enabled , location_one, location_two) VALUES (enabled, :location_one, :location_two)";
@@ -77,10 +86,14 @@ class ConnectionRepository extends BaseRepository
 
     private function hydrateRow(array $row): Connection
     {
-        $locationOne = $this->locationRepository->getById($row['location_one']);
-
-        $locationTwo = $this->locationRepository->getById($row['location_two']);
-
+        $locationOne = null;
+        $locationTwo = null;
+        if ($row['location_one'] != null) {
+            $locationOne = $this->locationRepository->get($row['location_one']);
+        }
+        if ($row['location_two'] != null) {
+            $locationTwo = $this->locationRepository->get($row['location_two']);
+        }
         return new Connection(
             $row['id'],
             $row['enabled'] == 1 ? true : false,
