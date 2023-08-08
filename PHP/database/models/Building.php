@@ -2,13 +2,20 @@
 include_once "Campus.php";
 include_once "Location.php";
 include_once "Details.php";
-class Building
+
+class Building implements JsonSerializable
 {
 
     public function __toString(): string
     {
         return json_encode($this->toArray());
     }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
     public function __construct(
         private int $id,
         private bool $enabled = true,
