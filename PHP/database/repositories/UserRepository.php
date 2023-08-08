@@ -3,16 +3,24 @@
 class UserRepository extends BaseRepository
 {
 
+    private CampusRepository $campusRepository;
+    private PrivilegesRepository $privilegesRepository;
+
     public function __construct(
         Database $conn,
+        CampusRepository $campusRepository,
+        PrivilegesRepository $privilegesRepository
     ) {
         parent::__construct($conn);
+        $this->campusRepository = $campusRepository;
+        $this->privilegesRepository = $privilegesRepository;
     }
 
     public function getAll(bool $disabled = false): array
     {
         $sql = "SELECT * FROM users";
         $params = [];
+
         if (!$disabled) {
             $sql .= " WHERE enabled = :enabled";
             $params = ['enabled' => 1];
@@ -45,7 +53,7 @@ class UserRepository extends BaseRepository
 
         $data = $this->fetch($sql, [':id' => $id]);
 
-        return $data;
+        return $this->hydrateRow($data);
     }
 
 
@@ -100,5 +108,38 @@ class UserRepository extends BaseRepository
         $sql = "DELETE FROM users WHERE ID = :ID";
 
         return $this->execute($sql, [':ID' => $id]);
+    }
+
+    private function hydrate(array $data): array
+    {
+        $output = [];
+        foreach ($data as $row) {
+            $output[] = $this->hydrateRow($row);
+        }
+        return $output;
+    }
+
+    private function hydrateRow(array $row): User
+    {
+
+        $campus = null;
+        $privileges = null;
+        if ($row['campus'] !== null) {
+            $campus = $this->campusRepository->get($row['campus']);
+        }
+        if ($row['privileges'] !== null) {
+            $privileges = $this->privilegesRepository->get($row['privileges']);
+        }
+
+        return new User(
+            $row['id'],
+            $row['enabled'] ?? true,
+            $row['email'] ?? "",
+            $row['name'] ?? "",
+            $row['password'] ?? "",
+            $row['created'] ?? "",
+            $privileges,
+            $campus,
+        );
     }
 }

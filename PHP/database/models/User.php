@@ -21,7 +21,7 @@ class User implements JsonSerializable
         private string $name = "",
         private string $password = "",
         private string $created = "",
-        private ?string $privileges = null,
+        private ?Privileges $privileges = null,
         private ?Campus $campus = null,
     ) {
         $this->id = $id;
@@ -48,7 +48,7 @@ class User implements JsonSerializable
     {
         return $this->email;
     }
-    public function getPrivileges(): string
+    public function getPrivileges(): Privileges|null
     {
         return $this->privileges;
     }
@@ -82,7 +82,7 @@ class User implements JsonSerializable
     {
         $this->email = $email;
     }
-    public function setPrivileges(string $privileges): void
+    public function setPrivileges(?Privileges $privileges): void
     {
         $this->privileges = $privileges;
     }
@@ -105,11 +105,15 @@ class User implements JsonSerializable
             'username' => $this->getUsername(),
             'email' => $this->getEmail(),
             'password' => $this->getPassword(),
-            'privileges' => $this->getPrivileges(),
             'created' => $this->getCreated(),
         ];
-        if ($this->campus) {
+
+        if ($this->getCampus()) {
             $data['campus'] = $this->getCampus()->toArray();
+        }
+
+        if ($this->getPrivileges()) {
+            $data['privileges'] = $this->getPrivileges()->toArray();
         }
 
         return $data;

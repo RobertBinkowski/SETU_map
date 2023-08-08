@@ -5,8 +5,10 @@ $detailsRepository = new DetailsRepository($database);
 $logRepository = new LogRepository($database);
 $coordinatesRepository = new CoordinatesRepository($database);
 $campusRepository = new CampusRepository($database, $coordinatesRepository, $detailsRepository);
+$privilegeValueRepository = new PrivilegeValueRepository($database);
+$privilegesRepository = new PrivilegesRepository($database, $privilegeValueRepository);
+$userRepository = new UserRepository($database, $campusRepository, $privilegesRepository);
 
-// $userRepository = new UserRepository($database, $campusRepository);
 // $locationRepository = new LocationRepository($database);
 // $buildingRepository = new BuildingRepository($database, $campusRepository, $locationRepository);
 // $floorRepository = new FloorRepository($database, $buildingRepository);
@@ -34,10 +36,10 @@ if ($request[1] == "api") {
             //     $output = new ImageController($imageRepository, $logRepository);
             //     $output->request($_SERVER["REQUEST_METHOD"], $id);
             //     break;
-            // case "users":
-            //     $output = new UserController($userRepository, $logRepository);
-            //     $output->request($_SERVER["REQUEST_METHOD"], $id);
-            //     break;
+        case "users":
+            $output = new UserController($userRepository, $logRepository);
+            $output->request($_SERVER["REQUEST_METHOD"], $id);
+            break;
             // case "buildings":
             //     $output = new BuildingController($buildingRepository, $logRepository);
             //     $output->request($_SERVER["REQUEST_METHOD"], $id);
@@ -82,10 +84,10 @@ if ($request[1] == "api") {
             $output = new CoordinatesController($coordinatesRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
-            // case "login":
-            //     // LogIn Service
-            //     $output = new SignInService($userRepository);
-            //     break;
+        case "login":
+            // LogIn Service
+            $output = new SignInService($userRepository);
+            break;
         default:
             // By Default respond with failiure
             http_response_code(404);
