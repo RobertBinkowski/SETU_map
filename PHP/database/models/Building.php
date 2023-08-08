@@ -19,9 +19,9 @@ class Building implements JsonSerializable
     public function __construct(
         private int $id,
         private bool $enabled = true,
-        private ?Campus $campus,
-        private ?Location $location,
-        private ?Details $details,
+        private ?Campus $campus = null,
+        private ?Location $location = null,
+        private ?Details $details = null,
     ) {
         $this->id = $id;
         $this->setEnabled($enabled);

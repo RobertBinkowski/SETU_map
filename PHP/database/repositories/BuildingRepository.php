@@ -41,29 +41,18 @@ class BuildingRepository extends BaseRepository
 
         $data = $this->fetch($sql, [':id' => $id]);
 
-        return $data;
+        return $this->hydrateRow($data);
     }
 
-    // public function create(Building $data): bool
-    // {
-    //     $sql = "INSERT INTO buildings (enabled, name, abbreviation, info, size, campus_id) 
-    //             VALUES (:enabled, :name, :abbreviation, :info, :size, :campus_id)";
+    public function create(Building $data): bool
+    {
+        $sql = "INSERT INTO buildings (enabled, name, abbreviation, info, size, campus_id) 
+                VALUES (:enabled, :name, :abbreviation, :info, :size, :campus_id)";
 
-    //     return $this->execute($sql, [
-    //         ':enabled' => 1,
-    //     ]);
-    // }
-
-    // public function update(Building $current, array $new): bool
-    // {
-    //     $sql = "UPDATE buildings SET name = :name, abbreviation = :abbreviation, info = :info, 
-    //             size = :size, campus_id = :campus_id WHERE id = :id";
-
-    //     return $this->execute($sql, [
-    //         ':campus_id' => $new['campius'] ?? $current->getCampus(),
-    //         ':id' => $current->getId(),
-    //     ]);
-    // }
+        return $this->execute($sql, [
+            ':enabled' => 1,
+        ]);
+    }
 
     public function disable(int $id, bool $enabled = false): bool
     {
@@ -93,12 +82,18 @@ class BuildingRepository extends BaseRepository
 
     private function hydrateRow(array $row): Building
     {
-        $campus = $this->campusRepository->get($row['campus']);
-
-        $location = $this->locationRepository->get($row['location']);
-
-        $details = $this->detailsRepository->get($row['details']);
-
+        $campus = null;
+        $location = null;
+        $details = null;
+        if ($row['campus']) {
+            $campus = $this->campusRepository->get($row['campus']);
+        }
+        if ($row['location']) {
+            $location = $this->locationRepository->get($row['location']);
+        }
+        if ($row['details']) {
+            $details = $this->detailsRepository->get($row['details']);
+        }
         return new Building(
             $row['id'],
             $row['enabled'] == 1 ? true : false,
