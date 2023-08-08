@@ -20,9 +20,10 @@ class Room implements JsonSerializable
         private int $id,
         private bool $enabled = true,
         private string $type = "",
-        private ?int $building = null,
-        private ?int $location = null,
-        private ?int $floor = null,
+        private ?Building $building = null,
+        private ?Location $location = null,
+        private ?Floor $floor = null,
+        private ?Details $details = null
     ) {
         $this->id = $id;
         $this->setEnabled($enabled);
@@ -31,6 +32,7 @@ class Room implements JsonSerializable
         $this->setBuilding($building);
         $this->setLocation($location);
         $this->setFloor($floor);
+        $this->setDetails($details);
     }
 
     // Getters
@@ -64,6 +66,11 @@ class Room implements JsonSerializable
         return $this->floor;
     }
 
+    public function getDetails(): ?Details
+    {
+        return $this->details;
+    }
+
     // Setters
     public function setType(string $type): void
     {
@@ -88,6 +95,11 @@ class Room implements JsonSerializable
         $this->floor = $floor;
     }
 
+    public function setDetails(?Details $details = null): void
+    {
+        $this->details = $details;
+    }
+
     // To Array
     public function toArray(): array
     {
@@ -104,6 +116,9 @@ class Room implements JsonSerializable
         }
         if ($this->floor) {
             $data["floor"] = $this->getFloor()->toArray();
+        }
+        if ($this->details) {
+            $data["details"] = $this->getDetails()->toArray();
         }
         return $data;
     }

@@ -1,131 +1,108 @@
 <?php
 
-declare(strict_types=1);
-
 class RoomRepository extends BaseRepository
 {
+    private LocationRepository $locationRepository;
+    private DetailsRepository $detailsRepository;
+
+    private BuildingRepository $buildingRepository;
+
+    private FloorRepository $floorRepository;
 
     public function __construct(
         Database $conn,
-        private BuildingRepository $buildingRepository,
-        private LocationRepository $locationRepository,
-        private FloorRepository $floorRepository
+        LocationRepository $locationRepository,
+        DetailsRepository $detailsRepository,
+        BuildingRepository $buildingRepository,
+        FloorRepository $floorRepository,
     ) {
         parent::__construct($conn);
-        $this->buildingRepository = $buildingRepository;
         $this->locationRepository = $locationRepository;
+        $this->detailsRepository = $detailsRepository;
+        $this->buildingRepository = $buildingRepository;
         $this->floorRepository = $floorRepository;
     }
+
     public function getAll(bool $disabled = false): array
     {
         $sql = "SELECT * FROM rooms";
-
+        $params = [];
         if (!$disabled) {
-            $sql .= " WHERE enabled = 1";
+            $sql .= " WHERE enabled = :enabled";
+            $params = ['enabled' => 1];
         }
 
-        $result = $this->conn->query($sql);
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
 
-        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $rooms = [];
-
-        foreach ($data as $row) {
-            $room = new Room(
-                $this->buildingRepository,
-                $this->locationRepository,
-                $this->floorRepository,
-                $row['id'],
-                $row['type'] ?? "",
-                $row['name'] ?? "",
-                $row['info'] ?? "",
-                $row['size'] ?? "",
-                $row['layout'] ?? "",
-                $row['building_id'] ?? null,
-                $row['location_id'] ?? null,
-                $row['floor_id'] ?? null,
-                (bool)$row['enabled'] ?? true,
-            );
-            $rooms[] = $room;
-        }
-
-        return $rooms;
-    }
-    public function create(Room $data): string
-    {
-        $sql = "INSERT INTO rooms (enabled , type, name, info, size, building_id, location_id, floor_id) VALUES (true, :type, :name, :info, :size, :building_id, :location_id, :floor_id)";
-
-        $this->execute($sql, [
-            ":type" => $data->getType(),
-            ":name" => $data->getName(),
-            ":info" => $data->getInfo(),
-            ":size" => $data->getSize(),
-            ":building_id" => $data->getBuilding(),
-            ":location_id" => $data->getLocation(),
-            ":floor_id" => $data->getFloor()
-        ]);
-
-        return $this->lastInsertId();
+        return $this->hydrate($data);
     }
 
-    public function get(string $id): Room|false
+    public function get(string $id): Room|null
     {
         $sql = "SELECT * FROM rooms WHERE id = :id";
 
         $data = $this->fetch($sql, [':id' => $id]);
 
-        if ($data !== false) {
-            $data["enabled"] = (bool)$data["enabled"];
-            return new Room(
-                $this->buildingRepository,
-                $this->locationRepository,
-                $this->floorRepository,
-                $data['id'],
-                $data['type'] ?? "",
-                $data['name'] ?? "",
-                $data['info'] ?? "",
-                $data['size'] ?? "",
-                $data['layout'] ?? "",
-                $data['building_id'] ?? null,
-                $data['location_id'] ?? null,
-                $data['floor_id'] ?? null,
-                (bool)$data['enabled'] ?? true,
-            );
-        }
-        return false;
+        return $this->hydrateRow($data);
     }
 
-    public function update(Room $current, array $new): bool
+    public function disable(int $id, bool $enabled = false): bool
     {
-        $sql = "UPDATE rooms SET type = :type, name = :name, info = :info, enabled = :enabled, size = :size, building_id= :building_id, location_id = :location_id, floor_id = :floor_id WHERE ID =:ID";
-
-
-        return $this->execute($sql, [
-            ":type" => $new['type'] ?? $current->getType(),
-            ":name" => $new['name'] ?? $current->getName(),
-            ":info" => $new['info'] ?? $current->getInfo(),
-            ":size" => $new['size'] ?? $current->getSize(),
-            ":building_id" => $new['building'] ?? $current->getBuilding(),
-            ":location_id" => $new['location'] ?? $current->getLocation(),
-            ":floor_id" => $new['floor'] ?? $current->getFloor(),
-            ":ID" => $current->getId()
-        ]);
-    }
-
-    public function disable(Room $current, bool $enabled = false): bool
-    {
-        $sql = "UPDATE rooms SET enabled = :enabled WHERE ID =:ID";
+        $sql = "UPDATE rooms SET enabled = :enabled WHERE id = :id";
 
         return $this->execute($sql, [
             ':enabled' => $enabled,
-            ':ID' => $current->getId()
+            ':id' => $id,
         ]);
     }
 
-    public function delete(string $id): bool
+    public function delete(int $id): bool
     {
-        $sql = "DELETE FROM rooms WHERE ID = :ID";
+        $sql = "DELETE FROM rooms WHERE id = :id";
 
-        return $this->execute($sql, [':ID' => $id]);
+        return $this->execute($sql, [':id' => $id]);
+    }
+
+    private function hydrate(array $data): array
+    {
+        $rooms = [];
+        foreach ($data as $row) {
+            $rooms[] = $this->hydrateRow($row);
+        }
+        return $rooms;
+    }
+
+    private function hydrateRow(array $row): Room
+    {
+        $location = null;
+        $details = null;
+        $building = null;
+        $floor = null;
+
+        if ($row['location']) {
+            $location = $this->locationRepository->get($row['location']);
+        }
+        if ($row['details']) {
+            $details = $this->detailsRepository->get($row['details']);
+        }
+        if ($row['building']) {
+            $building = $this->buildingRepository->get($row['building']);
+        }
+        if ($row['floor']) {
+            $floor = $this->floorRepository->get($row['floor']);
+        }
+
+        return new Room(
+            $row['id'],
+            $row['enabled'],
+            $row['type'],
+            $building,
+            $location,
+            $floor,
+            $details,
+        );
     }
 }

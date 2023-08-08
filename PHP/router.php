@@ -13,12 +13,13 @@ $buildingRepository = new BuildingRepository($database, $campusRepository, $loca
 $floorRepository = new FloorRepository($database, $buildingRepository, $detailsRepository);
 $connectionRepository = new ConnectionRepository($database, $locationRepository);
 
-// $roomRepository = new RoomRepository(
-//     $database,
-//     $buildingRepository,
-//     $locationRepository,
-//     $floorRepository
-// );
+$roomRepository = new RoomRepository(
+    $database,
+    $locationRepository,
+    $detailsRepository,
+    $buildingRepository,
+    $floorRepository,
+);
 // $imageRepository = new ImageRepository($database, $campusRepository, $buildingRepository, $roomRepository);
 
 
@@ -60,10 +61,10 @@ if ($request[1] == "api") {
             $output = new LocationController($locationRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
-            // case "rooms":
-            //     $output = new RoomController($roomRepository, $logRepository);
-            //     $output->request($_SERVER["REQUEST_METHOD"], $id);
-            //     break;
+        case "rooms":
+            $output = new RoomController($roomRepository, $logRepository);
+            $output->request($_SERVER["REQUEST_METHOD"], $id);
+            break;
             // case "tables":
             //     // Returns all tables used to then display them in the admin panel
             //     $tables = $database->getTables();
