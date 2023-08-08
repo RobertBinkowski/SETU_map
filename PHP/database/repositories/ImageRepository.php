@@ -1,107 +1,84 @@
 <?php
 
-
 class ImageRepository extends BaseRepository
 {
+
+    private DetailsRepository $detailsRepository;
+
     public function __construct(
         Database $conn,
-        private CampusRepository $campusRepository,
-        private BuildingRepository $buildingRepository,
-        private RoomRepository $roomRepository
+        DetailsRepository $detailsRepository,
     ) {
         parent::__construct($conn);
-        $this->campusRepository = $campusRepository;
-        $this->buildingRepository = $buildingRepository;
-        $this->roomRepository = $roomRepository;
+        $this->detailsRepository = $detailsRepository;
     }
+
     public function getAll(bool $disabled = false): array
     {
         $sql = "SELECT * FROM images";
+        $params = [];
 
         if (!$disabled) {
-            $sql .= " WHERE enabled = 1";
+            $sql .= " WHERE enabled = :enabled";
+            $params = ['enabled' => 1];
         }
 
-        $result = $this->conn->query($sql);
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
 
-        $data = $result->fetchAll(PDO::FETCH_ASSOC);
-        // return $data;
-        $images = [];
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach ($data as $row) {
-            $image = new Image(
-                $row['id'],
-                $row['name'] ?? "",
-                $row['src'] ?? "",
-                $row['enabled'] ?? true,
-            );
-            $images[] = $image;
-        }
-
-        return $images;
-    }
-    public function create(Image $data): bool
-    {
-        $sql = "INSERT INTO images (enabled ,name, src,) 
-        VALUES (enabled,:name, :src)";
-
-        return $this->execute(
-            $sql,
-            [
-                ':enable' => 1,
-                ':name' => $data->getName(),
-                ':src' => $data->getSrc(),
-            ]
-        );
+        return $this->hydrate($data);
     }
 
-    public function get(string $id): Image|null
+    public function get(string $id): Details|null
     {
         $sql = "SELECT * FROM images WHERE id = :id";
 
         $data = $this->fetch($sql, [':id' => $id]);
 
-        if ($data !== false) {
-            $data["enabled"] = (bool)$data["enabled"];
-            return new Image(
-                $data['id'],
-                $data['name'] ?? "",
-                $data['info'] ?? "",
-                $data['src'] ?? "",
-                $data['enabled'] ?? true,
-            );
-        }
-
-        return null;
+        return $this->hydrateRow($data);
     }
 
-    public function update(Image $current, array $new): bool
-    {
-        $sql = "UPDATE images SET name = :name, src = :src, info = :info, enabled = :enabled WHERE ID =:ID";
-
-        return $this->execute($sql, [
-            ':name' => $new['name'] ?? $current->getName(),
-            ':src' => $new['src'] ?? $current->getSrc(),
-            ':enabled' => $new['enabled'] ?? $current->isEnabled(),
-            ':id' => $current->getId(),
-        ]);
-    }
-
-    public function disable(int $id, bool $enabled = false): int
+    public function disable(int $id, bool $enabled = false): bool
     {
         $sql = "UPDATE images SET enabled = :enabled WHERE ID =:ID";
 
         return $this->execute($sql, [
             ':enabled' => $enabled,
-            ':id' => $id,
-        ]);;
+            ':ID' => $id,
+        ]);
     }
 
-    public function delete(int $id): int
+    public function delete(string $id): bool
     {
         $sql = "DELETE FROM images WHERE ID = :ID";
 
+        return $this->execute($sql, [':ID' => $id]);
+    }
 
-        return $this->execute($sql, [':id' => $id]);
+    private function hydrate(array $data): array
+    {
+        $output = [];
+        foreach ($data as $row) {
+            $output[] = $this->hydrateRow($row);
+        }
+        return $output;
+    }
+
+    private function hydrateRow(array $row): Details
+    {
+
+        $details = null;
+        if ($row['details']) {
+            $details = $this->detailsRepository->get($row['details']);
+        }
+        return new Details(
+            $row['id'],
+            $row['enabled'],
+            $row['name'],
+            $row['src'],
+            $details,
+        );
     }
 }

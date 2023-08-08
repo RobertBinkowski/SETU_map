@@ -57,41 +57,41 @@ class UserRepository extends BaseRepository
     }
 
 
-    public function findByEmail(string $email): User|false
-    {
-        $sql = "SELECT * FROM users WHERE email = :email";
+    // public function findByEmail(string $email): User|false
+    // {
+    //     $sql = "SELECT * FROM users WHERE email = :email";
 
-        $data = $this->fetch($sql, [':email' => $email]);
+    //     $data = $this->fetch($sql, [':email' => $email]);
 
-        if ($data !== false) {
-            $data["enabled"] = (bool)$data["enabled"];
-            return new User(
-                $data['id'],
-                $data['enabled'] ?? true,
-                $data['email'] ?? "",
-                $data['name'] ?? "",
-                $data['password'] ?? "",
-                $data['created'] ?? "",
-                $data['privileges'] ?? "",
-                $data['campus'] ?? null,
-            );
-        }
+    //     if ($data !== false) {
+    //         $data["enabled"] = (bool)$data["enabled"];
+    //         return new User(
+    //             $data['id'],
+    //             $data['enabled'] ?? true,
+    //             $data['email'] ?? "",
+    //             $data['name'] ?? "",
+    //             $data['password'] ?? "",
+    //             $data['created'] ?? "",
+    //             $data['privileges'] ?? "",
+    //             $data['campus'] ?? null,
+    //         );
+    //     }
 
-        return false;
-    }
-    public function update(User $current, array $new): bool
-    {
-        $sql = "UPDATE users SET username = :username, password = :password, email = :email, enabled = :enabled, privileges = :privileges WHERE ID =:ID";
+    //     return false;
+    // }
+    // public function update(User $current, array $new): bool
+    // {
+    //     $sql = "UPDATE users SET username = :username, password = :password, email = :email, enabled = :enabled, privileges = :privileges WHERE ID =:ID";
 
-        return $this->execute($sql, [
-            ':username' => $new['username'] ?? $current->getUsername(),
-            ':password' => $new['password'] ?? $current->getPassword(),
-            ':email' => $new['email'] ?? $current->getEmail(),
-            ':enabled' => $new['enabled'] ?? $current->isEnabled(),
-            ':privileges' => $new['privileges'] ?? $current->getPrivileges(),
-            ':ID' => $current->getID(),
-        ]);
-    }
+    //     return $this->execute($sql, [
+    //         ':username' => $new['username'] ?? $current->getUsername(),
+    //         ':password' => $new['password'] ?? $current->getPassword(),
+    //         ':email' => $new['email'] ?? $current->getEmail(),
+    //         ':enabled' => $new['enabled'] ?? $current->isEnabled(),
+    //         ':privileges' => $new['privileges'] ?? $current->getPrivileges(),
+    //         ':ID' => $current->getID(),
+    //     ]);
+    // }
 
     public function disable(int $id, bool $enabled = false): bool
     {

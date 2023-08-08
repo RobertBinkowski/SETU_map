@@ -12,7 +12,6 @@ $locationRepository = new LocationRepository($database, $coordinatesRepository);
 $buildingRepository = new BuildingRepository($database, $campusRepository, $locationRepository, $detailsRepository);
 $floorRepository = new FloorRepository($database, $buildingRepository, $detailsRepository);
 $connectionRepository = new ConnectionRepository($database, $locationRepository);
-
 $roomRepository = new RoomRepository(
     $database,
     $locationRepository,
@@ -20,7 +19,8 @@ $roomRepository = new RoomRepository(
     $buildingRepository,
     $floorRepository,
 );
-// $imageRepository = new ImageRepository($database, $campusRepository, $buildingRepository, $roomRepository);
+
+$imageRepository = new ImageRepository($database, $detailsRepository);
 
 
 // explode the url request to create a router
@@ -33,10 +33,10 @@ if ($request[1] == "api") {
 
     switch ($request[2]) {
             // Database routes
-            // case "images":
-            //     $output = new ImageController($imageRepository, $logRepository);
-            //     $output->request($_SERVER["REQUEST_METHOD"], $id);
-            //     break;
+        case "images":
+            $output = new ImageController($imageRepository, $logRepository);
+            $output->request($_SERVER["REQUEST_METHOD"], $id);
+            break;
         case "users":
             $output = new UserController($userRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
