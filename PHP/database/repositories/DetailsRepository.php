@@ -44,21 +44,22 @@ class DetailsRepository extends BaseRepository
 
     private function create(array $data)
     {
-        $sql = "INSERT INTO details (name, abbreviation, info, size) 
-                VALUES (:name, :abbreviation, :info, :size)";
+        $sql = "INSERT INTO details (name, abbreviation, info, size, src) 
+                VALUES (:name, :abbreviation, :info, :size, :src)";
 
         return $this->execute($sql, [
             ':name' => $data['name'],
             ':abbreviation' => $data['abbreviation'],
             ':info' => $data['info'],
             ':size' => $data['size'],
+            ':src' => $data['src'],
         ]);
     }
 
     private function update(array $data)
     {
         $sql = "UPDATE details SET name = :name, abbreviation = :abbreviation, info = :info, 
-                size = :size WHERE id = :id";
+                size = :size, src = :src WHERE id = :id";
 
         return $this->execute($sql, [
             ':id' => $data['id'],
@@ -66,6 +67,7 @@ class DetailsRepository extends BaseRepository
             ':abbreviation' => $data['abbreviation'],
             ':info' => $data['info'],
             ':size' => $data['size'],
+            ':src' => $data['src'],
         ]);
     }
 
@@ -87,6 +89,7 @@ class DetailsRepository extends BaseRepository
             $row['abbreviation'],
             $row['info'],
             $row['size'],
+            $row['src'],
         );
     }
 }

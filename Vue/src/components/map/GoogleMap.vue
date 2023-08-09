@@ -43,7 +43,7 @@
             newCampus.coordinates.latitude !== oldCampus.coordinates.latitude ||
             newCampus.coordinates.longitude !== oldCampus.coordinates.longitude
           ) {
-            this.updateMapLocation();
+            this.updateMapLocation(newCampus.coordinates);
           }
         },
       },
@@ -75,6 +75,7 @@
           },
           zoom: parseFloat(this.campus.coordinates.zoom),
           selectedCampus: null,
+          mapTypeControl: false,
         });
 
         // Create markers
@@ -87,22 +88,24 @@
         // Create new markers
         this.createMarkers();
       },
-      updateMapLocation() {
+      updateMapLocation($coordinates) {
+        // Check if map is initialized
         if (this.map) {
-          // If the map is initialized, update its center based on new lat/lng values
+          // Update map location
           this.map.setCenter({
-            lat: parseFloat(this.campus.coordinates.latitude),
-            lng: parseFloat(this.campus.coordinates.longitude),
+            lat: parseFloat($coordinates.latitude),
+            lng: parseFloat($coordinates.longitude),
           });
-          this.map.setZoom(parseFloat(this.campus.coordinates.zoom));
+          // Update map zoom
+          this.map.setZoom(parseFloat($coordinates.zoom));
         }
       },
       createMarkers() {
         this.locations.forEach((location) => {
           const marker = new google.maps.Marker({
             position: {
-              lat: parseFloat(location.latitude),
-              lng: parseFloat(location.longitude),
+              lat: parseFloat(location.coordinates.latitude),
+              lng: parseFloat(location.coordinates.longitude),
             },
             map: this.map,
           });
@@ -114,15 +117,14 @@
         });
       },
       clearMarkers() {
+        // Remove all markers
         this.markers.forEach((marker) => {
           marker.setMap(null);
         });
         this.markers = [];
       },
       onMarkerClick(location) {
-        // For demonstration purposes, display an alert with the location name
-        alert(`Clicked on location: ${location.type}`);
-        // You can replace the above with any action you'd like to perform
+        // What to do when marked clicked
       },
     },
     beforeDestroy() {

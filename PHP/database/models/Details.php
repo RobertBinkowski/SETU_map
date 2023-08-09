@@ -19,12 +19,14 @@ class Details implements JsonSerializable
         private ?string $abbreviation,
         private ?string $info,
         private ?float $size,
+        private ?string $src,
     ) {
         $this->id = $id;
         $this->setName($name);
         $this->setAbbreviation($abbreviation);
         $this->setInfo($info);
         $this->setSize($size);
+        $this->setSrc($src);
     }
 
     // Getters
@@ -53,6 +55,11 @@ class Details implements JsonSerializable
         return $this->size;
     }
 
+    public function getSrc(): ?string
+    {
+        return $this->src;
+    }
+
     // Setters
 
     public function setName(?string $name): void
@@ -75,16 +82,23 @@ class Details implements JsonSerializable
         $this->size = $size;
     }
 
+    public function setSrc(?string $src): void
+    {
+        $this->src = $src;
+    }
+
 
     // to Array
     public function toArray(): array
     {
+
         $data =  [
             "id" => $this->getId(),
             "name" => $this->getName(),
             "abbreviation" => $this->getAbbreviation(),
             "info" => $this->getInfo(),
             "size" => $this->getSize(),
+            "src" => $this->getSrc(),
         ];
 
         return $data;
