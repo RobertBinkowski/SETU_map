@@ -19,8 +19,8 @@ class Log implements JsonSerializable
         $this->setInfo($info);
         $this->setTitle($title);
         $this->setType($type);
-        $this->timestamp = date('Y-m-d H:i:s');
-        $this->device = $device;
+        $this->timestamp = $timestamp;
+        $this->setDevice($device);
     }
 
     // Getters
@@ -74,6 +74,10 @@ class Log implements JsonSerializable
     public function setTimestamp(?string $timestamp): void
     {
         $this->timestamp = $timestamp;
+    }
+    public function setDevice(?Device $device)
+    {
+        $this->device = $device;
     }
 
     // to Array

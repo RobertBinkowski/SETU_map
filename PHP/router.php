@@ -2,7 +2,7 @@
 
 // Initiate all repositories for later easier use
 $detailsRepository = new DetailsRepository($database);
-$logRepository = new LogRepository($database);
+$logRepository = new LogRepository($database, $detailsRepository);
 $coordinatesRepository = new CoordinatesRepository($database);
 $campusRepository = new CampusRepository($database, $coordinatesRepository, $detailsRepository);
 $privilegeValueRepository = new PrivilegeValueRepository($database);
@@ -19,7 +19,6 @@ $roomRepository = new RoomRepository(
     $buildingRepository,
     $floorRepository,
 );
-
 $imageRepository = new ImageRepository($database, $detailsRepository);
 
 
@@ -65,16 +64,16 @@ if ($request[1] == "api") {
             $output = new RoomController($roomRepository, $logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
-            // case "tables":
-            //     // Returns all tables used to then display them in the admin panel
-            //     $tables = $database->getTables();
-            //     echo json_encode($tables);
-            //     break;
-            // case "logs":
-            //     // Logs
-            //     $output = new LogController($logRepository);
-            //     $output->request($_SERVER["REQUEST_METHOD"], $id);
-            //     break;
+        case "tables":
+            // Returns all tables used to then display them in the admin panel
+            $tables = $database->getTables();
+            echo json_encode($tables);
+            break;
+        case "logs":
+            // Logs
+            $output = new LogController($logRepository);
+            $output->request($_SERVER["REQUEST_METHOD"], $id);
+            break;
         case "details":
             // Details
             $output = new DetailsController($detailsRepository, $logRepository);

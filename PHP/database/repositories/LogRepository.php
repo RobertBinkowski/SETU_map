@@ -1,75 +1,94 @@
 <?php
 
-
 class LogRepository extends BaseRepository
 {
+
+    private DetailsRepository $detailsRepository;
+
+    public function __construct(
+        Database $conn,
+        DetailsRepository $detailsRepository
+    ) {
+        parent::__construct($conn);
+        $this->detailsRepository = $detailsRepository;
+    }
+
     public function getAll(): array
     {
         $sql = "SELECT * FROM logs";
 
-        $result = $this->conn->query($sql);
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
 
-        $data = $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $logs = [];
-
-        foreach ($data as $row) {
-            $log = new Log(
-                $row['id'],
-                $row['title'] ?? "",
-                $row['type'] ?? "",
-                $row['info'] ?? "",
-            );
-            $logs[] = $log;
-        }
-
-        return $logs;
+        return $this->hydrate($data);
     }
-    public function create(string $title, string $info, ?string $type = "Info"): string
+
+    public function create(string $title, string $info, string $type): bool
     {
-        $sql = "INSERT INTO logs (title, type, info) VALUES (:title, :type, :info)";
+        // $sql = "INSERT INTO logs (info ,title, type, date, device) VALUES (:info ,:title, :type, :date, :device)";
 
-        $this->execute($sql, [
-            ':title' => $title,
-            ':type' => $type,
-            ':info' => $info,
-        ]);
-
-        return $this->lastInsertId();
+        // return $this->execute($sql, [
+        //     ':info' => $log->getInfo(),
+        //     ':title' => $log->getTitle(),
+        //     ':type' =>  $log->getType(),
+        //     ':date' =>  date('Y-m-d H:i:s'),
+        //     ':device' => $log->getDevice()
+        // ]);
+        return true;
     }
 
-    public function get(string $id): Log|null
+
+    public function get(string $id): Log
     {
         $sql = "SELECT * FROM logs WHERE id = :id";
 
         $data = $this->fetch($sql, [':id' => $id]);
 
-        if ($data !== false) {
-            return new Log(
-                $data['id'],
-                $data['title'] ?? "",
-                $data['type'] ?? "",
-                $data['info'] ?? "",
-            );
-        }
-        return null;
+        return $this->hydrateRow($data);
     }
 
-    public function update(Log $current, array $new): bool
+    public function disable(int $id, bool $enabled = false): bool
     {
-        $sql = "UPDATE logs SET title = :title, type = :type, info = :info WHERE ID =:ID";
+        $sql = "UPDATE logs SET enabled = :enabled WHERE ID =:ID";
 
         return $this->execute($sql, [
-            ':title' => $new['title'] ?? $current->getTitle(),
-            ':type' => $new['type'] ?? $current->getType(),
-            ':info' => $new['info'] ?? $current->getInfo(),
+            ':enabled' => $enabled,
+            ':ID' => $id,
         ]);
     }
 
-    public function delete(string $id): int
+    public function delete(string $id): bool
     {
         $sql = "DELETE FROM logs WHERE ID = :ID";
 
         return $this->execute($sql, [':ID' => $id]);
+    }
+
+    private function hydrate(array $data): array
+    {
+        $output = [];
+        foreach ($data as $row) {
+            $output[] = $this->hydrateRow($row);
+        }
+        return $output;
+    }
+
+    private function hydrateRow(array $row): Log
+    {
+        $device = null;
+        if ($row['device'] !== null) {
+            $device = $this->detailsRepository->get($row['device']);
+        }
+
+        return new Log(
+            $row['id'],
+            $row['title'],
+            $row['type'],
+            $row['info'],
+            $row['date'],
+            $device
+        );
     }
 }
