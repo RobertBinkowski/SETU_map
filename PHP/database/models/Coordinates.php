@@ -17,11 +17,13 @@ class Coordinates implements JsonSerializable
         private float $latitude = 0,
         private float $longitude = 0,
         private float $altitude = 0,
+        private float $zoom = 0,
     ) {
         $this->id = $id;
         $this->setLatitude($latitude);
         $this->setLongitude($longitude);
         $this->setAltitude($altitude);
+        $this->setZoom($zoom);
     }
 
     public function getId(): int
@@ -40,6 +42,10 @@ class Coordinates implements JsonSerializable
     {
         return $this->altitude;
     }
+    public function getZoom(): float
+    {
+        return $this->zoom;
+    }
 
 
     // Setters
@@ -55,6 +61,10 @@ class Coordinates implements JsonSerializable
     {
         $this->altitude = $altitude;
     }
+    public function setZoom(float $zoom): void
+    {
+        $this->zoom = $zoom;
+    }
 
     // to Array
     public function toArray(): array
@@ -64,6 +74,7 @@ class Coordinates implements JsonSerializable
             "latitude" => $this->getLatitude(),
             "longitude" => $this->getLongitude(),
             "altitude" => $this->getAltitude(),
+            "zoom" => $this->getZoom(),
         ];
     }
 }

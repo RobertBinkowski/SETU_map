@@ -1,7 +1,7 @@
 <template>
   <main>
     <SearchComponent
-      v-if="rooms && buildings && campuses"
+      v-if="campuses"
       :rooms="rooms"
       :buildings="buildings"
       :campuses="campuses"
@@ -57,7 +57,6 @@
       let campuses = ref([]);
       let rooms = ref([]);
       let connections = ref([]);
-
       let location = ref([]);
 
       // Campuses

@@ -40,8 +40,8 @@
         handler(newCampus, oldCampus) {
           // Check if latitude or longitude has changed
           if (
-            newCampus.latitude !== oldCampus.latitude ||
-            newCampus.longitude !== oldCampus.longitude
+            newCampus.coordinates.latitude !== oldCampus.coordinates.latitude ||
+            newCampus.coordinates.longitude !== oldCampus.coordinates.longitude
           ) {
             this.updateMapLocation();
           }
@@ -70,10 +70,10 @@
         // Initialize the map
         this.map = new google.maps.Map(document.getElementById("map"), {
           center: {
-            lat: parseFloat(this.campus.latitude),
-            lng: parseFloat(this.campus.longitude),
+            lat: parseFloat(this.campus.coordinates.latitude),
+            lng: parseFloat(this.campus.coordinates.longitude),
           },
-          zoom: parseFloat(this.campus.size),
+          zoom: parseFloat(this.campus.coordinates.zoom),
           selectedCampus: null,
         });
 
@@ -91,10 +91,10 @@
         if (this.map) {
           // If the map is initialized, update its center based on new lat/lng values
           this.map.setCenter({
-            lat: parseFloat(this.campus.latitude),
-            lng: parseFloat(this.campus.longitude),
+            lat: parseFloat(this.campus.coordinates.latitude),
+            lng: parseFloat(this.campus.coordinates.longitude),
           });
-          this.map.setZoom(parseFloat(this.campus.size));
+          this.map.setZoom(parseFloat(this.campus.coordinates.zoom));
         }
       },
       createMarkers() {

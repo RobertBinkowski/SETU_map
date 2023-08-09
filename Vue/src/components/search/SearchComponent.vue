@@ -15,7 +15,7 @@
           v-show="campus.enabled"
           :value="campus"
         >
-          {{ campus.name }}
+          {{ campus.details.name }}
         </option>
       </select>
     </div>
@@ -23,7 +23,7 @@
       v-for="location in filteredRooms"
       :key="location"
       :location="location"
-      :data="location"
+      :data="location.details"
       @click="emitLocation(location)"
     ></SearchEntry>
     <SearchEntry
@@ -45,19 +45,22 @@
     },
     props: {
       rooms: {
+        type: Array,
         required: true,
       },
       buildings: {
+        type: Array,
         required: false,
       },
       campuses: {
+        type: Array,
         required: true,
       },
     },
     data() {
       return {
         searchTerm: "",
-        selectedCampus: this.campuses[0],
+        selectedCampus: this.campuses.length ? this.campuses[0] : null,
       };
     },
     computed: {

@@ -38,28 +38,29 @@ class CoordinatesRepository extends BaseRepository
         return $this->hydrateRow($data);
     }
 
-    private function delete(int $id)
+    private function delete(int $id): bool
     {
         $sql = "DELETE FROM coordinates WHERE id = :id";
 
         return $this->execute($sql, [':id' => $id]);
     }
 
-    private function create(array $data)
+    private function create(array $data): bool
     {
-        $sql = "INSERT INTO coordinates (latitude, longitude, altitude) 
-                VALUES (:latitude, :longitude, :altitude)";
+        $sql = "INSERT INTO coordinates (latitude, longitude, altitude, zoom) 
+                VALUES (:latitude, :longitude, :altitude, :zoom)";
 
         return $this->execute($sql, [
             ':latitude' => $data['latitude'],
             ':longitude' => $data['longitude'],
             ':altitude' => $data['altitude'],
+            ':zoom' => $data['zoom'],
         ]);
     }
 
-    private function update(array $data)
+    private function update(array $data): bool
     {
-        $sql = "UPDATE coordinates SET latitude = :latitude, longitude = :longitude, altitude = :altitude
+        $sql = "UPDATE coordinates SET latitude = :latitude, longitude = :longitude, altitude = :altitude, zoom = :zoom
             WHERE id = :id";
 
         return $this->execute($sql, [
@@ -67,6 +68,7 @@ class CoordinatesRepository extends BaseRepository
             ':latitude' => $data['latitude'],
             ':longitude' => $data['longitude'],
             ':altitude' => $data['altitude'],
+            ':zoom' => $data['zoom'],
         ]);
     }
 
@@ -86,7 +88,8 @@ class CoordinatesRepository extends BaseRepository
             $row['id'],
             $row['latitude'],
             $row['longitude'],
-            $row['altitude']
+            $row['altitude'],
+            $row['zoom'],
         );
     }
 }
