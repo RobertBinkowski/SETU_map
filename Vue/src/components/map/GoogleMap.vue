@@ -76,6 +76,12 @@
           zoom: parseFloat(this.campus.coordinates.zoom),
           selectedCampus: null,
           mapTypeControl: false,
+          styles: [
+            {
+              featureType: "poi",
+              stylers: [{ visibility: "off" }],
+            },
+          ],
         });
 
         // Create markers
@@ -123,8 +129,10 @@
         });
         this.markers = [];
       },
-      onMarkerClick(location) {
-        // What to do when marked clicked
+      onMarkerClick($location) {
+        this.updateMapLocation($location.coordinates);
+
+        emitLocation($location);
       },
     },
     beforeDestroy() {
@@ -135,6 +143,9 @@
         google.maps.event.clearInstanceListeners(this.map.getStreetView());
         this.map = null;
       }
+    },
+    emitLocation(location) {
+      this.$emit("selectLocation", location);
     },
   };
 </script>

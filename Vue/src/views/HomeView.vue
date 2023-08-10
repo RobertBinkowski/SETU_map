@@ -22,10 +22,12 @@
       @navigate="navigate"
       @updateDisabled="updateWheelchairAccessible"
     ></NavigationPanel>
+    {{ selectedLocation }}
     <MapParentComponent
       v-if="locations"
       :locations="locations"
       :campus="this.campus"
+      @selectLocation="setLocation"
     ></MapParentComponent>
   </main>
 </template>
@@ -53,7 +55,6 @@
     setup() {
       let buildings = ref([]);
       let locations = ref([]);
-      let floors = ref([]);
       let campuses = ref([]);
       let rooms = ref([]);
       let connections = ref([]);
@@ -83,27 +84,17 @@
         }
       }
 
-      // Floors
-      async function getFloors() {
-        try {
-          const { data } = await axios.get("http://localhost:8000/api/floors");
-          floors.value = data;
-        } catch (error) {
-          console.error("Error".error);
-        }
-      }
-
       // Connections
-      async function getFloors() {
-        try {
-          const { data } = await axios.get(
-            "http://localhost:8000/api/connections"
-          );
-          connections.value = data;
-        } catch (error) {
-          console.error("Error".error);
-        }
-      }
+      // async function getConnections() {
+      //   try {
+      //     const { data } = await axios.get(
+      //       "http://localhost:8000/api/connections"
+      //     );
+      //     connections.value = data;
+      //   } catch (error) {
+      //     console.error("Error".error);
+      //   }
+      // }
 
       // Buildings
       async function getBuildings() {
@@ -131,16 +122,15 @@
       getLocations();
       getCampuses();
       getRooms();
-      getFloors();
+      // getConnections();
 
       return {
         buildings,
         locations,
         campuses,
         rooms,
-        floors,
         location,
-        connections,
+        // connections,
       };
     },
     data() {

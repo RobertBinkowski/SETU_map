@@ -26,13 +26,13 @@
       :data="location.details"
       @click="emitLocation(location)"
     ></SearchEntry>
-    <SearchEntry
+    <!-- <SearchEntry
       v-for="location in filteredBuildings"
       :key="location"
       :location="location"
       :data="location"
       @click="emitLocation(location)"
-    ></SearchEntry>
+    ></SearchEntry> -->
   </div>
 </template>
 <script>
@@ -70,20 +70,22 @@
         }
         return this.rooms.filter(
           (room) =>
-            room.building.campus.id == this.selectedCampus.id &&
-            room.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+            room.building.campus.id == this.selectedCampus.id ||
+            room.details.name
+              .toLowerCase()
+              .includes(this.searchTerm.toLowerCase())
         );
       },
-      filteredBuildings() {
-        if (this.searchTerm == "") {
-          return null;
-        }
-        return this.buildings.filter(
-          (building) =>
-            building.campus.id == this.selectedCampus.id &&
-            building.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-        );
-      },
+      // filteredBuildings() {
+      //   if (this.searchTerm == "") {
+      //     return null;
+      //   }
+      //   return this.buildings.filter(
+      //     (building) =>
+      //       building.campus.id == this.selectedCampus.id &&
+      //       building.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      //   );
+      // },
     },
     methods: {
       emitLocation(location) {
