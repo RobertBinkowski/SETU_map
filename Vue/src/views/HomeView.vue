@@ -22,10 +22,9 @@
       @navigate="navigate"
       @updateDisabled="updateWheelchairAccessible"
     ></NavigationPanel>
-    {{ selectedLocation }}
     <MapParentComponent
       v-if="locations"
-      :locations="locations"
+      :locations="rooms"
       :campus="this.campus"
       @selectLocation="setLocation"
     ></MapParentComponent>

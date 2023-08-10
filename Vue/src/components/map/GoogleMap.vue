@@ -107,19 +107,22 @@
         }
       },
       createMarkers() {
+        // Create markers
         this.locations.forEach((location) => {
-          const marker = new google.maps.Marker({
-            position: {
-              lat: parseFloat(location.coordinates.latitude),
-              lng: parseFloat(location.coordinates.longitude),
-            },
-            map: this.map,
-          });
-          // Add click event to the marker
-          marker.addListener("click", () => {
-            this.onMarkerClick(location);
-          });
-          this.markers.push(marker);
+          if (location.location.coordinates != null) {
+            const marker = new google.maps.Marker({
+              position: {
+                lat: parseFloat(location.location.coordinates.latitude),
+                lng: parseFloat(location.location.coordinates.longitude),
+              },
+              map: this.map,
+            });
+            // Add click event to the marker
+            marker.addListener("click", () => {
+              this.onMarkerClick(location.location);
+            });
+            this.markers.push(marker);
+          }
         });
       },
       clearMarkers() {
@@ -132,7 +135,10 @@
       onMarkerClick($location) {
         this.updateMapLocation($location.coordinates);
 
-        emitLocation($location);
+        this.emitLocation($location);
+      },
+      emitLocation(location) {
+        this.$emit("selectLocation", location);
       },
     },
     beforeDestroy() {
@@ -143,9 +149,6 @@
         google.maps.event.clearInstanceListeners(this.map.getStreetView());
         this.map = null;
       }
-    },
-    emitLocation(location) {
-      this.$emit("selectLocation", location);
     },
   };
 </script>

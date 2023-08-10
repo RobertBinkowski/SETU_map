@@ -5,6 +5,7 @@
       v-if="campus"
       :locations="locations"
       :campus="campus"
+      @selectLocation="selectLocation"
     ></GoogleMap>
     <div v-else>
       <h2>Loading...</h2>
@@ -28,6 +29,11 @@
       campus: {
         type: Object,
         required: true,
+      },
+    },
+    methods: {
+      selectLocation(location) {
+        this.$emit("selectLocation", location);
       },
     },
   };
