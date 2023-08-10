@@ -1,18 +1,25 @@
 <template>
   <div id="locationDetails">
     <span class="close" @click="$emit('close')">X</span>
-    <div v-show="image.src != '' && image.enabled" class="image">
-      <img :src="image.src" :alt="image.name" />
+    <div
+      v-if="location.details.src != '' && location.details.src != null"
+      class="image"
+    >
+      <img :src="location.details.src" :alt="location.details.name" />
     </div>
     <div v-if="location" class="details">
-      <h1 v-if="location.name">
-        {{ location.name }}
+      <h1 v-if="location.details.name">
+        {{ location.details.name }}
       </h1>
-      <span v-if="location.abbreviation">{{ location.abbreviation }}</span>
-      <span v-if="location.building" class="building">{{
-        location.building.name
+      <span v-if="location.details.abbreviation">{{
+        location.abbreviation
       }}</span>
-      <p v-if="location.info" class="info">{{ location.info }}</p>
+      <span v-if="location.building.details" class="building">{{
+        location.building.details.name
+      }}</span>
+      <p v-if="location.details.info" class="info">
+        {{ location.details.info }}
+      </p>
     </div>
     <div class="options">
       <button @click="$emit('openNavigation', location)">navigate</button>
@@ -41,22 +48,6 @@
     setup(props) {
       // Watch for changes
       watch(() => props.location);
-
-      let image = ref([]);
-
-      if (location.hasOwnProperty("type")) {
-        // This is a room
-      } else {
-        // this is a building
-      }
-      // Get Image by ID
-      async function getImage() {
-        const { data } = await axios.get("http://localhost:8000/api/images/1");
-        image.value = data;
-      }
-
-      getImage();
-      return { image };
     },
   };
 </script>
