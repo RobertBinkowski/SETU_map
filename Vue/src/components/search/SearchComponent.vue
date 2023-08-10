@@ -22,17 +22,9 @@
     <SearchEntry
       v-for="location in filteredRooms"
       :key="location"
-      :location="location"
-      :data="location.details"
+      :location="location.details"
       @click="emitLocation(location)"
     ></SearchEntry>
-    <!-- <SearchEntry
-      v-for="location in filteredBuildings"
-      :key="location"
-      :location="location"
-      :data="location"
-      @click="emitLocation(location)"
-    ></SearchEntry> -->
   </div>
 </template>
 <script>
@@ -76,16 +68,6 @@
               .includes(this.searchTerm.toLowerCase())
         );
       },
-      // filteredBuildings() {
-      //   if (this.searchTerm == "") {
-      //     return null;
-      //   }
-      //   return this.buildings.filter(
-      //     (building) =>
-      //       building.campus.id == this.selectedCampus.id &&
-      //       building.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-      //   );
-      // },
     },
     methods: {
       emitLocation(location) {

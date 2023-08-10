@@ -1,5 +1,6 @@
 <template>
-  <div class="border" @click="handleClick">
+  <div v-if="location.name" class="border" @click="handleClick">
+    <img v-show="location.src" :src="location.src" :alt="location.name" />
     <strong v-if="location">{{ location.name }}</strong>
     - {{ location.type ?? "Building" }}
   </div>
@@ -14,9 +15,6 @@
     props: {
       location: {
         default: null,
-      },
-      data: {
-        required: false,
       },
     },
     data() {
@@ -44,6 +42,16 @@
     text-align: center;
     padding: 0.5em;
     color: $txt-2;
+
+    img {
+      position: absolute;
+      left: 0em;
+      top: 0;
+      width: 20em;
+      height: 100%;
+      object-fit: cover;
+      border-radius: $rad-1;
+    }
 
     strong {
       color: $acc-2;
