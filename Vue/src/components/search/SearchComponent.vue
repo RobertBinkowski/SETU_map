@@ -52,7 +52,7 @@
     data() {
       return {
         searchTerm: "",
-        selectedCampus: this.campuses.length ? this.campuses[0] : null,
+        selectedCampus: this.campuses[0],
       };
     },
     computed: {
@@ -75,6 +75,14 @@
       },
     },
     watch: {
+      campuses: {
+        immediate: true,
+        handler(newValue) {
+          if (newValue && newValue[0]) {
+            this.selectedCampus = newValue[0];
+          }
+        },
+      },
       selectedCampus(newVal) {
         this.$emit("updateSelectedCampus", newVal);
       },
