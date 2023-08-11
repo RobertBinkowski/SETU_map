@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Map</h1>
     <GoogleMap
       v-if="campus"
       :locations="locations"

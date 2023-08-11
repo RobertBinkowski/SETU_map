@@ -8,15 +8,16 @@
       @selectLocation="setLocation"
       @updateSelectedCampus="handleSelectedCampusUpdate"
     ></SearchComponent>
-    <DetailsComponent
+    <!-- <DetailsComponent
       v-if="selectedLocation && !navigation.enabled"
       :location="selectedLocation"
       @close="closeDetails"
       @openNavigation="openNavigation"
       @setDeparture="setDepartureLoc"
-    ></DetailsComponent>
+    ></DetailsComponent> -->
     <NavigationPanel
-      v-if="navigation.enabled"
+      v-if="selectedLocation && !navigation.enabled"
+      :location="selectedLocation"
       :navigation="navigation"
       @close="closeNavigation"
       @navigate="navigate"
@@ -41,8 +42,8 @@
   import MapParentComponent from "../components/map/MapParentComponent.vue";
 
   import SearchComponent from "../components/search/SearchComponent.vue";
-  import DetailsComponent from "../components/search/DetailsComponent.vue";
-  import NavigationPanel from "../components/NavigationPanel.vue";
+  import DetailsComponent from "../components/navigation/DetailsComponent.vue";
+  import NavigationPanel from "../components/navigation/NavigationPanel.vue";
 
   export default {
     components: {

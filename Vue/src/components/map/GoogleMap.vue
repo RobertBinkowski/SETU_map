@@ -119,7 +119,7 @@
             });
             // Add click event to the marker
             marker.addListener("click", () => {
-              this.onMarkerClick(location.location);
+              this.onMarkerClick(location);
             });
             this.markers.push(marker);
           }
@@ -133,7 +133,7 @@
         this.markers = [];
       },
       onMarkerClick($location) {
-        this.updateMapLocation($location.coordinates);
+        this.updateMapLocation($location.location.coordinates);
 
         this.emitLocation($location);
       },
