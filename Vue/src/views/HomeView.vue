@@ -5,29 +5,21 @@
       :rooms="rooms"
       :buildings="buildings"
       :campuses="campuses"
-      @selectLocation="setLocation"
+      @selectLocation="toggleNavigationPanel"
       @updateSelectedCampus="handleSelectedCampusUpdate"
     ></SearchComponent>
-    <!-- <DetailsComponent
-      v-if="selectedLocation && !navigation.enabled"
-      :location="selectedLocation"
-      @close="closeDetails"
-      @openNavigation="openNavigation"
-      @setDeparture="setDepartureLoc"
-    ></DetailsComponent> -->
     <NavigationPanel
-      v-if="selectedLocation && !navigation.enabled"
-      :location="selectedLocation"
-      :navigation="navigation"
-      @close="closeNavigation"
-      @navigate="navigate"
-      @updateDisabled="updateWheelchairAccessible"
+      v-if="navigationPanelOpen"
+      :location="location"
+      :path="path"
+      @close="toggleNavigationPanel"
     ></NavigationPanel>
     <MapParentComponent
       v-if="locations"
       :locations="rooms"
       :campus="this.campus"
-      @selectLocation="setLocation"
+      :path="path"
+      @selectLocation="toggleNavigationPanel"
     ></MapParentComponent>
   </main>
 </template>
@@ -36,28 +28,22 @@
   import axios from "axios";
   import { ref } from "vue";
 
-  import { search } from "@/../js/main.js";
-  import { getClosestNode } from "@/../js/functions.js";
-
+  // Components
   import MapParentComponent from "../components/map/MapParentComponent.vue";
-
   import SearchComponent from "../components/search/SearchComponent.vue";
-  import DetailsComponent from "../components/navigation/DetailsComponent.vue";
   import NavigationPanel from "../components/navigation/NavigationPanel.vue";
 
   export default {
     components: {
       SearchComponent,
-      DetailsComponent,
       NavigationPanel,
       MapParentComponent,
     },
     setup() {
+      let campuses = ref([]);
       let buildings = ref([]);
       let locations = ref([]);
-      let campuses = ref([]);
       let rooms = ref([]);
-      let connections = ref([]);
       let location = ref([]);
 
       // Campuses
@@ -72,7 +58,7 @@
         }
       }
 
-      // Nodes
+      // Locations
       async function getLocations() {
         try {
           const { data } = await axios.get(
@@ -83,18 +69,6 @@
           console.error("Error".error);
         }
       }
-
-      // Connections
-      // async function getConnections() {
-      //   try {
-      //     const { data } = await axios.get(
-      //       "http://localhost:8000/api/connections"
-      //     );
-      //     connections.value = data;
-      //   } catch (error) {
-      //     console.error("Error".error);
-      //   }
-      // }
 
       // Buildings
       async function getBuildings() {
@@ -122,94 +96,39 @@
       getLocations();
       getCampuses();
       getRooms();
-      // getConnections();
 
       return {
         buildings,
         locations,
         campuses,
         rooms,
-        location,
-        // connections,
       };
     },
     data() {
       return {
-        selectedLocation: null,
+        navigationPanelOpen: false,
         campus: null,
-        navigation: {
-          enabled: false,
-          disabled: false,
-          departure: null,
-          destination: null,
-          distance: null,
-          nodeIds: [],
-          path: [],
-        },
+        location: null,
+        path: null,
       };
     },
     methods: {
-      updateNodes() {
-        this.defaults.onlyNodes = !this.defaults.onlyNodes;
-      },
-      closeDetails() {
-        this.selectedLocation = null;
-      },
-      closeNavigation() {
-        this.navigation.enabled = false;
-      },
-      setLocation(location) {
-        this.selectedLocation = location;
-        this.locationContent = true;
+      toggleNavigationPanel(loc = null) {
+        if (loc === this.location) {
+          this.navigationPanelOpen = false;
+          this.location = null;
+        } else if (loc == null) {
+          this.navigationPanelOpen = false;
+          this.location = null;
+        } else {
+          this.navigationPanelOpen = true;
+          this.location = loc;
+        }
       },
       handleSelectedCampusUpdate(campus) {
         this.selectedLocation = null;
         this.campus = campus;
       },
-      updateWheelchairAccessible(isDisabled) {
-        this.navigation.disabled = isDisabled;
-      },
-      openNavigation(location) {
-        this.navigation.enabled = true;
-        this.navigation.destination = location;
-        this.closeDetails();
-      },
-      setDepartureLoc(location) {
-        this.navigation.departure = location;
-        this.selectedLocation = null;
-      },
-      setDeparture(x = 0, y = 0, z = 0) {
-        if (this.navigation.set == false) {
-          this.navigation.departure = getClosestNode(this.locations, x, y, z);
-        }
-      },
-      navigate() {
-        if (this.navigation.departure == null) {
-          this.navigation.departure = getClosestNode(this.locations);
-        }
-
-        let output = search(
-          this.locations,
-          this.connections,
-          this.navigation.departure,
-          this.navigation.destination.location,
-          this.navigation.disabled
-        );
-        if (output === []) {
-          alert("No Route found");
-          return;
-        }
-
-        [
-          this.navigation.distance,
-          this.navigation.nodeIds,
-          this.navigation.path,
-        ] = output;
-
-        alert(this.navigation.nodeIds);
-      },
     },
   };
 </script>
-
-<style lang="scss" scoped></style>

@@ -2,7 +2,11 @@
   <div v-if="location.name" class="border" @click="handleClick">
     <img v-show="location.src" :src="location.src" :alt="location.name" />
     <strong v-if="location">{{ location.name }}</strong>
-    - {{ location.type ?? "Building" }}
+    -
+    <span v-if="location.building && location.building.details">
+      {{ location.building.details.name }}
+    </span>
+    <span v-else>Building</span>
   </div>
 </template>
 <script>

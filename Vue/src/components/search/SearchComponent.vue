@@ -23,7 +23,7 @@
       v-for="location in filteredRooms"
       :key="location"
       :location="location.details"
-      @click="emitLocation(location)"
+      @click="selectLocation(location)"
     ></SearchEntry>
   </div>
 </template>
@@ -70,7 +70,7 @@
       },
     },
     methods: {
-      emitLocation(location) {
+      selectLocation(location) {
         this.$emit("selectLocation", location);
       },
     },
