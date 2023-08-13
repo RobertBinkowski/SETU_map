@@ -4,9 +4,7 @@
  *  Student No:     C00237917
  */
 
-import { Connection } from "./connection.js";
 export class Node {
-  connection = new Connection();
   /**
    *
    *    Node Class
@@ -27,10 +25,7 @@ export class Node {
     this.type = type;
 
     //Location Info
-    this.x = x;
-    this.y = y;
-    this.z = z; // Also the Floor number 0 being Ground Floor
-    this.location = "[" + x + "," + y + "," + z + "]";
+    this.coordinates = new coordinates(x, y, z);
 
     this.f = 0; //  Total Cost Function
     this.g = 0; //  Steps Taken from the start
@@ -44,5 +39,14 @@ export class Node {
     if (!this.connections.includes(node)) {
       this.connections.push(node);
     }
+  }
+}
+
+export class coordinates {
+  constructor(x, y, z) {
+    this.longitude = x;
+    this.latitude = y;
+    this.altitude = z; // Also the Floor number 0 being Ground Floor
+    this.location = "[" + x + "," + y + "," + z + "]";
   }
 }

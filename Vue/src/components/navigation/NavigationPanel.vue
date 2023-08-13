@@ -84,7 +84,6 @@
         /><label for="disabled">Wheelchair Accessible</label>
       </div>
     </div>
-    {{ navigation.edit }}
     <div class="details">
       <h5 v-if="navigation">Distance</h5>
       <span v-if="navigation.distance != null">
@@ -149,8 +148,14 @@
         }
         // If no departure is selected, select the closest node
         if (this.navigation.departure == null) {
-          this.navigation.departure = getClosestNode(this.locations);
+          this.navigation.departure = getClosestNode(
+            this.locations,
+            52.82866813716404,
+            -6.936708227680724,
+            0
+          );
         }
+
         // Initiate search
         let output = search(
           this.locations,

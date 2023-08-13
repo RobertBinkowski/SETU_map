@@ -4,6 +4,8 @@
  *  Student No:     C00237917
  */
 
+import { Node } from "./node.js";
+
 /**
  * Calculate Geological Distance in Meters
  *
@@ -14,10 +16,17 @@
  */
 export function geoDistance(start, end, meters = false) {
   const radius = 6378.137; // Earth Radius in KM
-
+  const metersDistance = 1000;
+  if (start.coordinates === null || end.coordinates === null) {
+    return null;
+  }
   // Extract latitudes and longitudes
-  const { x: lat1, y: lon1 } = start;
-  const { x: lat2, y: lon2 } = end;
+  const {
+    coordinates: { latitude: lat1, longitude: lon1 },
+  } = start;
+  const {
+    coordinates: { latitude: lat2, longitude: lon2 },
+  } = end;
 
   // Haversine formula
   const latitude = (lat2 * Math.PI) / 180 - (lat1 * Math.PI) / 180;
@@ -27,11 +36,15 @@ export function geoDistance(start, end, meters = false) {
     Math.cos((lat1 * Math.PI) / 180) *
       Math.cos((lat2 * Math.PI) / 180) *
       Math.sin(longitude / 2) ** 2;
+
   const c = 2 * Math.atan2(Math.sqrt(d), Math.sqrt(1 - d));
   var output = radius * c;
+
+  // Convert to meters
   if (meters) {
-    output *= 1000; //Convert to meters
+    output *= metersDistance;
   }
+
   return output;
 }
 
@@ -40,28 +53,31 @@ export function geoDistance(start, end, meters = false) {
  * Algorithm to find the closest node to the specified location on the map
  *
  * @param {array} locations - To Search Through
- * @param {int} x - latitude
- * @param {int} y - longitude
- * @param {int} z - altitude
+ * @param {int} longitude - latitude
+ * @param {int} latitude - longitude
+ * @param {int} altitude - altitude
  * @returns
  */
-export function getClosestNode(locations = null, x = 0, y = 0, z = 0) {
+export function getClosestNode(
+  locations = null,
+  longitude = 0,
+  latitude = 0,
+  altitude = 0
+) {
   if (locations === null || locations.length === 0) {
     return null;
   }
-
   let closestDistance = Infinity;
   let closestNode = null;
+  let distance = 0;
+  const loc = new Node(0, "Test", longitude, latitude, altitude);
+
+  console.log(loc);
 
   for (let i = 0; i < locations.length; i++) {
     const location = locations[i];
 
-    const distance = Math.sqrt(
-      Math.pow(location.mapLongitude - x, 2) +
-        Math.pow(location.mapLatitude - y, 2) +
-        Math.pow(location.mapAltitude - z, 2)
-    );
-
+    distance = geoDistance(location, loc);
     if (distance < closestDistance) {
       closestDistance = distance;
       closestNode = location;
