@@ -133,8 +133,8 @@
         this.markers = [];
       },
       onMarkerClick($location) {
+        // On marker click, update map location and open Navigation
         this.updateMapLocation($location.location.coordinates);
-
         this.emitLocation($location);
       },
       emitLocation(location) {

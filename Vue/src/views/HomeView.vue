@@ -11,6 +11,8 @@
     <NavigationPanel
       v-if="navigationPanelOpen"
       :location="location"
+      :locations="locations"
+      :connections="connections"
       :path="path"
       @close="toggleNavigationPanel"
     ></NavigationPanel>
@@ -127,6 +129,7 @@
       },
       handleSelectedCampusUpdate(campus) {
         this.selectedLocation = null;
+        this.toggleNavigationPanel();
         this.campus = campus;
       },
     },
