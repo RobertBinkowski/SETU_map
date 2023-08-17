@@ -148,9 +148,9 @@
         }
         // If no departure is selected, select the closest node
         if (this.navigation.departure == null) {
-          try{
-          this.navigation.departure = this.entrance;
-          }catch (err){
+          try {
+            this.navigation.departure = this.entrance;
+          } catch (err) {
             this.navigation.departure = getClosestNode(
               this.locations,
               52.82866813716404,
@@ -182,6 +182,7 @@
           this.navigation.nodeIds,
           this.navigation.path,
         ] = output;
+        this.updatePath();
       },
       setEdit(edit) {
         if (edit === this.navigation.edit) {
@@ -201,22 +202,34 @@
         this.navigation.disabled = !this.navigation.disabled;
       },
       clearDeparture() {
-        this.navigation.departure = getClosestNode(
-          this.locations,
-          52.82866813716404,
-          -6.936708227680724,
-          0
-        );
+        try {
+          this.navigation.departure = this.entrance;
+        } catch (err) {
+          this.navigation.departure = getClosestNode(
+            this.locations,
+            52.82866813716404,
+            -6.936708227680724,
+            0
+          );
+          console.log(err);
+        }
       },
       clearDestination() {
         this.navigation.destination = null;
+      },
+      updatePath() {
+        this.$emit("updatePath", [
+          this.navigation.path,
+          this.navigation.nodeIds,
+        ]);
       },
       setup() {
         watch(
           () => this.location,
           (newVal) => {
             this.navigation.departure = newVal;
-          }
+          },
+          { deep: true }
         );
       },
     },

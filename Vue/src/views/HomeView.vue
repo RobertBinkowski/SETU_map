@@ -14,10 +14,9 @@
       :locations="locations"
       :connections="connections"
       :entrance="campus.entrance"
-      :path="path"
+      @updatePath="handleUpdatePath"
       @close="toggleNavigationPanel"
     ></NavigationPanel>
-    {{ this.path }}
     <MapParentComponent
       v-if="locations"
       :locations="rooms"
@@ -127,7 +126,7 @@
         navigationPanelOpen: false,
         campus: null,
         location: null,
-        path: null,
+        path: null, // [path, nodeIds]
       };
     },
     methods: {
@@ -143,6 +142,11 @@
           this.location = loc;
         }
       },
+
+      handleUpdatePath(newPath) {
+        this.path = newPath; // [path, nodeIds]
+      },
+
       handleSelectedCampusUpdate(campus) {
         this.selectedLocation = null;
         this.toggleNavigationPanel();
