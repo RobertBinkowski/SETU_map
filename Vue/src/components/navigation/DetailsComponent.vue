@@ -120,7 +120,7 @@
       .name {
         position: absolute;
         left: 0.5em;
-        top: -1.3em;
+        top: -1.5em;
       }
     }
     .resize,

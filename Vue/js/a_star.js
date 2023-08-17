@@ -1,5 +1,4 @@
 import { Node } from "./node.js"; // Make sure to import updated classes
-import { Connection } from "./connection.js";
 import { geoDistance } from "./functions.js";
 
 /**
@@ -16,6 +15,8 @@ export function A_Star(departure, destination, disabled = false) {
     console.log("Error: Values Were Undefined");
     return [];
   }
+  console.log("Departure", departure);
+  console.log("Destination", destination);
 
   // Initialize variables
   const unchecked = new Map(); // Nodes to be checked
@@ -49,7 +50,7 @@ export function A_Star(departure, destination, disabled = false) {
       }
 
       // Prepare the distance
-      distance = { distance: distance | 0, metric: "km" };
+      distance = { distance: distance | 0, metric: "m" };
 
       // Return the pathIds and distance in an array
       return [distance, pathIds.reverse(), path]; // Make distance a whole number
@@ -70,7 +71,7 @@ export function A_Star(departure, destination, disabled = false) {
         const neighbor = connections[i];
 
         // If the neighbor has already been checked, skip it
-        if (checked.has(neighbor)) {
+        if (checked.has(neighbor) || neighbor === undefined) {
           continue;
         }
 

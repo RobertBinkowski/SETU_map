@@ -11,14 +11,15 @@ export function Map(nodes, connections) {
   [nodes, connections] = prepareData(nodes, connections);
 
   //  Add Connections to the nodes one by one
-  for (let i = 0; i < connections.length; i++) {
-    nodes[connections[i].nodeOne - 1].addConnection(
-      nodes[connections[i].nodeTwo - 1]
-    );
-    nodes[connections[i].nodeTwo - 1].addConnection(
-      nodes[connections[i].nodeOne - 1]
-    );
-  }
+  connections.forEach((connection) => {
+    nodes
+      .find((node) => node.id === connection.nodeOne)
+      .addConnection(nodes.find((node) => node.id === connection.nodeTwo));
+    nodes
+      .find((node) => node.id === connection.nodeTwo)
+      .addConnection(nodes.find((node) => node.id === connection.nodeOne));
+  });
+
   return nodes;
 }
 
@@ -28,16 +29,17 @@ export function prepareData(locations, connections) {
 
   // Create Nodes out of locations
   locations.forEach((location) => {
-    nodes.push(
-      new Node(
-        location.id,
-        location.name,
-        location.geoLatitude,
-        location.geoLongitude,
-        location.mapAltitude,
-        location.type
-      )
-    );
+    if (location.coordinates) {
+      nodes.push(
+        new Node(
+          location.id,
+          location.coordinates.latitude,
+          location.coordinates.longitude,
+          location.coordinates.altitude,
+          location.type
+        )
+      );
+    }
   });
 
   // Add Connections to the nodes one by one

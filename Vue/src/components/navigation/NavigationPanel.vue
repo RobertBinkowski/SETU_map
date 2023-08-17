@@ -87,7 +87,7 @@
     <div class="details">
       <h5 v-if="navigation">Distance</h5>
       <span v-if="navigation.distance != null">
-        {{ navigation.distance }} Meters
+        {{ navigation.distance.distance }} {{ navigation.distance.metric }}
       </span>
     </div>
     <button @click="navigate">Navigate</button>
@@ -136,10 +136,6 @@
       },
     },
     methods: {
-      // submit() {
-      //   this.$emit("close");
-      //   this.$emit("updateDisabled", this.isChecked);
-      // },
       navigate() {
         // Ensure the route is valid
         if (this.navigation.destination === this.navigation.departure) {
@@ -164,11 +160,13 @@
           this.navigation.destination,
           this.navigation.disabled
         );
+
         // If no route is found, alert the user
-        if (output === []) {
+        if (output === [] || output === null || output === undefined) {
           alert("No Route found");
           return;
         }
+
         // Update the navigation object
         [
           this.navigation.distance,

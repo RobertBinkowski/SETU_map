@@ -46,7 +46,7 @@
       let buildings = ref([]);
       let locations = ref([]);
       let rooms = ref([]);
-      let location = ref([]);
+      let connections = ref([]);
 
       // Campuses
       async function getCampuses() {
@@ -84,6 +84,18 @@
         }
       }
 
+      // Connections
+      async function getConnections() {
+        try {
+          const { data } = await axios.get(
+            "http://localhost:8000/api/connections"
+          );
+          connections.value = data;
+        } catch (error) {
+          console.error("Error".error);
+        }
+      }
+
       // Rooms
       async function getRooms() {
         try {
@@ -98,12 +110,14 @@
       getLocations();
       getCampuses();
       getRooms();
+      getConnections();
 
       return {
         buildings,
         locations,
         campuses,
         rooms,
+        connections,
       };
     },
     data() {

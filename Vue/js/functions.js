@@ -70,9 +70,7 @@ export function getClosestNode(
   let closestDistance = Infinity;
   let closestNode = null;
   let distance = 0;
-  const loc = new Node(0, "Test", longitude, latitude, altitude);
-
-  console.log(loc);
+  const loc = new Node(0, longitude, latitude, altitude);
 
   for (let i = 0; i < locations.length; i++) {
     const location = locations[i];

@@ -29,7 +29,6 @@ export function search(
   }
   if (departure === null) {
     console.log("No Departure");
-    return [];
   }
   if (destination === null) {
     console.log("No Destination");
@@ -39,16 +38,19 @@ export function search(
   //  connect locations
   let map = Map(locations, connections);
 
-  departure = map[departure.id - 1];
-  destination = map[destination.id - 1];
+  // Set Departure and Destination
+  departure = map.find((dep) => dep.id === departure.id);
+  destination = map.find((dep) => dep.id === destination.id);
 
-  // set unset locations
+  // Check if departure and destination are set
   if (typeof departure == "undefined" || typeof destination == "undefined") {
     console.log("No Departure/Destination Provided");
     return [];
   }
 
+  // Find the closest node to the departure and destination
   var search = new A_Star(departure, destination, disabled);
 
+  // Return the path
   return search;
 }
