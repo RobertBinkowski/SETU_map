@@ -13,9 +13,11 @@
       :location="location"
       :locations="locations"
       :connections="connections"
+      :entrance="campus.entrance"
       :path="path"
       @close="toggleNavigationPanel"
     ></NavigationPanel>
+    {{ this.path }}
     <MapParentComponent
       v-if="locations"
       :locations="rooms"

@@ -134,6 +134,10 @@
         type: Array,
         required: false,
       },
+      entrance: {
+        type: Object,
+        required: false,
+      },
     },
     methods: {
       navigate() {
@@ -144,12 +148,17 @@
         }
         // If no departure is selected, select the closest node
         if (this.navigation.departure == null) {
-          this.navigation.departure = getClosestNode(
-            this.locations,
-            52.82866813716404,
-            -6.936708227680724,
-            0
-          );
+          try{
+          this.navigation.departure = this.entrance;
+          }catch (err){
+            this.navigation.departure = getClosestNode(
+              this.locations,
+              52.82866813716404,
+              -6.936708227680724,
+              0
+            );
+            console.log(err);
+          }
         }
 
         // Initiate search

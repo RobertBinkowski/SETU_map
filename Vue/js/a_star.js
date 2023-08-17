@@ -15,8 +15,6 @@ export function A_Star(departure, destination, disabled = false) {
     console.log("Error: Values Were Undefined");
     return [];
   }
-  console.log("Departure", departure);
-  console.log("Destination", destination);
 
   // Initialize variables
   const unchecked = new Map(); // Nodes to be checked

@@ -20,11 +20,13 @@ class Campus implements JsonSerializable
         private int $id,
         private bool $enabled = true,
         private ?Coordinates $coordinates = null,
+        private ?Coordinates $entrance = null,
         private ?Details $details = null,
     ) {
         $this->id = $id;
         $this->setEnabled($enabled);
         $this->setCoordinates($coordinates);
+        $this->setEntrance($entrance);
         $this->setDetails($details);
     }
 
@@ -48,6 +50,10 @@ class Campus implements JsonSerializable
     {
         return $this->details;
     }
+    public function setEntrance(?Coordinates $entrance): void
+    {
+        $this->entrance = $entrance;
+    }
 
 
     // Setters
@@ -65,6 +71,10 @@ class Campus implements JsonSerializable
     {
         $this->details = $details;
     }
+    public function getEntrance(): ?Coordinates
+    {
+        return $this->entrance;
+    }
 
     // To Array
     public function toArray(): array
@@ -75,6 +85,9 @@ class Campus implements JsonSerializable
         ];
         if ($this->coordinates) {
             $data['coordinates'] = $this->getCoordinates()->toArray();
+        }
+        if ($this->entrance) {
+            $data['entrance'] = $this->getEntrance()->toArray();
         }
         if ($this->details) {
             $data['details'] = $this->getDetails()->toArray();

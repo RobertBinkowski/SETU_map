@@ -88,6 +88,12 @@ class CampusRepository extends BaseRepository
             $coordinates = null;
         }
 
+        if ($row['entrance'] !== null) {
+            $entrance = $this->coordinatesRepository->get($row['entrance']);
+        } else {
+            $entrance = null;
+        }
+
         if ($row['details'] !== null) {
             $details = $this->detailsRepository->get($row['details']);
         } else {
@@ -97,6 +103,7 @@ class CampusRepository extends BaseRepository
             $row['id'],
             $row['enabled'],
             $coordinates,
+            $entrance,
             $details
         );
     }
