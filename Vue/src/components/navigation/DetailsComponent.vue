@@ -67,8 +67,7 @@
 </template>
 
 <script>
-  import axios from "axios";
-  import { ref, watch } from "vue";
+  import { watch } from "vue";
 
   export default {
     data() {
@@ -80,6 +79,14 @@
       location: {
         type: Object,
         required: true,
+      },
+    },
+    watch: {
+      location: {
+        deep: true,
+        handler() {
+          this.large = true;
+        },
       },
     },
     methods: {

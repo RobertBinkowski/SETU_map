@@ -41,6 +41,9 @@
       },
     },
     watch: {
+      locations: {
+        deep: true,
+      },
       path: {
         deep: true,
         handler(newPath) {

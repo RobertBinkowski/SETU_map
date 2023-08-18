@@ -36,8 +36,8 @@
     watch: {
       locations: {
         deep: true,
-        handler(location) {
-          this.updateMarkers(location);
+        handler() {
+          this.updateMarkers();
         },
       },
       path: {
