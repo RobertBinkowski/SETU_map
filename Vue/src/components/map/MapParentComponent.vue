@@ -4,6 +4,7 @@
       v-if="campus"
       :locations="locations"
       :campus="campus"
+      :path="internalPath"
       @selectLocation="selectLocation"
     ></GoogleMap>
     <div v-else>
@@ -20,6 +21,11 @@
     components: {
       GoogleMap,
     },
+    data() {
+      return {
+        internalPath: [],
+      };
+    },
     props: {
       locations: {
         type: Array,
@@ -29,7 +35,20 @@
         type: Object,
         required: true,
       },
+      path: {
+        type: Array,
+        required: false,
+      },
     },
+    watch: {
+      path: {
+        deep: true,
+        handler(newPath) {
+          this.internalPath = newPath;
+        },
+      },
+    },
+
     methods: {
       selectLocation(location) {
         this.$emit("selectLocation", location);

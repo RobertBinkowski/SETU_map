@@ -16,6 +16,7 @@
       return {
         map: null,
         markers: [],
+        internalPath: [],
       };
     },
     props: {
@@ -27,24 +28,29 @@
         type: Object,
         required: true,
       },
+      path: {
+        type: Array,
+        required: false,
+      },
     },
     watch: {
       locations: {
         deep: true,
-        handler(newLocations, oldLocations) {
-          this.updateMarkers(newLocations);
+        handler(location) {
+          this.updateMarkers(location);
+        },
+      },
+      path: {
+        deep: true,
+        handler(path) {
+          this.internalPath = path;
         },
       },
       campus: {
         deep: true,
-        handler(newCampus, oldCampus) {
+        handler(campus) {
           // Check if latitude or longitude has changed
-          if (
-            newCampus.coordinates.latitude !== oldCampus.coordinates.latitude ||
-            newCampus.coordinates.longitude !== oldCampus.coordinates.longitude
-          ) {
-            this.updateMapLocation(newCampus.coordinates);
-          }
+          this.updateMapLocation(campus.coordinates);
         },
       },
     },
@@ -140,15 +146,6 @@
       emitLocation(location) {
         this.$emit("selectLocation", location);
       },
-    },
-    beforeDestroy() {
-      if (this.map) {
-        // Clean up the map instance
-        google.maps.event.clearInstanceListeners(this.map);
-        google.maps.event.clearInstanceListeners(this.map.data);
-        google.maps.event.clearInstanceListeners(this.map.getStreetView());
-        this.map = null;
-      }
     },
   };
 </script>
