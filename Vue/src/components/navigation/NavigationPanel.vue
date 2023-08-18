@@ -37,8 +37,9 @@
           </svg>
           Main Entrance
         </div>
-        <span class="edit" @click="setEdit('departure')">
+        <span class="edit">
           <svg
+            @click="setEdit('departure')"
             xmlns="http://www.w3.org/2000/svg"
             height="1em"
             viewBox="0 0 512 512"
@@ -50,7 +51,7 @@
         </span>
       </div>
     </div>
-    <div class="swap" @click="swap">
+    <div class="swap" @click="swap()">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         height="1em"
@@ -232,13 +233,6 @@
           this.navigation.edit = edit;
         }
       },
-      setLocation(location) {
-        if (edit === "Departure") {
-          this.navigation.departure = location;
-        } else if (edit === "Destination") {
-          this.navigation.destination = location;
-        }
-      },
       toggleDisabled() {
         this.navigation.disabled = !this.navigation.disabled;
       },
@@ -254,6 +248,11 @@
           );
           console.log(err);
         }
+      },
+      swap() {
+        let temp = this.navigation.departure;
+        this.navigation.departure = this.navigation.destination;
+        this.navigation.destination = temp;
       },
       clearDestination() {
         this.navigation.destination = null;
@@ -292,6 +291,19 @@
     overflow: hidden;
     font-weight: bold;
     color: $txt-2;
+    .swap {
+      text-align: end;
+      svg {
+        height: 1.5em;
+        width: 1.5em;
+        fill: $txt-1;
+        cursor: pointer;
+        transition: $tr-f;
+        &:hover {
+          fill: $acc-1;
+        }
+      }
+    }
     .mainGate {
       display: flex;
       align-items: center;
