@@ -147,9 +147,16 @@ export default {
                 position: userLocation,
                 map: this.map,
                 icon: {
-                  url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                  scaledSize: new google.maps.Size(40, 40),
+                  path: google.maps.SymbolPath.CIRCLE,
+                  scale: 10,
+                  fillColor: "#4287f5",
+                  fillOpacity: 1.0,
+                  strokeColor: "#343536",
+                  strokeWeight: .2,
                 },
+              });
+              marker.addListener("click", () => {
+                alert("Your current position");
               });
             }
           },
@@ -157,13 +164,6 @@ export default {
             console.error("Error getting user location:", error);
           }
         );
-      }
-    },
-    stopTrackingUserLocation() {
-      // Stop tracking user location
-      if (this.watchId) {
-        navigator.geolocation.clearWatch(this.watchId);
-        this.watchId = null;
       }
     },
     createMarkers() {
@@ -176,6 +176,14 @@ export default {
               lng: parseFloat(location.location.coordinates.longitude),
             },
             map: this.map,
+            icon: {
+              path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+              fillColor: "#07ddf5",
+              fillOpacity: 1.0,
+              strokeColor: "#343536",
+              strokeWeight: .2,
+              scale: 5,
+            },
           });
           // Add click event to the marker
           marker.addListener("click", () => {
@@ -235,6 +243,13 @@ export default {
     },
     emitLocation(location) {
       this.$emit("selectLocation", location);
+    },
+    stopTrackingUserLocation() {
+      // Stop tracking user location
+      if (this.watchId) {
+        navigator.geolocation.clearWatch(this.watchId);
+        this.watchId = null;
+      }
     },
   },
   beforeDestroy() {
