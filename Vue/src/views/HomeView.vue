@@ -144,7 +144,7 @@
       },
 
       handleUpdatePath(newPath) {
-        this.path = newPath; // [path, nodeIds]
+        this.path = newPath[0]; // [path, nodeIds]
       },
 
       handleSelectedCampusUpdate(campus) {

@@ -44,6 +44,8 @@
         deep: true,
         handler(path) {
           this.internalPath = path;
+          this.updateMarkers();
+          this.refreshMap();
         },
       },
       campus: {
@@ -67,6 +69,12 @@
       });
     },
     methods: {
+      refreshMap() {
+        // Clear the markers
+        this.clearMarkers();
+        // Reinitialize the map
+        this.initMap();
+      },
       initMap() {
         if (!this.campus) {
           // Campus data is not available yet, do not initialize the map
@@ -130,6 +138,18 @@
             this.markers.push(marker);
           }
         });
+        this.internalPath.forEach((location) => {
+          if (location.coordinates != null) {
+            const marker = new google.maps.Marker({
+              position: {
+                lat: parseFloat(location.coordinates.latitude),
+                lng: parseFloat(location.coordinates.longitude),
+              },
+              map: this.map,
+            });
+            this.markers.push(marker);
+          }
+        });
       },
       clearMarkers() {
         // Remove all markers
@@ -146,6 +166,15 @@
       emitLocation(location) {
         this.$emit("selectLocation", location);
       },
+    },
+    beforeDestroy() {
+      if (this.map) {
+        // Clean up the map instance
+        google.maps.event.clearInstanceListeners(this.map);
+        google.maps.event.clearInstanceListeners(this.map.data);
+        google.maps.event.clearInstanceListeners(this.map.getStreetView());
+        this.map = null;
+      }
     },
   };
 </script>
