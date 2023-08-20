@@ -206,8 +206,17 @@ export default {
           path: pathCoordinates,
           geodesic: true,
           strokeColor: "#4287f5",
-          strokeOpacity: 1.0,
-          strokeWeight: 2,
+          strokeOpacity: 0,
+          strokeWeight: 0,
+          icons: [{
+            icon: {
+              path: 'M 0,0 L -1,-2 L 1,-2 z',
+              strokeOpacity: .6,
+              scale: 3,
+            },
+            offset: '0',
+            repeat: '20px'
+          }],
         });
         pathLine.setMap(this.map);
       }
