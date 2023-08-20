@@ -17,6 +17,8 @@ export default {
       map: null,
       markers: [],
       internalPath: [],
+      userMarker: null,
+      watchId: null,
     };
   },
   props: {
@@ -106,8 +108,8 @@ export default {
       // Remove old markers
       this.clearMarkers();
 
-      // Add User Location
-      this.showUserLocation()
+      // Add and track User Location
+      this.startTrackingUserLocation()
       // Create new markers
       this.createMarkers();
       // Create Path
@@ -125,27 +127,31 @@ export default {
         this.map.setZoom(parseFloat($coordinates.zoom));
       }
     },
-    showUserLocation() {
+    startTrackingUserLocation() {
       // If location is granted
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
+        this.watchId = navigator.geolocation.watchPosition(
           (position) => {
-
             // Get User's location
             const userLocation = {
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             };
 
-            // Add a marker for the user's location
-            const marker = new google.maps.Marker({
-              position: userLocation,
-              map: this.map,
-              icon: {
-                url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                scaledSize: new google.maps.Size(40, 40),
-              },
-            });
+            if (this.userMarker) {
+              this.userMarker.setPosition(userLocation);
+            } else {
+
+              // Add a marker for the user's location
+              const marker = new google.maps.Marker({
+                position: userLocation,
+                map: this.map,
+                icon: {
+                  url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                  scaledSize: new google.maps.Size(40, 40),
+                },
+              });
+            }
           },
           (error) => {
             console.error("Error getting user location:", error);
@@ -153,7 +159,13 @@ export default {
         );
       }
     },
-
+    stopTrackingUserLocation() {
+      // Stop tracking user location
+      if (this.watchId) {
+        navigator.geolocation.clearWatch(this.watchId);
+        this.watchId = null;
+      }
+    },
     createMarkers() {
       // Create markers
       this.locations.forEach((location) => {
@@ -173,7 +185,6 @@ export default {
         }
       });
     },
-
     createPath() {
       const pathCoordinates = this.internalPath.map((location) => {
         return {
@@ -233,6 +244,7 @@ export default {
       google.maps.event.clearInstanceListeners(this.map.data);
       google.maps.event.clearInstanceListeners(this.map.getStreetView());
       this.map = null;
+      this.stopTrackingUserLocation();
     }
   },
 };
