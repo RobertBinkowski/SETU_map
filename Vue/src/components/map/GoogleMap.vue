@@ -37,14 +37,14 @@ export default {
     locations: {
       deep: true,
       handler() {
-        this.updateMarkers();
+        this.refreshMap();
       },
     },
     path: {
       deep: true,
       handler(path) {
         this.internalPath = path;
-        this.updateMarkers();
+        // Refresh the Map
         this.refreshMap();
       },
     },
@@ -99,15 +99,19 @@ export default {
         ],
       });
 
-      // Create markers
-      this.createMarkers();
+      // Update Markers
+      this.updateMarkers();
     },
     updateMarkers() {
       // Remove old markers
       this.clearMarkers();
 
+      // Add User Location
+      this.showUserLocation()
       // Create new markers
       this.createMarkers();
+      // Create Path
+      this.createPath();
     },
     updateMapLocation($coordinates) {
       // Check if map is initialized
@@ -121,6 +125,35 @@ export default {
         this.map.setZoom(parseFloat($coordinates.zoom));
       }
     },
+    showUserLocation() {
+      // If location is granted
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+
+            // Get User's location
+            const userLocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+
+            // Add a marker for the user's location
+            const marker = new google.maps.Marker({
+              position: userLocation,
+              map: this.map,
+              icon: {
+                url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                scaledSize: new google.maps.Size(40, 40),
+              },
+            });
+          },
+          (error) => {
+            console.error("Error getting user location:", error);
+          }
+        );
+      }
+    },
+
     createMarkers() {
       // Create markers
       this.locations.forEach((location) => {
@@ -139,7 +172,9 @@ export default {
           this.markers.push(marker);
         }
       });
+    },
 
+    createPath() {
       const pathCoordinates = this.internalPath.map((location) => {
         return {
           lat: parseFloat(location.coordinates.latitude),
@@ -168,15 +203,13 @@ export default {
             map: this.map,
             icon: {
               url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png", // Use Google Maps' standard red marker icon
-              scaledSize: new google.maps.Size(10, 10), // Set the size of the icon
+              scaledSize: new google.maps.Size(1, 1),
             },
           });
           this.markers.push(marker);
         }
       });
-
-    }
-    ,
+    },
     clearMarkers() {
       // Remove all markers
       this.markers.forEach((marker) => {
