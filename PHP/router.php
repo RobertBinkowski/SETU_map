@@ -69,6 +69,11 @@ if ($request[1] == "api") {
             $output = new LogController($logRepository);
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
+        case "searches":
+            // Logs
+            $output = new LogController($logRepository);
+            $output->request($_SERVER["REQUEST_METHOD"], $id);
+            break;
         case "details":
             // Details
             $output = new DetailsController($detailsRepository, $logRepository);

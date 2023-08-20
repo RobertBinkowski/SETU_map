@@ -1,5 +1,4 @@
 <?
-include_once "Device.php";
 class Log implements JsonSerializable
 {
     public function jsonSerialize(): array
@@ -13,14 +12,12 @@ class Log implements JsonSerializable
         private string $type = "info",
         private string $info = "",
         private ?string $timestamp = "",
-        private ?Device $device = null
     ) {
         $this->setId($id);
         $this->setInfo($info);
         $this->setTitle($title);
         $this->setType($type);
         $this->timestamp = $timestamp;
-        $this->setDevice($device);
     }
 
     // Getters
@@ -47,10 +44,6 @@ class Log implements JsonSerializable
     {
         return $this->timestamp;
     }
-    public function getDevice(): Device
-    {
-        return $this->device;
-    }
 
     // Setters
     public function setId(int $id): void
@@ -75,10 +68,6 @@ class Log implements JsonSerializable
     {
         $this->timestamp = $timestamp;
     }
-    public function setDevice(?Device $device)
-    {
-        $this->device = $device;
-    }
 
     // to Array
     public function toArray(): array
@@ -90,9 +79,6 @@ class Log implements JsonSerializable
             "info" => $this->getInfo(),
             "TimeStamp" => $this->getTimestamp(),
         ];
-        if ($this->getDevice() != null) {
-            $data["device"] = $this->getDevice()->toArray();
-        }
 
         return $data;
     }

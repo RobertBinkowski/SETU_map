@@ -52,14 +52,6 @@ const router = createRouter({
       component: () => import("../views/admin/CRUD/Users.vue"),
     },
     {
-      path: "/logs",
-      name: "Logs",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/admin/Logs.vue"),
-    },
-    {
       path: "/buildings",
       name: "Buildings",
       // route level code-splitting
@@ -92,20 +84,29 @@ const router = createRouter({
       component: () => import("../views/admin/CRUD/Floors.vue"),
     },
     {
-      path: "/images",
-      name: "Images",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/admin/CRUD/Images.vue"),
-    },
-    {
       path: "/Rooms",
       name: "Rooms",
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/admin/CRUD/Rooms.vue"),
+    },
+    // Views
+    {
+      path: "/Searches",
+      name: "Searches",
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import("../views/admin/View/Searches.vue"),
+    },
+    {
+      path: "/logs",
+      name: "Logs",
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import("../views/admin/View/Logs.vue"),
     },
   ],
 });
@@ -121,8 +122,8 @@ router.beforeEach((to, from, next) => {
     "Campuses",
     "Connections",
     "Floors",
-    "Images",
     "Rooms",
+    "Searches",
   ];
 
   // Check if logged in and if the location requires login

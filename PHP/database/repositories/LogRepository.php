@@ -1,16 +1,14 @@
 <?php
+// include_once "../models/Log.php";
 
 class LogRepository extends BaseRepository
 {
 
-    private DetailsRepository $detailsRepository;
 
     public function __construct(
         Database $conn,
-        DetailsRepository $detailsRepository
     ) {
         parent::__construct($conn);
-        $this->detailsRepository = $detailsRepository;
     }
 
     public function getAll(): array
@@ -34,7 +32,6 @@ class LogRepository extends BaseRepository
         //     ':title' => $log->getTitle(),
         //     ':type' =>  $log->getType(),
         //     ':date' =>  date('Y-m-d H:i:s'),
-        //     ':device' => $log->getDevice()
         // ]);
         return true;
     }
@@ -77,18 +74,12 @@ class LogRepository extends BaseRepository
 
     private function hydrateRow(array $row): Log
     {
-        $device = null;
-        if ($row['device'] !== null) {
-            $device = $this->detailsRepository->get($row['device']);
-        }
-
         return new Log(
             $row['id'],
             $row['title'],
             $row['type'],
             $row['info'],
-            $row['date'],
-            $device
+            $row['date']
         );
     }
 }
