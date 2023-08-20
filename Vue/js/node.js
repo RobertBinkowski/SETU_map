@@ -46,8 +46,8 @@ export class Node {
  */
 export class Coordinates {
   constructor(x, y, z) {
-    this.longitude = x;
-    this.latitude = y;
+    this.latitude = x;
+    this.longitude = y;
     this.altitude = z;
   }
 }
