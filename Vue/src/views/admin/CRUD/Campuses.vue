@@ -7,7 +7,39 @@
           {{ table }}
         </a>
       </div>
-      <TableComponent :data="campuses"></TableComponent>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Enabled</th>
+          <th>Name</th>
+          <th>Abbreviation</th>
+          <th>Info</th>
+          <th>Size</th>
+          <th>Image</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Altitude</th>
+          <th v-show="edit == true"></th>
+        </tr>
+        <tr v-for="(value, key) in  campuses " :key="key">
+          <td>{{ value.id }}</td>
+          <td>{{ value.enabled }}</td>
+          <td>{{ value.details ? value.details.name : '' }} </td>
+          <td>{{ value.details ? value.details.abbreviation : '' }} </td>
+          <td>{{ value.details ? value.details.info : '' }} </td>
+          <td>{{ value.details ? value.details.size : '' }} </td>
+          <td>{{ value.details ? value.details.src : '' }} </td>
+          <td>{{ value.coordinates ? value.coordinates.latitude : 0 }} </td>
+          <td>{{ value.coordinates ? value.coordinates.longitude : 0 }}</td>
+          <td> {{ value.coordinates ? value.coordinates.altitude : 0 }}
+          </td>
+          <td v-show="edit == true">
+            <button :value="value.id">Edit</button>
+            <button :value="value.id">Delete</button>
+            <button :value="value.id">Disable</button>
+          </td>
+        </tr>
+      </table>
       <!-- <button>Create New</button> -->
     </div>
   </main>
@@ -23,22 +55,15 @@ export default {
     TableComponent,
   },
   setup() {
-    let tables = ref([]);
     let campuses = ref([]);
 
-    async function getTables() {
-      const { data } = await axios.get("http://localhost:8000/api/tables");
-      tables.value = data;
-    }
-
-    async function getcampuses() {
+    async function getCampuses() {
       const { data } = await axios.get("http://localhost:8000/api/campuses");
       campuses.value = data;
     }
 
-    getTables();
-    getcampuses();
-    return { campuses, tables };
+    getCampuses();
+    return { campuses };
   },
 };
 </script>
