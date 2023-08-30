@@ -7,7 +7,26 @@
           {{ table }}
         </a>
       </div>
-      <TableComponent :data="connections"></TableComponent>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Enabled</th>
+          <th>Location One</th>
+          <th>Location Two</th>
+          <th v-show="edit == true"></th>
+        </tr>
+        <tr v-for="(value, key) in  connections " :key="key">
+          <td>{{ value.id }}</td>
+          <td>{{ value.enabled }}</td>
+          <td>{{ value.locationOne.id }}</td>
+          <td>{{ value.locationTwo.id }}</td>
+          <td v-show="edit == true">
+            <button :value="value.id">Edit</button>
+            <button :value="value.id">Delete</button>
+            <button :value="value.id">Disable</button>
+          </td>
+        </tr>
+      </table>
       <!-- <button>Create New</button> -->
     </div>
   </main>
@@ -23,24 +42,17 @@ export default {
     TableComponent,
   },
   setup() {
-    let tables = ref([]);
     let connections = ref([]);
 
-    async function getTables() {
-      const { data } = await axios.get("http://localhost:8000/api/tables");
-      tables.value = data;
-    }
-
-    async function getconnections() {
+    async function getConnections() {
       const { data } = await axios.get(
         "http://localhost:8000/api/connections"
       );
       connections.value = data;
     }
 
-    getTables();
-    getconnections();
-    return { connections, tables };
+    getConnections();
+    return { connections };
   },
 };
 </script>
