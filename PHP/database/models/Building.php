@@ -90,6 +90,9 @@ class Building implements JsonSerializable
         if ($this->location) {
             $data['location'] = $this->getLocation()->toArray();
         }
+        if ($this->details) {
+            $data['details'] = $this->getDetails()->toArray();
+        }
         return $data;
     }
 }

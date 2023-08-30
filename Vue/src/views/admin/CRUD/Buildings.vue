@@ -3,42 +3,67 @@
     <h1>Buildings</h1>
     <div class="table">
       <NavigationComponent></NavigationComponent>
-      <TableComponent :data="buildings"></TableComponent>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Enabled</th>
+          <th>Name</th>
+          <th>Abbreviation</th>
+          <th>Info</th>
+          <th>Size</th>
+          <th>Image</th>
+          <th>Campus</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Altitude</th>
+          <th v-show="edit == true"></th>
+        </tr>
+        <tr v-for="(value, key) in  buildings " :key="key">
+          <td>{{ value.id }}</td>
+          <td>{{ value.enabled }}</td>
+          <td>
+            {{ value.details ? value.details.name : '' }} </td>
+          <td>{{ value.details ? value.details.abbreviation : '' }} </td>
+          <td>{{ value.details ? value.details.info : '' }} </td>
+          <td>{{ value.details ? value.details.size : '' }} </td>
+          <td>{{ value.details ? value.details.src : '' }} </td>
+          <td>{{ value.campus.details.name }}</td>
+          <td>
+            {{ value.location.coordinates ? value.location.coordinates.latitude : 0 }} </td>
+          <td>{{ value.location.coordinates ? value.location.coordinates.longitude : 0 }}</td>
+          <td> {{ value.location.coordinates ? value.location.coordinates.altitude : 0 }}
+          </td>
+          <td v-show="edit == true">
+            <button :value="value.id">Edit</button>
+            <button :value="value.id">Delete</button>
+            <button :value="value.id">Disable</button>
+          </td>
+        </tr>
+      </table>
       <!-- <button>Create New</button> -->
     </div>
   </main>
 </template>
 
 <script>
-import TableComponent from "@/components/admin/TableComponent.vue";
 import NavigationComponent from "../../../components/admin/NavigationComponent.vue";
 import axios from "axios";
 import { ref } from "vue";
 
 export default {
   components: {
-    TableComponent,
     NavigationComponent
   },
   setup() {
-    // let tables = ref([]);
     let buildings = ref([]);
-
-    // Old system to get all tables
-    // async function getTables() {
-    //   const { data } = await axios.get("http://localhost:8000/api/tables");
-    //   tables.value = data;
-    // }
 
     async function getBuildings() {
       const { data } = await axios.get("http://localhost:8000/api/buildings");
       buildings.value = data;
     }
 
-    // getTables();
     getBuildings();
     return { buildings };
-    // return { buildings, tables };
   },
 };
 </script>
