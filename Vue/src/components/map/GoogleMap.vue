@@ -110,8 +110,10 @@ export default {
 
       // Add and track User Location
       this.startTrackingUserLocation()
-      // Create new markers
-      this.createMarkers();
+      if (this.internalPath == []) {
+        // Create new markers
+        this.createMarkers();
+      }
       // Create Path
       this.createPath();
     },
