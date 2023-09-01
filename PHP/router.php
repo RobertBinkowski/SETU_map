@@ -85,7 +85,6 @@ if ($request[1] == "api") {
             $output->request($_SERVER["REQUEST_METHOD"], $id);
             break;
         case "login":
-            // LogIn Service
             $output = new SignInService($userRepository);
             break;
         default:

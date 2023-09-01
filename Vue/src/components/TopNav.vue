@@ -98,7 +98,7 @@
       logout() {
         localStorage.removeItem("authToken");
         alert("Logged Out");
-        this.$router.push({ name: "Login" });
+        this.$router.push({ name: "SignIn" });
       },
     },
   };

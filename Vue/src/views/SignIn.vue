@@ -65,6 +65,8 @@
           const authToken = response.data.token;
           // Store the authToken in localStorage
           localStorage.setItem("authToken", authToken);
+
+          // localStorage.setItem("user", response.data.user);
           // Redirect to the protected route
           this.$router.push({ name: "Admin" });
         } catch (error) {

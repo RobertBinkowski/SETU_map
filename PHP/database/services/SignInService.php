@@ -17,10 +17,11 @@ class SignInService
             // Return the authentication token to the client
             http_response_code(200);
             header("Content-Type: application/json");
-            echo json_encode(["token" => $token]);
+            echo json_encode(["token" => $token, "user" => $user]);
         } else {
             // Return an error message to the client
             http_response_code(401);
+            header("Content-Type: application/json");
             echo json_encode(["message" => "Invalid email or password"]);
         }
     }
