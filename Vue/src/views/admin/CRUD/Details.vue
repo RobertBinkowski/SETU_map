@@ -1,6 +1,6 @@
 <template>
   <main>
-    <h1>Campuses</h1>
+    <h1>Details</h1>
     <NavigationComponent></NavigationComponent>
     <div class="table">
       <div class="top">
@@ -11,28 +11,20 @@
       <table>
         <tr>
           <th>ID</th>
-          <th>Enabled</th>
-          <th>Name</th>
-          <th>Abbreviation</th>
-          <th>Info</th>
-          <th>Size</th>
-          <th>Image</th>
-          <th>Latitude</th>
-          <th>Longitude</th>
-          <th>Altitude</th>
+          <th>name</th>
+          <th>abbreviation</th>
+          <th>info</th>
+          <th>size</th>
+          <th>src</th>
           <th v-show="edit == true"></th>
         </tr>
-        <tr v-for="(value, key) in campuses" :key="key">
+        <tr v-for="(value, key) in details" :key="key">
           <td>{{ value.id }}</td>
-          <td>{{ value.enabled }}</td>
-          <td>{{ value.details ? value.details.name : "" }}</td>
-          <td>{{ value.details ? value.details.abbreviation : "" }}</td>
-          <td>{{ value.details ? value.details.info : "" }}</td>
-          <td>{{ value.details ? value.details.size : "" }}</td>
-          <td>{{ value.details ? value.details.src : "" }}</td>
-          <td>{{ value.coordinates ? value.coordinates.latitude : 0 }}</td>
-          <td>{{ value.coordinates ? value.coordinates.longitude : 0 }}</td>
-          <td>{{ value.coordinates ? value.coordinates.altitude : 0 }}</td>
+          <td>{{ value.name }}</td>
+          <td>{{ value.abbreviation }}</td>
+          <td>{{ value.info }}</td>
+          <td>{{ value.size }}</td>
+          <td>{{ value.src }}</td>
           <td v-show="edit == true">
             <button :value="value.id">Edit</button>
             <button :value="value.id">Delete</button>
@@ -56,15 +48,15 @@
       NavigationComponent,
     },
     setup() {
-      let campuses = ref([]);
+      let details = ref([]);
 
-      async function getCampuses() {
-        const { data } = await axios.get("http://localhost:8000/api/campuses");
-        campuses.value = data;
+      async function getDetails() {
+        const { data } = await axios.get("http://localhost:8000/api/details");
+        details.value = data;
       }
 
-      getCampuses();
-      return { campuses };
+      getDetails();
+      return { details };
     },
   };
 </script>
