@@ -58,15 +58,16 @@
     computed: {
       filteredRooms() {
         if (this.searchTerm == "") {
-          return null;
+          return [];
         }
-        return this.rooms.filter(
+        const filtered = this.rooms.filter(
           (room) =>
-            room.building.campus.id == this.selectedCampus.id ||
+            room.building.campus.id === this.selectedCampus.id &&
             room.details.name
               .toLowerCase()
               .includes(this.searchTerm.toLowerCase())
         );
+        return filtered;
       },
     },
     methods: {

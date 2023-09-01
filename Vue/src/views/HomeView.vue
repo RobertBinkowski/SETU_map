@@ -19,7 +19,7 @@
     ></NavigationPanel>
     <MapParentComponent
       v-if="locations"
-      :locations="buildings"
+      :locations="rooms"
       :campus="this.campus"
       :path="path"
       @selectLocation="toggleNavigationPanel"
