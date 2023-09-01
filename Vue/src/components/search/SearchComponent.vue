@@ -22,7 +22,7 @@
     <SearchEntry
       v-for="location in filteredRooms"
       :key="location"
-      :location="location.details"
+      :location="location"
       @selectLocation="selectLocation"
     ></SearchEntry>
   </div>
@@ -40,10 +40,10 @@
         type: Array,
         required: true,
       },
-      buildings: {
-        type: Array,
-        required: false,
-      },
+      // buildings: {
+      //   type: Array,
+      //   required: false,
+      // },
       campuses: {
         type: Array,
         required: true,

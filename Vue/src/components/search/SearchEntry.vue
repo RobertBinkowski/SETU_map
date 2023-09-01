@@ -1,7 +1,11 @@
 <template>
-  <div v-if="location.name" class="border" @click="handleClick">
-    <img v-show="location.src" :src="location.src" :alt="location.name" />
-    <strong v-if="location">{{ location.name }}</strong>
+  <div v-if="location.details.name" class="border" @click="handleClick">
+    <img
+      v-show="location.details.src"
+      :src="location.details.src"
+      :alt="location.details.name"
+    />
+    <strong v-if="location.details">{{ location.details.name }}</strong>
     -
     <span v-if="location.building && location.building.details">
       {{ location.building.details.name }}
