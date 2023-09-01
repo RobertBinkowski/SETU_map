@@ -2,43 +2,55 @@
   <main>
     <h1>Locations</h1>
     <div class="table">
-      <div class="top">
-        <a v-for="table in tables" :key="table.id" :href="table">
-          {{ table }}
-        </a>
-      </div>
-      <TableComponent :data="locations"></TableComponent>
+      <NavigationComponent></NavigationComponent>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Enabled</th>
+          <th>Type</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Altitude</th>
+          <th v-show="edit == true"></th>
+        </tr>
+        <tr v-for="(value, key) in  locations " :key="key">
+          <td>{{ value.id }}</td>
+          <td>{{ value.enabled }}</td>
+          <td>{{ value.type }}</td>
+          <td>{{ value.coordinates.latitude }}</td>
+          <td>{{ value.coordinates.longitude }}</td>
+          <td>{{ value.coordinates.altitude }}</td>
+          <td v-show="edit == true">
+            <button :value="value.id">Edit</button>
+            <button :value="value.id">Delete</button>
+            <button :value="value.id">Disable</button>
+          </td>
+        </tr>
+      </table>
       <!-- <button>Create New</button> -->
     </div>
   </main>
 </template>
 
 <script>
-import TableComponent from "@/components/admin/TableComponent.vue";
+import NavigationComponent from "@/components/admin/NavigationComponent.vue";
 import axios from "axios";
 import { ref } from "vue";
 
 export default {
   components: {
-    TableComponent,
+    NavigationComponent,
   },
   setup() {
-    let tables = ref([]);
     let locations = ref([]);
-
-    async function getTables() {
-      const { data } = await axios.get("http://localhost:8000/api/tables");
-      tables.value = data;
-    }
 
     async function getLocations() {
       const { data } = await axios.get("http://localhost:8000/api/locations");
       locations.value = data;
     }
 
-    getTables();
     getLocations();
-    return { locations, tables };
+    return { locations };
   },
   methods: {
     setData: function () {

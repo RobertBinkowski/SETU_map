@@ -46,7 +46,8 @@
 </template>
 
 <script>
-import NavigationComponent from "../../../components/admin/NavigationComponent.vue";
+import NavigationComponent from "@/components/admin/NavigationComponent.vue";
+
 import axios from "axios";
 import { ref } from "vue";
 

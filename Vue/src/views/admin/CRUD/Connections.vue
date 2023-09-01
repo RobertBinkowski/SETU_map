@@ -1,6 +1,7 @@
 <template>
   <main>
     <h1>Connections</h1>
+    <NavigationComponent></NavigationComponent>
     <div class="table">
       <div class="top">
         <a v-for="table in tables" :key="table.id" :href="table">
@@ -33,13 +34,14 @@
 </template>
 
 <script>
-import TableComponent from "@/components/admin/TableComponent.vue";
+import NavigationComponent from "@/components/admin/NavigationComponent.vue";
+
 import axios from "axios";
 import { ref } from "vue";
 
 export default {
   components: {
-    TableComponent,
+    NavigationComponent
   },
   setup() {
     let connections = ref([]);

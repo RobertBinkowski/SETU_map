@@ -1,6 +1,7 @@
 <template>
   <main>
     <h1>Campuses</h1>
+    <NavigationComponent></NavigationComponent>
     <div class="table">
       <div class="top">
         <a v-for="table in tables" :key="table.id" :href="table">
@@ -46,13 +47,12 @@
 </template>
 
 <script>
-import TableComponent from "@/components/admin/TableComponent.vue";
 import axios from "axios";
 import { ref } from "vue";
 
 export default {
   components: {
-    TableComponent,
+    NavigationComponent
   },
   setup() {
     let campuses = ref([]);
