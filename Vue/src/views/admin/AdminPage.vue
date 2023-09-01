@@ -1,6 +1,7 @@
 <template>
   <main>
     <h1>Admin Page</h1>
+    <h2>{{ name }}</h2>
     <NavigationComponent></NavigationComponent>
     <div class="dashboard">
       <div>

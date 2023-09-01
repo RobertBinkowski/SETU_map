@@ -12,7 +12,7 @@ export default {
     data() {
         return {
             tables: [
-                { 'name': 'Admin', 'src': 'Admin' },
+                { 'name': 'Dashboard', 'src': 'Admin' },
                 { 'name': 'Buildings', 'src': 'buildings' },
                 { 'name': 'Campuses', 'src': 'campuses' },
                 { 'name': 'Connections', 'src': 'connections' },
@@ -21,8 +21,6 @@ export default {
                 { 'name': 'Floors', 'src': 'floors' },
                 { 'name': 'Privileges', 'src': 'privileges' },
                 { 'name': 'Rooms', 'src': 'rooms' },
-                { 'name': 'Logs', 'src': 'logs' },
-                { 'name': 'Searches', 'src': 'searches' },
             ]
         }
     }
