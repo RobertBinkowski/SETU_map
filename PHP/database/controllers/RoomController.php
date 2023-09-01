@@ -14,11 +14,11 @@ class RoomController extends BaseController
     }
     public function request(string $method, ?string $id): void
     {
-        $this->logRepository->create(
-            "Room Request",
-            "Attempting to get data from Room with " . $method,
-            "Info"
-        );
+        // $this->logRepository->create(
+        //     "Room Request",
+        //     "Attempting to get data from Room with " . $method,
+        //     "Info"
+        // );
         if ($id) {
             $this->processResourceRequest($method, $id);
         } else {
@@ -27,11 +27,11 @@ class RoomController extends BaseController
     }
     public function processResourceRequest(string $method, string $id): void
     {
-        $this->logRepository->create(
-            "Room Request with ID",
-            "Attempting to get data from Room with " . $method . " id: " . $id,
-            "Info"
-        );
+        // $this->logRepository->create(
+        //     "Room Request with ID",
+        //     "Attempting to get data from Room with " . $method . " id: " . $id,
+        //     "Info"
+        // );
         $room = $this->gateway->get($id);
 
         if (!$room) {
@@ -71,11 +71,11 @@ class RoomController extends BaseController
                 ]);
                 break;
             default:
-                $this->logRepository->create(
-                    "Room Request",
-                    "Attempting to Reach Wrong method " . $method . " id: " . $id,
-                    "Error"
-                );
+                // $this->logRepository->create(
+                //     "Room Request",
+                //     "Attempting to Reach Wrong method " . $method . " id: " . $id,
+                //     "Error"
+                // );
                 http_response_code(405);
                 header("Allowed: GET, PATCH, DELETE");
                 break;

@@ -42,9 +42,16 @@ a {
 }
 
 button{
-  background-color: $acc-2;
+  padding: 1em;
+  margin: 0.1em;
   border-radius: $rad-1;
-  padding: .1em 1em .1em 1em;
-  margin: .3em;
-  color: $txt-1;
+  border-radius: $rad-1;
+  background-color: $acc-1-d;
+  color: $acc-1;
+  font-weight: bolder;
+
+  &:hover {
+    background-color: $acc-1;
+    color: $acc-1-d;
+  }
 }

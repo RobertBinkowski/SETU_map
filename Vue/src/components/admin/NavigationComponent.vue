@@ -19,6 +19,7 @@
           { name: "Details", src: "details" },
           { name: "Floors", src: "floors" },
           { name: "Rooms", src: "rooms" },
+          { name: "Users", src: "users" },
         ],
       };
     },
