@@ -21,16 +21,16 @@
           <th>Building</th>
           <th v-show="edit == true"></th>
         </tr>
-        <tr v-for="(value, key) in  floors " :key="key">
+        <tr v-for="(value, key) in floors" :key="key">
           <td>{{ value.id }}</td>
           <td>{{ value.enabled }}</td>
           <td>{{ value.floor }}</td>
-          <td>{{ value.details ? value.details.name : '' }}</td>
-          <td>{{ value.details ? value.details.abbreviation : '' }}</td>
-          <td>{{ value.details ? value.details.info : '' }}</td>
-          <td>{{ value.details ? value.details.size : '' }}</td>
-          <td>{{ value.details ? value.details.src : '' }}</td>
-          <td>{{ value.building ? value.building : '' }}</td>
+          <td>{{ value.details ? value.details.name : "" }}</td>
+          <td>{{ value.details ? value.details.abbreviation : "" }}</td>
+          <td>{{ value.details ? value.details.info : "" }}</td>
+          <td>{{ value.details ? value.details.size : "" }}</td>
+          <td>{{ value.details ? value.details.src : "" }}</td>
+          <td>{{ value.building ? value.building.details.name : "" }}</td>
           <td v-show="edit == true">
             <button :value="value.id">Edit</button>
             <button :value="value.id">Delete</button>
@@ -44,46 +44,45 @@
 </template>
 
 <script>
-import NavigationComponent from "@/components/admin/NavigationComponent.vue";
+  import NavigationComponent from "@/components/admin/NavigationComponent.vue";
 
-import axios from "axios";
-import { ref } from "vue";
+  import axios from "axios";
+  import { ref } from "vue";
 
-export default {
-  components: {
-    NavigationComponent
-  },
-  setup() {
-    let floors = ref([]);
+  export default {
+    components: {
+      NavigationComponent,
+    },
+    setup() {
+      let floors = ref([]);
 
-    async function getFloors() {
-      const { data } = await axios.get("http://localhost:8000/api/Floors");
-      floors.value = data;
-    }
+      async function getFloors() {
+        const { data } = await axios.get("http://localhost:8000/api/Floors");
+        floors.value = data;
+      }
 
-    getFloors();
-    return { floors };
-  },
-};
+      getFloors();
+      return { floors };
+    },
+  };
 </script>
 
 <style scoped lang="scss">
-@import "@/assets/variables.scss";
+  @import "@/assets/variables.scss";
 
-.top {
-  padding: .1em;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  .top {
+    padding: 0.1em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 
-  a {
-    padding: 1em;
-    margin: .1em;
-    border-radius: $rad-1;
-    border-radius: $rad-1;
-    background-color: $acc-1-d;
-    color: $acc-1;
+    a {
+      padding: 1em;
+      margin: 0.1em;
+      border-radius: $rad-1;
+      border-radius: $rad-1;
+      background-color: $acc-1-d;
+      color: $acc-1;
+    }
   }
-
-}
 </style>
