@@ -23,7 +23,7 @@
       v-for="location in filteredRooms"
       :key="location"
       :location="location.details"
-      @click="selectLocation(location)"
+      @selectLocation="selectLocation"
     ></SearchEntry>
   </div>
 </template>
