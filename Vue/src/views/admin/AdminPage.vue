@@ -4,11 +4,9 @@
     <NavigationComponent></NavigationComponent>
     <div class="dashboard">
       <div>
-        Most Searches
         <a href="searches">Searches</a>
       </div>
       <div>
-        Logs
         <a href="logs">Logs</a>
       </div>
     </div>
