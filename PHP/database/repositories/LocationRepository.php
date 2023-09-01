@@ -30,15 +30,15 @@ class LocationRepository extends BaseRepository
         return $this->hydrate($data);
     }
 
-    public function create(Location $data): string
+    public function create(Location $location): bool
     {
-        $sql = "INSERT INTO locations (enabled, name, abbreviation, info, size) VALUES (:enabled, :name, :abbreviation, :info, :size)";
+        $sql = "INSERT INTO locations (enabled, type) 
+                VALUES (:enabled, :type)";
 
-        $this->execute($sql, [
-            ':enabled' => $data->isEnabled(),
+        return $this->execute($sql, [
+            ':enabled' => $location->isEnabled(),
+            ':type' => $location->getType(),
         ]);
-
-        return $this->lastInsertId();
     }
 
     public function get(string $id): Location|null
@@ -62,6 +62,20 @@ class LocationRepository extends BaseRepository
             ':ID' => $current->getId()
         ]);
     }
+
+    public function update(Location $location): bool
+    {
+        $sql = "UPDATE locations SET enabled = :enabled, type = :type
+                WHERE ID = :ID";
+
+        return $this->execute($sql, [
+            ':ID' => $location->getId(),
+            ':enabled' => $location->isEnabled(),
+            ':type' => $location->getType(),
+        ]);
+    }
+
+
     public function delete(string $id): bool
     {
         $sql = "DELETE FROM locations WHERE ID = :ID";

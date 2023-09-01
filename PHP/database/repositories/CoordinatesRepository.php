@@ -38,37 +38,37 @@ class CoordinatesRepository extends BaseRepository
         return $this->hydrateRow($data);
     }
 
-    private function delete(int $id): bool
+    public function delete(int $id): bool
     {
         $sql = "DELETE FROM coordinates WHERE id = :id";
 
         return $this->execute($sql, [':id' => $id]);
     }
 
-    private function create(array $data): bool
+    public function create(Coordinates $coordinates): bool
     {
         $sql = "INSERT INTO coordinates (latitude, longitude, altitude, zoom) 
                 VALUES (:latitude, :longitude, :altitude, :zoom)";
 
         return $this->execute($sql, [
-            ':latitude' => $data['latitude'],
-            ':longitude' => $data['longitude'],
-            ':altitude' => $data['altitude'],
-            ':zoom' => $data['zoom'],
+            ':latitude' => $coordinates->getLatitude(),
+            ':longitude' => $coordinates->getLongitude(),
+            ':altitude' => $coordinates->getAltitude(),
+            ':zoom' => $coordinates->getZoom(),
         ]);
     }
 
-    private function update(array $data): bool
+    public function update(Coordinates $coordinates): bool
     {
         $sql = "UPDATE coordinates SET latitude = :latitude, longitude = :longitude, altitude = :altitude, zoom = :zoom
-            WHERE id = :id";
+                WHERE id = :id";
 
         return $this->execute($sql, [
-            ':id' => $data['id'],
-            ':latitude' => $data['latitude'],
-            ':longitude' => $data['longitude'],
-            ':altitude' => $data['altitude'],
-            ':zoom' => $data['zoom'],
+            ':id' => $coordinates->getId(),
+            ':latitude' => $coordinates->getLatitude(),
+            ':longitude' => $coordinates->getLongitude(),
+            ':altitude' => $coordinates->getAltitude(),
+            ':zoom' => $coordinates->getZoom(),
         ]);
     }
 
