@@ -89,6 +89,6 @@ export function A_Star(departure, destination, disabled = false) {
   }
 
   // If no path was found, return an empty array
-  console.log("No Solution Found");
+  alert("No Route Found");
   return [];
 }

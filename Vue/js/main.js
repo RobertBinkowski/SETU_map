@@ -37,7 +37,6 @@ export function search(
 
   //  connect locations
   let map = Map(locations, connections);
-
   // Set Departure and Destination
   departure = map.find((dep) => dep.id === departure.id);
   destination = map.find((dep) => dep.id === destination.id);
